@@ -8,23 +8,22 @@
     <title>Website</title>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'fonts/font-awesome.min.css' %}">
-    <link rel="stylesheet" href="{% static 'fonts/ionicons.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/Footer-Dark.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/fonts/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/fonts/ionicons.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/Footer-Dark.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.3.1/css/swiper.min.css">
-    <link rel="stylesheet" href="{% static 'css/Navigation-with-Search.css' %}">
-    <link rel="stylesheet" href="{% static 'css/Simple-Slider.css' %}">
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/Simple-Slider.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/Navigation-with-Search.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/styles.css' %}">
     <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
-    <link rel="stylesheet" type="text/css" href="{% static 'shop/main.css' %}">
+    <!-- <link rel="stylesheet" type="text/css" href="{% static 'shop/main.css' %}"> -->
 </head>
 
 <body style="background: #ffffff;">
     <nav class="navbar navbar-light navbar-expand-md navigation-clean-search" style="background: #222222;">
         <div class="container"><a class="navbar-brand" href="#" style="color: #ffffff;">Website in Dev</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-            <div
-                class="collapse navbar-collapse" id="navcol-1">
+            <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="nav navbar-nav">
                     <li class="nav-item"><a class="nav-link active" href="#" style="color: #dddddd;">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="#" style="color: #dddddd;">Products</a></li>
@@ -88,7 +87,7 @@
                     </div>
                     <div class="col item social"><a href="#"><i class="icon ion-social-facebook"></i></a><a href="#"><i class="icon ion-social-twitter"></i></a><a href="#"><i class="icon ion-social-snapchat"></i></a><a href="#"><i class="icon ion-social-instagram"></i></a></div>
                 </div>
-                <p class="copyright">Company Name © 2017</p>
+                <p class="copyright">Company Name © 2020</p>
             </div>
         </footer>
     </div>
@@ -96,7 +95,7 @@
     <script src="/bootstrap/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.3.1/js/swiper.jquery.min.js"></script>
     <script src="{% static 'Simple-Slider.js' %}"></script>
-    <script id="bs-live-reload" data-sseport="53960" data-lastchange="1608825877757" src="/js/livereload.js"></script>
+    <script id="bs-live-reload" data-sseport="53960" data-lastchange="1608825877757" src="{% static '/js/livereload.js' %}"></script>
 </body>
 
 </html>
