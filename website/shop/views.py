@@ -19,8 +19,8 @@ def products(request):
     return render(request, 'shop/products.html')
 
 
-def item_list(request):
+def product_list(request):
     context = {
         'items': Item.objects.all()
     }
-    return render(request, " .html", context)
+    return render(request, "shop/products.html", context)
