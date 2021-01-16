@@ -63,20 +63,17 @@
                           <h5>{{ item.get_category_display }}</h5>
                         </p>
                         <h5>
-                          <strong>
                             <a href="{{ item.get_absolute_url }}" class="card_font_text">{{ item.title }}
                               <span class="badge badge-pill {{ item.get_label_display }}-color">NEW</span>
                             </a>
-                          </strong>
                         </h5>
-                        <h4 class="font-weight-bold blue-text">
-                          <strong>$
+                        <h4 class="font-weight blue-text">
                           {% if item.discount %}
                           {{ item.discount }}
                           {% else %}
                           {{ item.price }}
                           {% endif %}
-                          </strong>
+                          zł
                         </h4>
                       </div>
                     </div>
@@ -88,27 +85,30 @@
     </div>
 </div>
 
-{% endfor %}
-    {% if is_paginated %}
-        {% if page_obj.has_previous %}
-            <a class='btn btn-outline-info mb-4' href='?page=1'>First</a>
-            <a class='btn btn-outline-info mb-4' href='?page={{ page_obj.previous_page_number }}'>Previous</a>
+<center>
+    <div class="container">
+        {% if is_paginated %}
+                {% if page_obj.has_previous %}
+                    <!-- <a class='btn btn-outline-info mb-4' href='?page=1'>First</a> -->
+                    <a class='btn btn-outline-info mb-4' href='?page={{ page_obj.previous_page_number }}'>Previous</a>
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                        <a class='btn btn-info mb-4' href="?page={{ num }}">{{ num }}</a>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3'  %}
+                        <a class='btn btn-outline-info mb-4' href='?page={{ num }}'>{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                    <a class='btn btn-outline-info mb-4' href='?page={{ page_obj.next_page_number }}'>Next</a>
+                    <!-- <a class='btn btn-outline-info mb-4' href='?page={{ page_obj.paginator.num_pages }}'>Last</a> -->
+                {% endif %}
+
         {% endif %}
-
-        {% for num in page_obj.paginator.page_range %}
-            {% if page_obj.number == num %}
-                <a class='btn btn-info mb-4' href="?page={{ num }}">{{ num }}</a>
-            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3'  %}
-                <a class='btn btn-outline-info mb-4' href='?page={{ num }}'>{{ num }}</a>
-            {% endif %}
-        {% endfor %}
-
-        {% if page_obj.has_next %}
-            <a class='btn btn-outline-info mb-4' href='?page={{ page_obj.next_page_number }}'>Next</a>
-            <a class='btn btn-outline-info mb-4' href='?page={{ page_obj.paginator.num_pages }}'>Last</a>
-        {% endif %}
-
-{% endif %}
+    </div>
+</center>
 
 <div class="brands"><a href="#"> <img src="{% static 'shop/assets/img/instacart.png' %}"><img src="{% static 'shop/assets/img/kickstarter.png' %}"><img src="{% static 'shop/assets/img/lyft.png' %}"><img src="{% static 'shop/assets/img/shopify.png' %}"><img src="{% static 'shop/assets/img/pinterest.png' %}"><img src="{% static 'shop/assets/img/twitter.png' %}"></a></div>
 <div>

@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.shortcuts import reverse
 from PIL import Image
+from django.utils import timezone
 # Create your models here.
 
 CATEGORY_CHOICES = (
@@ -28,6 +29,7 @@ class Item(models.Model):
     description = models.TextField(
         default="To be, or not to be: that is the question: whether 'tis nobler in the mind to suffer the slings and arrows of outrageous fortune, or to take arms against a")
     image = models.ImageField(default='default.jpg', upload_to='product_pics')
+    date_added = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.title
@@ -42,6 +44,11 @@ class Item(models.Model):
             'slug': self.slug
         })
 
+    def get_remove_from_cart_url(self):
+        return reverse("shop:remove-from-cart", kwargs={
+            'slug': self.slug
+        })
+
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
@@ -53,6 +60,9 @@ class Item(models.Model):
 
 
 class OrderItem(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE)
+    ordered = models.BooleanField(default=False)
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
 
