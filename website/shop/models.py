@@ -27,7 +27,7 @@ class Item(models.Model):
     label = models.CharField(choices=LABEL_CHOICES, max_length=1, default='P')
     slug = models.SlugField()
     description = models.TextField(
-        default="To be, or not to be: that is the question: whether 'tis nobler in the mind to suffer the slings and arrows of outrageous fortune, or to take arms against a")
+        default="", max_length=100)
     image = models.ImageField(default='default.jpg', upload_to='product_pics')
     date_added = models.DateTimeField(default=timezone.now)
 
@@ -69,6 +69,20 @@ class OrderItem(models.Model):
     def __str__(self):
         return f"{self.quantity} of {self.item.title}"
 
+    def get_total_item_price(self):
+        return self.quantity*self.item.price
+
+    def get_total_item_discount_price(self):
+        return self.quantity*self.item.discount
+
+    def get_amount_saved(self):
+        return self.get_total_item_price() - self.get_total_item_discount_price()
+
+    def get_final_price(self):
+        if self.item.discount:
+            return self.get_total_item_discount_price()
+        return self.get_total_item_price()
+
 
 class Order(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -79,3 +93,10 @@ class Order(models.Model):
 
     def __str__(self):
         return self.user.username
+
+    def get_total(self):
+        total = 0
+        for order_item in self.items.all():
+            total += order_item.get_final_price()
+
+        return total

@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Item, OrderItem, Order
-from django.views.generic import ListView, DetailView
+from django.core.exceptions import ObjectDoesNotExist
+from django.views.generic import ListView, DetailView, View
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from django.utils import timezone
@@ -11,7 +12,7 @@ from django.contrib import messages
 class HomeListView(ListView):
     model = Item
     template_name = "shop/home.html"
-    paginate_by = 10
+    paginate_by = 6
 
     ordering = ['date_added']
 
@@ -19,6 +20,19 @@ class HomeListView(ListView):
 class ItemDetailView(DetailView):
     model = Item
     template_name = "shop/product.html"
+
+
+class OrderSummaryView(View):
+    def get(self, *args, **kwargs):
+        try:
+            order = Order.objects.get(user=self.request.user, ordered=False)
+            context = {
+                'object': order
+            }
+            return render(self.request, 'shop/order_summary.html', context)
+        except ObjectDoesNotExist:
+            messages.error(self.request, "Your cart is empty")
+            return redirect("/")
 
 
 def faq(request):
@@ -36,7 +50,6 @@ def product_list(request):
     return render(request, "shop/products.html", context)
 
 
-@login_required
 def add_to_cart(request, slug):
     item = get_object_or_404(Item, slug=slug)
     order_item, created = OrderItem.objects.get_or_create(
@@ -65,7 +78,6 @@ def add_to_cart(request, slug):
         return redirect("shop:product", slug=slug)
 
 
-@login_required
 def remove_from_cart(request, slug):
     item = get_object_or_404(Item, slug=slug)
     order_qs = Order.objects.filter(
