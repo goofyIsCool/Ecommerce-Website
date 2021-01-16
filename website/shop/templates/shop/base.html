@@ -16,7 +16,6 @@
     <link rel="stylesheet" href="{% static 'shop/assets/css/Navigation-with-Search.css' %}">
     <link rel="stylesheet" href="{% static 'shop/assets/css/Newsletter-Subscription-Form.css' %}">
     <link rel="stylesheet" href="{% static 'shop/assets/css/Simple-Slider.css' %}">
-    <!-- <link rel="stylesheet" href="{% static 'shop/assets/css/styles.css' %}"> -->
     <link rel="stylesheet" href="{% static 'shop/assets/css/card.css' %}">
 </head>
 
@@ -53,18 +52,22 @@
             {% endif %}
     </nav>
 
-    <div style="margin-top:5em; margin-bottom:5em">
+    <div class="mt-5 pt-4">
     {% if messages %}
         {% for message in messages %}
-            <div class='alert alert-{{message.tags}}'>
-                {{message}}
-            </div>
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
         {% endfor %}
     {% endif %}
+    </div>
 
     {% block content %}
     {% endblock %}
-    </div>
+
 
     <div class="footer-dark">
         <footer>
