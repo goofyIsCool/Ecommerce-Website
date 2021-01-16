@@ -5,9 +5,9 @@
 <div class="simple-slider">
     <div class="swiper-container">
         <div class="swiper-wrapper">
-            <div class="swiper-slide" style="background-image:url(https://previews.123rf.com/images/maximleshkovich/maximleshkovich1905/maximleshkovich190500088/125134566-minimal-fashion-concept-female-clothes-on-hanger-on-white-background-fashion-blog-website-social-med.jpg;w=1920&amp;h=500);"></div>
-            <div class="swiper-slide" style="background-image:url(https://previews.123rf.com/images/maximleshkovich/maximleshkovich1905/maximleshkovich190500088/125134566-minimal-fashion-concept-female-clothes-on-hanger-on-white-background-fashion-blog-website-social-med.jpg;w=1920&amp;h=500);"></div>
-            <div class="swiper-slide" style="background-image:url(https://previews.123rf.com/images/maximleshkovich/maximleshkovich1905/maximleshkovich190500088/125134566-minimal-fashion-concept-female-clothes-on-hanger-on-white-background-fashion-blog-website-social-med.jpg;w=1920&amp;h=500);"></div>
+            <div class="swiper-slide" style="background-image:url(http://www.birds.com/wp-content/uploads/home/bird4.jpg;w=1920&amp;h=400);"></div>
+            <div class="swiper-slide" style="background-image:url(https://previews.123rf.com/images/maximleshkovich/maximleshkovich1905/maximleshkovich190500088/125134566-minimal-fashion-concept-female-clothes-on-hanger-on-white-background-fashion-blog-website-social-med.jpg;w=1920&amp;h=400);"></div>
+            <div class="swiper-slide" style="background-image:url(https://previews.123rf.com/images/maximleshkovich/maximleshkovich1905/maximleshkovich190500088/125134566-minimal-fashion-concept-female-clothes-on-hanger-on-white-background-fashion-blog-website-social-med.jpg;w=1920&amp;h=400);"></div>
         </div>
         <div class="swiper-pagination"></div>
         <div class="swiper-button-prev"></div>
@@ -60,21 +60,21 @@
                       </div>
                       <div class="card-body text-left">
                         <p1 href="" class="card_font_text">
-                          <h5>{{ item.get_category_display }}</h5>
+                          <h6>{{ item.get_category_display }}</h6>
                         </p>
                         <h5>
                             <a href="{{ item.get_absolute_url }}" class="card_font_text">{{ item.title }}
                               <span class="badge badge-pill {{ item.get_label_display }}-color">NEW</span>
                             </a>
                         </h5>
-                        <h4 class="font-weight blue-text">
+                        <h5 class="font-weight blue-text">
                           {% if item.discount %}
                           {{ item.discount }}
                           {% else %}
                           {{ item.price }}
                           {% endif %}
                           zł
-                        </h4>
+                        </h5>
                       </div>
                     </div>
                   </div>
