@@ -1,9 +1,10 @@
-# Wehsbite
+# Website
 
 ## Table of contents
 * [General info](#general-info)
 * [Technologies](#technologies)
 * [Setup](#setup)
+* [Access Admin Panel](#Access-admin-panel)
 
 ## General info
 Simple e-commerce website created for Mario with D-jango Framework in Python.
@@ -12,6 +13,7 @@ Simple e-commerce website created for Mario with D-jango Framework in Python.
 Project is created with:
 * Boostrap: 4.5
 * Python: 3.9
+* Django: 3.1.3
 
 ## Setup
 To run this project, install it locally using cmd/terminal:
@@ -34,3 +36,12 @@ To run this project, install it locally using cmd/terminal:
 5. Once you've done that, run the website locally, by typing this in:
     ```python/python3 manage.py runserver```
 
+## Access Admin Panel
+To access the admin panel, create a superuser in the console:
+    ```python/python3 manage.py createsuperuser```
+
+Admin page can be accesed on
+    ```localhost:8000/admin```
+
+Home page can be accesed on
+    ```localhost:8000```
