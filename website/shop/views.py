@@ -6,6 +6,9 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from django.utils import timezone
 from django.contrib import messages
+from django.http import JsonResponse
+from .forms import ShippingUpdateForm
+import json
 # Create your views here.
 
 
@@ -103,3 +106,62 @@ def remove_from_cart(request, slug):
     else:
         messages.info(request, "You do not have an active order")
         return redirect("shop:product", slug=slug)
+
+
+def checkout(request):
+    if request.user.is_authenticated():
+        customer = request.user.customer
+        order, created = Order.objects.get_or_create(customer=customer, completed=False)
+        items = order.orderitem_set.all()
+    else:
+        items = []
+        order = {'get_cart_total': 0, 'get_cart_items': 0}
+
+    context = {'items': items, 'order': order}
+    return render(request, 'shop/checkout.html', context)
+
+
+def updateItem(request):
+    data = json.loads(request.body)
+    productId = data['productId']
+    action = data['action']
+    print('Product:', productId)
+    print('Action:', action)
+
+    customer = request.user.customer
+    product = Item.objects.get(id=productId)
+
+    orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
+
+    if action == 'add':
+        orderItem.quantity = (orderItem.quantity + 1)
+    elif action == 'remove':
+        orderItem.quantity = (orderItem.quantity - 1)
+
+    orderItem.save()
+
+    if orderItem.quantity <= 0:
+        orderItem.delete()
+
+    return JsonResponse('Item was added', safe=False)
+
+
+@login_required
+def shipping_update(request):
+    if request.method == 'POST':
+        shipping_form = ShippingUpdateForm(request.POST, instance=request.user.customer)
+
+        if shipping_form.is_valid():
+            shipping_form.save()
+
+            messages.success(
+                request, f'Your account has been updated!')
+            return redirect('shop:shipping_update')
+    else:
+        shipping_form = ShippingUpdateForm(instance=request.user.customer)
+
+    context = {
+        'shipping_form': shipping_form,
+    }
+
+    return render(request, 'shop/shipment.html', context)

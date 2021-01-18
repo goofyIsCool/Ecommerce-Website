@@ -2,7 +2,7 @@
 {% block content %}
 {% load static %}
 
-<main class="mt-5 pt-4">
+<main class="mb-5 pt-4">
     <div class="container dark-grey-text mt-5">
 
       <!--Grid row-->
@@ -11,7 +11,7 @@
         <!--Grid column-->
         <div class="col-md-6 mb-4">
 
-          <img src="{{ item.image.url }}" class="img-fluid" alt="">
+          <img src="{{ item.image.url }}" class="img-fluid" alt="" width=400px height=600px>
 
         </div>
         <!--Grid column-->
@@ -46,13 +46,13 @@
             {% comment %} <form class="d-flex justify-content-left">
               <!-- Default input -->
               <input type="number" value="1" aria-label="Search" class="form-control" style="width: 100px">
-              <button class="btn btn-primary btn-md my-0 p" type="submit">
+              <button data-product="{{ item.id }}" data-action="add" class="btn btn-primary btn-md my-0 p update-cart" type="submit">
                 Add to cart
                 <i class="fas fa-shopping-cart ml-1"></i>
               </button>
 
             </form> {% endcomment %}
-            <a href="{{ object.get_add_to_cart_url }}" class="btn btn-primary btn-md my-0 p">
+            <a href="{{ object.get_add_to_cart_url }}" data-product="{{ item.id }}" data-action="add" class="update-cart btn btn-primary btn-md my-0 p">
               Add to cart
               <i class="fas fa-shopping-cart ml-1"></i>
             </a>
@@ -90,7 +90,7 @@
       <!--Grid row-->
 
       <!--Grid row-->
-      <div class="row wow fadeIn">
+      <div class="row wow fadeIn mb-5">
 
         <!--Grid column-->
         <div class="col-lg-4 col-md-12 mb-4">

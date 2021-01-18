@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.contrib.auth.models import User
 from django.shortcuts import reverse
 from PIL import Image
 from django.utils import timezone
@@ -19,10 +20,24 @@ LABEL_CHOICES = (
 )
 
 
+class Customer(models.Model):
+    user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE)
+    address = models.CharField(default='', max_length=200)
+    city = models.CharField(default='', max_length=200)
+    state = models.CharField(default='', max_length=200)
+    country = models.CharField(default='', max_length=200)
+    zip_code = models.CharField(default='', max_length=20)
+    phone = models.CharField(default='', max_length=20)
+    nip = models.CharField(default='', max_length=20)
+
+    def __str__(self):
+        return f'{self.user.username} Customer'
+
+
 class Item(models.Model):
     title = models.CharField(max_length=100)
-    price = models.FloatField()
-    discount = models.FloatField(blank=True, null=True)
+    price = models.DecimalField(max_digits=7, decimal_places=2)
+    discount = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
     category = models.CharField(choices=CATEGORY_CHOICES, max_length=2, default='S')
     label = models.CharField(choices=LABEL_CHOICES, max_length=1, default='P')
     slug = models.SlugField()
@@ -53,8 +68,8 @@ class Item(models.Model):
         super().save(*args, **kwargs)
 
         img = Image.open(self.image.path)
-        if img.height > 500 or img.width > 300:
-            output_size = (500, 300)
+        if img.width > 500 or img.height > 700:
+            output_size = (500, 700)
             img.thumbnail(output_size)
             img.save(self.image.path)
 
@@ -90,6 +105,7 @@ class Order(models.Model):
     start_date = models.DateTimeField(auto_now_add=True)
     ordered_date = models.DateTimeField()
     ordered = models.BooleanField(default=False)
+    complete = models.BooleanField(default=False, null=True, blank=False)
 
     def __str__(self):
         return self.user.username
