@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.contrib.auth.models import User
 from django.shortcuts import reverse
 from PIL import Image
 from django.utils import timezone
@@ -17,6 +18,20 @@ LABEL_CHOICES = (
     ('S', 'secondary'),
     ('D', 'danger'),
 )
+
+
+class Customer(models.Model):
+    user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE)
+    address = models.CharField(default='', max_length=200)
+    city = models.CharField(default='', max_length=200)
+    state = models.CharField(default='', max_length=200)
+    country = models.CharField(default='', max_length=200)
+    zip_code = models.CharField(default='', max_length=20)
+    phone = models.CharField(default='', max_length=20)
+    nip = models.CharField(default='', max_length=20)
+
+    def __str__(self):
+        return f'{self.user.username} Customer'
 
 
 class Item(models.Model):
@@ -90,6 +105,7 @@ class Order(models.Model):
     start_date = models.DateTimeField(auto_now_add=True)
     ordered_date = models.DateTimeField()
     ordered = models.BooleanField(default=False)
+    complete = models.BooleanField(default=False, null=True, blank=False)
 
     def __str__(self):
         return self.user.username
