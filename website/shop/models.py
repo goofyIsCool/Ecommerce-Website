@@ -21,8 +21,8 @@ LABEL_CHOICES = (
 
 class Item(models.Model):
     title = models.CharField(max_length=100)
-    price = models.FloatField()
-    discount = models.FloatField(blank=True, null=True)
+    price = models.DecimalField(max_digits=7, decimal_places=2)
+    discount = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
     category = models.CharField(choices=CATEGORY_CHOICES, max_length=2, default='S')
     label = models.CharField(choices=LABEL_CHOICES, max_length=1, default='P')
     slug = models.SlugField()
@@ -53,8 +53,8 @@ class Item(models.Model):
         super().save(*args, **kwargs)
 
         img = Image.open(self.image.path)
-        if img.height > 500 or img.width > 300:
-            output_size = (500, 300)
+        if img.width > 500 or img.height > 700:
+            output_size = (500, 700)
             img.thumbnail(output_size)
             img.save(self.image.path)
 
