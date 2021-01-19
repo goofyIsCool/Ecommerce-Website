@@ -1,20 +1,19 @@
 {% extends "shop/base.html" %}
 {% block content %}
 {% load static %}
-
-<div class="simple-slider mb-5">
-    <div class="swiper-container">
-        <div class="swiper-wrapper">
-            <div class="swiper-slide" style="background-image:url(https://placeholdit.imgix.net/~text?txtsize=68&amp;txt=Slideshow+Image&amp;w=1920&amp;h=500);"></div>
-            <div class="swiper-slide" style="background-image:url(https://placeholdit.imgix.net/~text?txtsize=68&amp;txt=Slideshow+Image&amp;w=1920&amp;h=500);"></div>
-            <div class="swiper-slide" style="background-image:url(https://placeholdit.imgix.net/~text?txtsize=68&amp;txt=Slideshow+Image&amp;w=1920&amp;h=500);"></div>
+    <div class="simple-slider mb-5">
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide" style="background-image:url(https://placeholdit.imgix.net/~text?txtsize=68&amp;txt=Slideshow+Image&amp;w=1920&amp;h=500);"></div>
+                <div class="swiper-slide" style="background-image:url(https://placeholdit.imgix.net/~text?txtsize=68&amp;txt=Slideshow+Image&amp;w=1920&amp;h=500);"></div>
+                <div class="swiper-slide" style="background-image:url(https://placeholdit.imgix.net/~text?txtsize=68&amp;txt=Slideshow+Image&amp;w=1920&amp;h=500);"></div>
+            </div>
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
         </div>
-        <div class="swiper-pagination"></div>
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
     </div>
-</div>
-<div>
+    <div>
     <div class="container">
         <div class="row">
             <div class="col-md-2">
@@ -32,36 +31,23 @@
             </div>
             <div class="col-md-10">
                 <div class="row wow fadeIn">
-                  {% for item in object_list %}
-                  <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="card">
-                      <div class="view overlay">
-                        {% comment %} <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/12.jpg" class="card-img-top" {% endcomment %}
-                        <a href="{{ item.get_absolute_url }}"><img src="{{ item.image.url }}" class="card-img-top"></a>
-                        <a href="{{ item.get_absolute_url }}">
-                          <div class="mask rgba-white-slight"></div>
-                        </a>
-                      </div>
-                      <div class="card-body text-left">
-                        <p1 href="" class="card_font_text">
-                          <h6>{{ item.get_category_display }}</h6>
-                        </p1>
-                        <h5>
-                            <a href="{{ item.get_absolute_url }}" class="card_font_text">{{ item.title }}
-                              <span class="badge badge-pill {{ item.get_label_display }}-color">NEW</span>
-                            </a>
-                        </h5>
-                        <h5 class="font-weight blue-text">
-                          {% if item.discount %}
-                          {{ item.discount }}
-                          {% else %}
-                          {{ item.price }}
-                          {% endif %}
-                          zł
-                        </h5>
-                      </div>
+                  {% for product in object_list %}
+                    <div class="card m-3">
+                        <div class="col my-5 ">
+                            <div class="m-2">
+                                <div class="view overlay">
+                                    {% comment %} <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/12.jpg" class="card-img-top" {% endcomment %}
+                                    <a href="{{ product.get_absolute_url }}"><img src="{{ product.image.url }}" class="card-img-top"></a>
+                                </div>
+                    			<div class="box-element product">
+                                    <h5><strong>{{product.title}}</strong></h5>
+                    				<hr>
+                    				<button  class="btn btn-outline-secondary add-btn">Add to Cart</button>
+                    				<h4 style="display: inline-block; float: right">{{product.price}} zł</h4>
+                    			</div>
+                            </div>
+                		</div>
                     </div>
-                  </div>
                   {% endfor %}
                 </div>
             </div>
