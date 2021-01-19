@@ -1,0 +1,108 @@
+{% extends "shop/base.html" %}
+{% block content %}
+{% load static %}
+    <div class="simple-slider mb-5">
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide" style="background-image:url(https://placeholdit.imgix.net/~text?txtsize=68&amp;txt=Slideshow+Image&amp;w=1920&amp;h=500);"></div>
+                <div class="swiper-slide" style="background-image:url(https://placeholdit.imgix.net/~text?txtsize=68&amp;txt=Slideshow+Image&amp;w=1920&amp;h=500);"></div>
+                <div class="swiper-slide" style="background-image:url(https://placeholdit.imgix.net/~text?txtsize=68&amp;txt=Slideshow+Image&amp;w=1920&amp;h=500);"></div>
+            </div>
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+        </div>
+    </div>
+    <div>
+    <div class="mx-5">
+        <div class="row">
+            <div class="col-md-2 mx-5">
+              <div class="content-section">
+                <h3>Categories</h3>
+                <p class='text-muted'>
+                  <ul class="list-group">
+                    <li class="list-group-item list-group-item-light">Latest</li>
+                    <li class="list-group-item list-group-item-light">Announcements</li>
+                    <li class="list-group-item list-group-item-light">Calendars</li>
+                    <li class="list-group-item list-group-item-light">etc</li>
+                  </ul>
+                </p>
+              </div>
+            </div>
+            <div class="col-md-8">
+                <div class="row wow fadeIn">
+                  {% for product in object_list %}
+                    <div class="card m-3">
+                        <div class="col my-5 ">
+                            <div class="m-2">
+                                <div class="view overlay">
+                                    {% comment %} <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/12.jpg" class="card-img-top" {% endcomment %}
+                                    <a href="{{ product.get_absolute_url }}"><img src="{{ product.image.url }}" class="card-img-top"></a>
+                                </div>
+                    			<div class="box-element product">
+                                    <h5><strong>{{product.title}}</strong></h5>
+                    				<hr>
+                    				<button  class="btn btn-outline-secondary add-btn">Add to Cart</button>
+                    				<h4 style="display: inline-block; float: right">{{product.price}} zł</h4>
+                    			</div>
+                            </div>
+                		</div>
+                    </div>
+                  {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<center>
+    <div class="container">
+        {% if is_paginated %}
+                {% if page_obj.has_previous %}
+                    <!-- <a class='btn btn-outline-info mb-4' href='?page=1'>First</a> -->
+                    <a class='btn btn-outline-info mb-4' href='?page={{ page_obj.previous_page_number }}'>Previous</a>
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                        <a class='btn btn-info mb-4' href="?page={{ num }}">{{ num }}</a>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3'  %}
+                        <a class='btn btn-outline-info mb-4' href='?page={{ num }}'>{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                    <a class='btn btn-outline-info mb-4' href='?page={{ page_obj.next_page_number }}'>Next</a>
+                    <!-- <a class='btn btn-outline-info mb-4' href='?page={{ page_obj.paginator.num_pages }}'>Last</a> -->
+                {% endif %}
+
+        {% endif %}
+    </div>
+</center>
+
+<div class="brands"><a href="#"> <img src="{% static 'shop/assets/img/instacart.png' %}"><img src="{% static 'shop/assets/img/kickstarter.png' %}"><img src="{% static 'shop/assets/img/lyft.png' %}"><img src="{% static 'shop/assets/img/shopify.png' %}"><img src="{% static 'shop/assets/img/pinterest.png' %}"><img src="{% static 'shop/assets/img/twitter.png' %}"></a></div>
+<div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4"></div>
+            <div class="col-md-4"></div>
+        </div>
+    </div>
+</div>
+<div class="newsletter-subscribe">
+    <div class="container">
+        <div class="intro">
+            <h2 class="text-center">Subscribe for our Newsletter</h2>
+            <p class="text-center">Nunc luctus in metus eget fringilla. Aliquam sed justo ligula. Vestibulum nibh erat, pellentesque ut laoreet vitae. </p>
+        </div>
+        <form class="form-inline" method="post">
+            <div class="form-group"><input class="form-control" type="email" name="email" placeholder="Your Email"></div>
+            <div class="form-group"><button class="btn btn-primary" type="submit">Subscribe </button></div>
+        </form>
+    </div>
+</div>
+{% endblock %}

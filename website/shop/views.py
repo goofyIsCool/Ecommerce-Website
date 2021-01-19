@@ -12,10 +12,14 @@ import json
 # Create your views here.
 
 
-class HomeListView(ListView):
+def home(request):
+    return render(request, 'shop/home.html')
+
+
+class ProductListView(ListView):
     model = Product
-    template_name = "shop/home.html"
-    paginate_by = 6
+    template_name = "shop/products.html"
+    paginate_by = 12
 
     ordering = ['date_added']
 
