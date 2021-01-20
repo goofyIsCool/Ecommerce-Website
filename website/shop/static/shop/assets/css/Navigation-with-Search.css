@@ -18,11 +18,12 @@
 
 .navigation-clean-search .navbar-brand {
   font-weight: bold;
-  color: inherit;
+  color: #ddd
+  ;
 }
 
 .navigation-clean-search .navbar-brand:hover {
-  color: #222;
+  color: white;
 }
 
 .navigation-clean-search .navbar-toggler {

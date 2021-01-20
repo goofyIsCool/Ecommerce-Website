@@ -1,10 +1,8 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 from .models import Product, OrderItem, Order
-from django.core.exceptions import ObjectDoesNotExist
-from django.views.generic import ListView, DetailView, View
+from django.views.generic import ListView, DetailView
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
-from django.utils import timezone
 from django.contrib import messages
 from django.http import JsonResponse
 from .forms import ShippingUpdateForm
@@ -12,10 +10,14 @@ import json
 # Create your views here.
 
 
-class HomeListView(ListView):
+def home(request):
+    return render(request, 'shop/home.html')
+
+
+class ProductListView(ListView):
     model = Product
-    template_name = "shop/home.html"
-    paginate_by = 6
+    template_name = "shop/products.html"
+    paginate_by = 12
 
     ordering = ['date_added']
 
@@ -23,19 +25,6 @@ class HomeListView(ListView):
 class ItemDetailView(DetailView):
     model = Product
     template_name = "shop/product.html"
-
-
-# class OrderSummaryView(View):
-#     def get(self, *args, **kwargs):
-#         try:
-#             order = Order.objects.get(user=self.request.user.customer, complete=False)
-#             context = {
-#                 'object': order
-#             }
-#             return render(self.request, 'shop/order_summary.html', context)
-#         except ObjectDoesNotExist:
-#             messages.error(self.request, "Your cart is empty")
-#             return redirect("/")
 
 
 def cart(request):
@@ -55,19 +44,20 @@ def cart(request):
 
 
 def checkout(request):
-    if request.user.is_authenticated:
-        customer = request.user.customer
-        order, created = Order.objects.get_or_create(customer=customer, complete=False)
-        items = order.orderitem_set.all()
-        cartItems = order.get_cart_items
-    else:
-        # Create empty cart for now for non-logged in user
-        items = []
-        order = {'get_cart_total': 0, 'get_cart_items': 0, 'shipping': False}
-        cartItems = order['get_cart_items']
+    # if request.user.is_authenticated:
+    #     customer = request.user.customer
+    #     order, created = Order.objects.get_or_create(customer=customer, complete=False)
+    #     items = order.orderitem_set.all()
+    #     cartItems = order.get_cart_items
+    # else:
+    #     # Create empty cart for now for non-logged in user
+    #     items = []
+    #     order = {'get_cart_total': 0, 'get_cart_items': 0, 'shipping': False}
+    #     cartItems = order['get_cart_items']
+    #
+    # context = {'items': items, 'order': order, 'cartItems': cartItems}
 
-    context = {'items': items, 'order': order, 'cartItems': cartItems}
-    return render(request, 'store/checkout.html', context)
+    return render(request, 'shop/checkout.html')
 
 
 def faq(request):
