@@ -1,10 +1,8 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 from .models import Product, OrderItem, Order
-from django.core.exceptions import ObjectDoesNotExist
-from django.views.generic import ListView, DetailView, View
+from django.views.generic import ListView, DetailView
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
-from django.utils import timezone
 from django.contrib import messages
 from django.http import JsonResponse
 from .forms import ShippingUpdateForm
@@ -27,19 +25,6 @@ class ProductListView(ListView):
 class ItemDetailView(DetailView):
     model = Product
     template_name = "shop/product.html"
-
-
-# class OrderSummaryView(View):
-#     def get(self, *args, **kwargs):
-#         try:
-#             order = Order.objects.get(user=self.request.user.customer, complete=False)
-#             context = {
-#                 'object': order
-#             }
-#             return render(self.request, 'shop/order_summary.html', context)
-#         except ObjectDoesNotExist:
-#             messages.error(self.request, "Your cart is empty")
-#             return redirect("/")
 
 
 def cart(request):

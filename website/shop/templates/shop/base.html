@@ -72,7 +72,7 @@
 
 <body>
     <div class="content">
-    <nav class="navbar navbar-light navbar-expand-md navigation-clean-search">
+    <nav class="navbar navbar-dark bg-dark navbar-expand-md navigation-clean-search">
         <div class="container"><a class="navbar-brand" href="{% url 'shop:home' %}">Website in Dev</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse"
                 id="navcol-1">
@@ -88,6 +88,8 @@
                 <!-- <ul class="nav navbar-nav">
                     <li class="nav-item"><a class="nav-link" href="#">Cart</a></li>
                 </ul> -->
+                <a href="{% url 'shop:cart' %}"><img  id="cart-icon" src="{% static 'images/cart.png' %}"></a>
+    	    	<p id="cart-total">0</p>
                 {% if user.is_authenticated %}
                     <!-- <ul class="nav navbar-nav">
                         <li class="nav-item"><a class="nav-link" href="#">Shipment</a></li>

@@ -1,23 +1,23 @@
 {% extends "shop/base.html" %}
 {% block content %}
 {% load static %}
-    <div class="simple-slider mb-5">
-        <div class="swiper-container">
-            <div class="swiper-wrapper">
-                <div class="swiper-slide" style="background-image:url(https://placeholdit.imgix.net/~text?txtsize=68&amp;txt=Slideshow+Image&amp;w=1920&amp;h=500);"></div>
-                <div class="swiper-slide" style="background-image:url(https://placeholdit.imgix.net/~text?txtsize=68&amp;txt=Slideshow+Image&amp;w=1920&amp;h=500);"></div>
-                <div class="swiper-slide" style="background-image:url(https://placeholdit.imgix.net/~text?txtsize=68&amp;txt=Slideshow+Image&amp;w=1920&amp;h=500);"></div>
-            </div>
-            <div class="swiper-pagination"></div>
-            <div class="swiper-button-prev"></div>
-            <div class="swiper-button-next"></div>
+<div class="simple-slider mb-5">
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide" style="background-image:url(https://placeholdit.imgix.net/~text?txtsize=68&amp;txt=Slideshow+Image&amp;w=1920&amp;h=500);"></div>
+            <div class="swiper-slide" style="background-image:url(https://placeholdit.imgix.net/~text?txtsize=68&amp;txt=Slideshow+Image&amp;w=1920&amp;h=500);"></div>
+            <div class="swiper-slide" style="background-image:url(https://placeholdit.imgix.net/~text?txtsize=68&amp;txt=Slideshow+Image&amp;w=1920&amp;h=500);"></div>
         </div>
+        <div class="swiper-pagination"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
     </div>
-    <div>
-    <div class="mx-5">
-        <div class="row">
+</div>
+<div>
+    <div class="ml-5">
+        <div class="row ml-5">
             <div class="col-md-2 mx-5">
-              <div class="content-section">
+              <div class="content-section ml-5">
                 <h3>Categories</h3>
                 <p class='text-muted'>
                   <ul class="list-group">
@@ -30,22 +30,19 @@
               </div>
             </div>
             <div class="col-md-8">
-                <div class="row wow fadeIn">
+                <div class="row wow fadeIn mb-5">
                   {% for product in object_list %}
                     <div class="card m-3">
-                        <div class="col my-5 ">
-                            <div class="m-2">
-                                <div class="view overlay">
-                                    {% comment %} <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/12.jpg" class="card-img-top" {% endcomment %}
-                                    <a href="{{ product.get_absolute_url }}"><img src="{{ product.image.url }}" class="card-img-top"></a>
-                                </div>
-                    			<div class="box-element product">
-                                    <h5><strong>{{product.title}}</strong></h5>
-                    				<hr>
-                    				<button  class="btn btn-outline-secondary add-btn">Add to Cart</button>
-                    				<h4 style="display: inline-block; float: right">{{product.price}} zł</h4>
-                    			</div>
+                        <div class="col">
+                            <div class="view overlay mt-3">
+                                <a href="{{ product.get_absolute_url }}"><img src="{{ product.image.url }}" class="card-img-top"></a>
                             </div>
+                			<div class="box-element">
+                                <h5><strong>{{product.title}}</strong></h5>
+                				<hr>
+                				<button class="btn btn-outline-secondary add-btn">Add to Cart</button>
+                				<h5 style="display: inline-block; float:right;">{{product.price}} zł</h5>
+                			</div>
                 		</div>
                     </div>
                   {% endfor %}
@@ -59,7 +56,6 @@
     <div class="container">
         {% if is_paginated %}
                 {% if page_obj.has_previous %}
-                    <!-- <a class='btn btn-outline-info mb-4' href='?page=1'>First</a> -->
                     <a class='btn btn-outline-info mb-4' href='?page={{ page_obj.previous_page_number }}'>Previous</a>
                 {% endif %}
 
@@ -73,7 +69,6 @@
 
                 {% if page_obj.has_next %}
                     <a class='btn btn-outline-info mb-4' href='?page={{ page_obj.next_page_number }}'>Next</a>
-                    <!-- <a class='btn btn-outline-info mb-4' href='?page={{ page_obj.paginator.num_pages }}'>Last</a> -->
                 {% endif %}
 
         {% endif %}
