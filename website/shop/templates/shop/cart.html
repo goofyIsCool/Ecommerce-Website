@@ -1,9 +1,9 @@
 {% extends 'shop/base.html' %}
 {% load static %}
 {% block content %}
-<div class="row">
+<div class="row container mx-auto">
 	<div class="col-lg-12">
-		<div class="box-element">
+		<div class="box-element2">
 			<a  class="btn btn-outline-dark" href="{% url 'shop:products' %}">&#x2190; Continue Shopping</a>
 			<br>
 			<br>
@@ -12,7 +12,7 @@
 					<th><h5>Items: <strong>3</strong></h5></th>
 					<th><h5>Total:<strong> $42</strong></h5></th>
 					<th>
-						<a  style="float:right; margin:5px;" class="btn btn-success" href="#">Checkout</a>
+						<a  style="float:right; margin:5px;" class="btn btn-success" href="{% url 'shop:checkout' %}">Checkout</a>
 					</th>
 				</tr>
 			</table>
@@ -20,7 +20,7 @@
 		</div>
 
 		<br>
-		<div class="box-element">
+		<div class="box-element2">
 			<div class="cart-row">
 				<div style="flex:2"></div>
 				<div style="flex:2"><strong>Item</strong></div>
@@ -30,9 +30,9 @@
 			</div>
 			{% for item in items %}
 			<div class="cart-row">
-				<div style="flex:2"><img class="row-image" src="{{item.product.imageURL}}"></div>
-				<div style="flex:2"><p>{{item.product.name}}</p></div>
-				<div style="flex:1"><p>${{item.product.price|floatformat:2}}</p></div>
+				<div style="flex:2"><img class="row-image" src="{{ item.image.url }}" ></div>
+				<div style="flex:2"><p>{{item.product.title}}</p></div>
+				<div style="flex:1"><p>{{item.product.price|floatformat:2}} zł</p></div>
 				<div style="flex:1">
 					<p class="quantity">{{item.quantity}}</p>
 					<div class="quantity">
@@ -41,7 +41,7 @@
 						<img class="chg-quantity" src="{% static  'images/arrow-down.png' %}">
 					</div>
 				</div>
-				<div style="flex:1"><p>$32</p></div>
+				<div style="flex:1"><p>10 zł</p></div>
 			</div>
 			{% endfor %}
 		</div>
