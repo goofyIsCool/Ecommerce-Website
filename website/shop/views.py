@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Product, OrderItem, Order
+from .models import Product, OrderItem, Order, ShippingAddress
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 from .forms import ShippingUpdateForm
 import json
+import datetime
 # Create your views here.
 
 
@@ -94,6 +95,36 @@ def updateItem(request):
         orderItem.delete()
 
     return JsonResponse('Item was added', safe=False)
+
+
+def processOrder(request):
+    transaction_id = datetime.datetime.now().timestamp()
+    data = json.loads(request.body)
+
+    if (request.user.is_authenticated):
+        customer = request.user.customer
+        order, created = Order.objects.get_or_create(customer=customer, complete=False)
+        total = float(data['form']['total'])
+        order.transaction_id = transaction_id
+
+        if total == order.get_cart_total:
+            order.completed = True
+        order.save()
+
+        ShippingAddress.objects.create(
+            customer=customer,
+            order=order,
+            address=data['shipping']['address'],
+            city=data['shipping']['city'],
+            state=data['shipping']['state'],
+            country=data['shipping']['country'],
+            zip_code=data['shipping']['zipcode'],
+        )
+
+    else:
+        print("User is not logged in..")
+    print("Data: ", request.body)
+    return JsonResponse('Payment complete!', safe=False)
 
 
 @login_required
