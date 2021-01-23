@@ -43,31 +43,11 @@
 
             <p>{{ object.description }}</p>
 
-            {% comment %} <form class="d-flex justify-content-left">
-              <!-- Default input -->
-              <input type="number" value="1" aria-label="Search" class="form-control" style="width: 100px">
-              <button data-product="{{ item.id }}" data-action="add" class="btn btn-primary btn-md my-0 p update-cart" type="submit">
-                Add to cart
-                <i class="fas fa-shopping-cart ml-1"></i>
-              </button>
-
-              <a href="{{ object.get_add_to_cart_url }}" data-product="{{ item.id }}" data-action="add" class="update-cart btn btn-primary btn-md my-0 p">
-                Add to cart
-                <i class="fas fa-shopping-cart ml-1"></i>
-              </a>
-              <a href="{{ object.get_remove_from_cart_url }}" class="btn btn-danger btn-md my-0 p">
-                Remove from cart
-              </a>
-            </form> {% endcomment %}
-
-            <a href="#" data-product="{{ item.id }}" data-action="add" class="update-cart btn btn-primary btn-md my-0 p">
+            <a data-product="{{ object.id }}" data-action="add" class="update-cart btn btn-primary btn-md my-0 p">
               Add to cart
               <i class="fas fa-shopping-cart ml-1"></i>
             </a>
-            <a href="#" class="btn btn-danger btn-md my-0 p">
-              Remove from cart
-            </a>
-
+            
           </div>
           <!--Content-->
 

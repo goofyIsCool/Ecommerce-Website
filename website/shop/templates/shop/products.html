@@ -1,19 +1,7 @@
 {% extends "shop/base.html" %}
 {% block content %}
 {% load static %}
-<div class="simple-slider mb-5">
-    <div class="swiper-container">
-        <div class="swiper-wrapper">
-            <div class="swiper-slide" style="background-image:url(https://placeholdit.imgix.net/~text?txtsize=68&amp;txt=Slideshow+Image&amp;w=1920&amp;h=500);"></div>
-            <div class="swiper-slide" style="background-image:url(https://placeholdit.imgix.net/~text?txtsize=68&amp;txt=Slideshow+Image&amp;w=1920&amp;h=500);"></div>
-            <div class="swiper-slide" style="background-image:url(https://placeholdit.imgix.net/~text?txtsize=68&amp;txt=Slideshow+Image&amp;w=1920&amp;h=500);"></div>
-        </div>
-        <div class="swiper-pagination"></div>
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
-    </div>
-</div>
-<div>
+<div class="mt-5">
     <div class="ml-5">
         <div class="row ml-5">
             <div class="col-md-2 mx-5">
@@ -38,9 +26,9 @@
                                 <a href="{{ product.get_absolute_url }}"><img src="{{ product.image.url }}" class="card-img-top"></a>
                             </div>
                 			<div class="box-element">
-                                <h5><strong>{{product.title}}</strong></h5>
+                                <a href="{{ product.get_absolute_url }}"><h5><strong>{{product.title}}</strong></h5></a>
                 				<hr>
-                				<button class="btn btn-outline-secondary add-btn">Add to Cart</button>
+                				<button data-product="{{ product.id }}" data-action="add" class="btn btn-outline-secondary update-cart">Add to Cart</button>
                 				<h5 style="display: inline-block; float:right;">{{product.price}} zł</h5>
                 			</div>
                 		</div>
