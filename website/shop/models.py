@@ -78,16 +78,18 @@ class Order(models.Model):
     def __str__(self):
         return str(self.id)
 
+    @property
+    def get_cart_total(self):
+        orderItems = self.orderitem_set.all()
+        total = sum([item.get_total for item in orderItems])
+        return total
 
-class OrderItem(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
-    order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
-    quantity = models.IntegerField(default=0, null=True, blank=True)
-    date_added = models.DateTimeField(auto_now_add=True)
+    @property
+    def get_cart_items(self):
+        orderItems = self.orderitem_set.all()
+        total = sum([item.quantity for item in orderItems])
+        return total
 
-    # def get_total_item_price(self):
-    #     return self.quantity*self.product.price
-    #
     # def get_total_item_discount_price(self):
     #     return self.quantity*self.product.discount
     #
@@ -98,6 +100,18 @@ class OrderItem(models.Model):
     #     if self.item.discount:
     #         return self.get_total_item_discount_price()
     #     return self.get_total_item_price()
+
+
+class OrderItem(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
+    order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
+    quantity = models.IntegerField(default=0, null=True, blank=True)
+    date_added = models.DateTimeField(auto_now_add=True)
+
+    @property
+    def get_total(self):
+        total = self.product.price * self.quantity
+        return total
 
 
 class ShippingAddress(models.Model):
