@@ -21,12 +21,18 @@ LABEL_CHOICES = (
 
 
 class Customer(models.Model):
+    name = models.CharField(default='', max_length=200)
+    surname = models.CharField(default='', max_length=200)
     user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
     phone = models.CharField(default='', max_length=20)
     nip = models.CharField(default='', max_length=20)
+    email = models.EmailField(null=False)
 
     def __str__(self):
-        return f'{self.user.username} Customer'
+        try:
+            return (f'{self.user.username} Customer')
+        except:
+            return 'Guest'
 
 
 class Product(models.Model):
@@ -47,16 +53,6 @@ class Product(models.Model):
     def get_absolute_url(self):
         return reverse("shop:product", kwargs={
             'slug': self.slug,
-        })
-
-    def get_add_to_cart_url(self):
-        return reverse("shop:add-to-cart", kwargs={
-            'slug': self.slug
-        })
-
-    def get_remove_from_cart_url(self):
-        return reverse("shop:remove-from-cart", kwargs={
-            'slug': self.slug
         })
 
     def save(self, *args, **kwargs):
@@ -89,17 +85,6 @@ class Order(models.Model):
         orderItems = self.orderitem_set.all()
         total = sum([item.quantity for item in orderItems])
         return total
-
-    # def get_total_item_discount_price(self):
-    #     return self.quantity*self.product.discount
-    #
-    # def get_amount_saved(self):
-    #     return self.get_total_item_price() - self.get_total_item_discount_price()
-    #
-    # def get_final_price(self):
-    #     if self.item.discount:
-    #         return self.get_total_item_discount_price()
-    #     return self.get_total_item_price()
 
 
 class OrderItem(models.Model):
