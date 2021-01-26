@@ -2,17 +2,24 @@ from django.shortcuts import render
 from .models import Product, OrderItem, Order, ShippingAddress
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.decorators import login_required
+# from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.http import JsonResponse
 from .forms import ShippingUpdateForm
 import json
+from .utils import cookieCart, cartData, guestOrder
 import datetime
 # Create your views here.
 
 
 def home(request):
-    return render(request, 'shop/home.html')
+    data = cartData(request)
+    cartItems = data['cartItems']
+
+    products = Product.objects.all()
+    context = {'product': products, 'cartItems': cartItems}
+    return render(request, 'shop/home.html', context)
 
 
 class ProductListView(ListView):
@@ -22,39 +29,53 @@ class ProductListView(ListView):
 
     ordering = ['date_added']
 
+    def get_context_data(self, **kwargs):
+        if self.request.user.is_authenticated:
+            customer = self.request.user.customer
+            order, created = Order.objects.get_or_create(customer=customer, complete=False)
+            cartItems = order.get_cart_items
+        else:
+            cookieData = cookieCart(self.request)
+            cartItems = cookieData['cartItems']
+
+        context = super().get_context_data(**kwargs)
+        context['cartItems'] = cartItems
+        return context
+
 
 class ItemDetailView(DetailView):
     model = Product
     template_name = "shop/product.html"
 
+    def get_context_data(self, **kwargs):
+        if self.request.user.is_authenticated:
+            customer = self.request.user.customer
+            order, created = Order.objects.get_or_create(customer=customer, complete=False)
+            cartItems = order.get_cart_items
+        else:
+            cookieData = cookieCart(self.request)
+            cartItems = cookieData['cartItems']
+
+        context = super().get_context_data(**kwargs)
+        context['cartItems'] = cartItems
+        return context
+
 
 def cart(request):
-    if request.user.is_authenticated:
-        customer = request.user.customer
-        order, created = Order.objects.get_or_create(customer=customer, complete=False)
-        items = order.orderitem_set.all()
-        cartItems = order.get_cart_items
-    else:
-        # Create empty cart for now for non-logged in user
-        items = []
-        order = {'get_cart_total': 0, 'get_cart_items': 0, 'shipping': False}
-        cartItems = order['get_cart_items']
+    data = cartData(request)
+    cartItems = data['cartItems']
+    order = data['order']
+    items = data['items']
 
     context = {'items': items, 'order': order, 'cartItems': cartItems}
     return render(request, 'shop/cart.html', context)
 
 
 def checkout(request):
-    if request.user.is_authenticated:
-        customer = request.user.customer
-        order, created = Order.objects.get_or_create(customer=customer, complete=False)
-        items = order.orderitem_set.all()
-        cartItems = order.get_cart_items
-    else:
-        # Create empty cart for now for non-logged in user
-        items = []
-        order = {'get_cart_total': 0, 'get_cart_items': 0, 'shipping': False}
-        cartItems = order['get_cart_items']
+    data = cartData(request)
+    cartItems = data['cartItems']
+    order = data['order']
+    items = data['items']
 
     context = {'items': items, 'order': order, 'cartItems': cartItems}
 
@@ -62,11 +83,19 @@ def checkout(request):
 
 
 def faq(request):
-    return render(request, 'shop/FAQ.html')
+    data = cartData(request)
+    cartItems = data['cartItems']
+
+    context = {'cartItems': cartItems}
+    return render(request, 'shop/FAQ.html', context)
 
 
 def contact(request):
-    return render(request, 'shop/contact.html')
+    data = cartData(request)
+    cartItems = data['cartItems']
+
+    context = {'cartItems': cartItems}
+    return render(request, 'shop/contact.html', context)
 
 
 def updateItem(request):
@@ -97,6 +126,7 @@ def updateItem(request):
     return JsonResponse('Item was added', safe=False)
 
 
+# @csrf_exempt
 def processOrder(request):
     transaction_id = datetime.datetime.now().timestamp()
     data = json.loads(request.body)
@@ -104,26 +134,25 @@ def processOrder(request):
     if (request.user.is_authenticated):
         customer = request.user.customer
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
-        total = float(data['form']['total'])
-        order.transaction_id = transaction_id
-
-        if total == order.get_cart_total:
-            order.completed = True
-        order.save()
-
-        ShippingAddress.objects.create(
-            customer=customer,
-            order=order,
-            address=data['shipping']['address'],
-            city=data['shipping']['city'],
-            state=data['shipping']['state'],
-            country=data['shipping']['country'],
-            zip_code=data['shipping']['zipcode'],
-        )
-
     else:
-        print("User is not logged in..")
-    print("Data: ", request.body)
+        customer, order = guestOrder(request, data)
+
+    total = float(data['form']['total'])
+    order.transaction_id = transaction_id
+
+    if total == order.get_cart_total:
+        order.completed = True
+    order.save()
+
+    ShippingAddress.objects.create(
+        customer=customer,
+        order=order,
+        address=data['shipping']['address'],
+        city=data['shipping']['city'],
+        state=data['shipping']['state'],
+        country=data['shipping']['country'],
+        zip_code=data['shipping']['zipcode'],
+    )
     return JsonResponse('Payment complete!', safe=False)
 
 
