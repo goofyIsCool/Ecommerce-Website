@@ -25,7 +25,7 @@ class Customer(models.Model):
     surname = models.CharField(default='', max_length=200)
     user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
     phone = models.CharField(default='', max_length=20)
-    nip = models.CharField(default='', max_length=20)
+    nip = models.CharField(default='', max_length=20, null=True, blank=True)
     email = models.EmailField(null=False)
 
     def __str__(self):
