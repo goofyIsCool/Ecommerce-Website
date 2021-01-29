@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .models import Product, OrderItem, Order, ShippingAddress
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 # from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import redirect
 from django.contrib import messages
@@ -10,6 +11,8 @@ from .forms import ShippingUpdateForm
 import json
 from .utils import cookieCart, cartData, guestOrder
 import datetime
+from .filters import ProductFilterSet
+# from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 # Create your views here.
 
 
@@ -23,11 +26,10 @@ def home(request):
 
 
 class ProductListView(ListView):
+
     model = Product
     template_name = "shop/products.html"
-    paginate_by = 12
-
-    ordering = ['date_added']
+    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         if self.request.user.is_authenticated:
@@ -40,6 +42,7 @@ class ProductListView(ListView):
 
         context = super().get_context_data(**kwargs)
         context['cartItems'] = cartItems
+        context['filter'] = ProductFilterSet(self.request.GET, queryset=self.get_queryset())
         return context
 
 
@@ -175,3 +178,18 @@ def shipping_update(request):
     }
 
     return render(request, 'shop/shipment.html', context)
+
+
+def product_querySet(query=None):
+    querySet = []
+    queries = query.split(" ")
+    for q in queries:
+        products = Product.objects.filter(
+            Q(title__icontains=q),
+            Q(body__icontains=q)
+        ).distinct()
+
+        for post in products:
+            querySet.append(post)
+
+    return list(set(querySet))

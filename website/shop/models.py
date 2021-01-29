@@ -7,16 +7,19 @@ from django.utils import timezone
 # Create your models here.
 
 CATEGORY_CHOICES = (
-    ('S', 'Shirt'),
-    ('ST', 'T-Shirt'),
-    ('SW', 'Sweatshirt'),
-    ('J', 'Jeans'),
+    ('S', 'Sukienki'),
+    ('K', 'Koszule'),
+    ('Sp', 'Spódniczki'),
+    ('Ż', 'Żakiety'),
 )
 
-LABEL_CHOICES = (
-    ('P', 'primary'),
-    ('S', 'secondary'),
-    ('D', 'danger'),
+SIZE_CHOICES = (
+    ('XS', 'extra small'),
+    ('S', 'small'),
+    ('M', 'medium'),
+    ('L', 'large'),
+    ('XL', 'extra large'),
+    ('XXL', 'extra extra large')
 )
 
 
@@ -39,13 +42,13 @@ class Product(models.Model):
     title = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=7, decimal_places=2)
     discount = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
+    size = models.CharField(choices=SIZE_CHOICES, max_length=3, default='S')
     category = models.CharField(choices=CATEGORY_CHOICES, max_length=2, default='S')
-    label = models.CharField(choices=LABEL_CHOICES, max_length=1, default='P')
     slug = models.SlugField()
     description = models.TextField(
         default="", max_length=100)
     image = models.ImageField(default='default.jpg', upload_to='product_pics')
-    date_added = models.DateTimeField(default=timezone.now)
+    release_date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.title
@@ -91,7 +94,7 @@ class OrderItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
     order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
     quantity = models.IntegerField(default=0, null=True, blank=True)
-    date_added = models.DateTimeField(auto_now_add=True)
+    release_date = models.DateTimeField(auto_now_add=True)
 
     @property
     def get_total(self):
@@ -107,7 +110,7 @@ class ShippingAddress(models.Model):
     state = models.CharField(max_length=200, null=False)
     country = models.CharField(max_length=200, null=False)
     zip_code = models.CharField(max_length=20, null=False)
-    date_added = models.DateTimeField(auto_now_add=True)
+    release_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.address
