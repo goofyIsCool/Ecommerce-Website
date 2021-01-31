@@ -17,11 +17,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='product',
             name='size',
-            field=models.CharField(choices=[('XS', 'extra small'), ('S', 'small'), ('M', 'medium'), ('L', 'large'), ('XL', 'extra large'), ('XXL', 'extra extra large')], default='S', max_length=3),
+            field=models.CharField(choices=[('XS', 'extra small'), ('S', 'small'), ('M', 'medium'), (
+                'L', 'large'), ('XL', 'extra large'), ('XXL', 'extra extra large')], default='S', max_length=3),
         ),
         migrations.AlterField(
             model_name='product',
             name='category',
-            field=models.CharField(choices=[('S', 'Sukienki'), ('K', 'Koszule'), ('Sp', 'Spódniczki'), ('Ż', 'Żakiety')], default='S', max_length=2),
+            field=models.CharField(choices=[('S', 'Sukienki'), ('K', 'Koszule'),
+                                            ('Sp', 'Spódniczki'), ('Ż', 'Żakiety')], default='S', max_length=2),
         ),
     ]

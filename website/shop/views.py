@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Product, OrderItem, Order, ShippingAddress
+from .models import Product, OrderItem, Order, ShippingAddress, Category
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
@@ -29,7 +29,7 @@ class ProductListView(ListView):
 
     model = Product
     template_name = "shop/products.html"
-    paginate_by = 10
+    paginate_by = 5
 
     def get_context_data(self, **kwargs):
         if self.request.user.is_authenticated:
@@ -40,9 +40,17 @@ class ProductListView(ListView):
             cookieData = cookieCart(self.request)
             cartItems = cookieData['cartItems']
 
+        categories = Category.get_all_categories()
+        categoryID = self.request.GET.get('category')
+        if categoryID:
+            products = Product.get_all_products_by_categoryid(categoryID)
+        else:
+            products = Product.get_all_products()
+
         context = super().get_context_data(**kwargs)
         context['cartItems'] = cartItems
-        context['filter'] = ProductFilterSet(self.request.GET, queryset=self.get_queryset())
+        context['categories'] = categories
+        context['filter'] = ProductFilterSet(self.request.GET, queryset=products)
         return context
 
 

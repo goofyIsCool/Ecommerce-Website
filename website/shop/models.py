@@ -6,13 +6,6 @@ from PIL import Image
 from django.utils import timezone
 # Create your models here.
 
-CATEGORY_CHOICES = (
-    ('S', 'Sukienki'),
-    ('K', 'Koszule'),
-    ('Sp', 'Spódniczki'),
-    ('Ż', 'Żakiety'),
-)
-
 SIZE_CHOICES = (
     ('XS', 'extra small'),
     ('S', 'small'),
@@ -38,12 +31,26 @@ class Customer(models.Model):
             return 'Guest'
 
 
+class Category(models.Model):
+    name = models.CharField(max_length=20)
+
+    class Meta:
+        verbose_name_plural = "Categories"
+
+    @staticmethod
+    def get_all_categories():
+        return Category.objects.all()
+
+    def __str__(self):
+        return self.name
+
+
 class Product(models.Model):
     title = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=7, decimal_places=2)
     discount = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
     size = models.CharField(choices=SIZE_CHOICES, max_length=3, default='S')
-    category = models.CharField(choices=CATEGORY_CHOICES, max_length=2, default='S')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, default=1)
     slug = models.SlugField()
     description = models.TextField(
         default="", max_length=100)
@@ -57,6 +64,17 @@ class Product(models.Model):
         return reverse("shop:product", kwargs={
             'slug': self.slug,
         })
+
+    @staticmethod
+    def get_all_products():
+        return Product.objects.all()
+
+    @staticmethod
+    def get_all_products_by_categoryid(category_id):
+        if category_id:
+            return Product.objects.filter(category=category_id)
+        else:
+            return Product.get_all_products()
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

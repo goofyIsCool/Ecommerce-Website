@@ -9,15 +9,13 @@ class ProductFilterSet(django_filters.FilterSet):
     CHOICES = (
         ('ascending', 'Ascending'), ('descending', 'Descending')
     )
-
-    title = django_filters.CharFilter(lookup_expr='icontains')
-    price = RangeFilter()
     ordering = django_filters.ChoiceFilter(
         label='Ordering', choices=CHOICES, method='filter_by_order')
+    price = RangeFilter()
 
     class Meta:
         model = Product
-        fields = ['title', 'price', 'category']
+        fields = ['price']
 
     def filter_by_order(self, queryset, price, value):
         expression = 'price' if value == 'ascending' else '-price'
