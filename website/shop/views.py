@@ -29,7 +29,19 @@ class ProductListView(ListView):
 
     model = Product
     template_name = "shop/products.html"
-    paginate_by = 5
+    paginate_by = 8
+    ordering = ['title']
+
+    def get_queryset(self, *args, **kwargs):
+        products = None
+        categoryID = self.request.GET.get('category')
+        if categoryID:
+            products = Product.get_all_products_by_categoryid(categoryID)
+        else:
+            products = Product.get_all_products()
+
+        queryset = ProductFilterSet(self.request.GET, queryset=products).qs
+        return queryset
 
     def get_context_data(self, **kwargs):
         if self.request.user.is_authenticated:
@@ -40,7 +52,6 @@ class ProductListView(ListView):
             cookieData = cookieCart(self.request)
             cartItems = cookieData['cartItems']
 
-        categories = Category.get_all_categories()
         categoryID = self.request.GET.get('category')
         if categoryID:
             products = Product.get_all_products_by_categoryid(categoryID)
@@ -49,6 +60,7 @@ class ProductListView(ListView):
 
         context = super().get_context_data(**kwargs)
         context['cartItems'] = cartItems
+        categories = Category.get_all_categories()
         context['categories'] = categories
         context['filter'] = ProductFilterSet(self.request.GET, queryset=products)
         return context
@@ -152,7 +164,8 @@ def processOrder(request):
     order.transaction_id = transaction_id
 
     if total == order.get_cart_total:
-        order.completed = True
+        order.complete = True
+
     order.save()
 
     ShippingAddress.objects.create(

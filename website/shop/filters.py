@@ -15,7 +15,7 @@ class ProductFilterSet(django_filters.FilterSet):
 
     class Meta:
         model = Product
-        fields = ['price']
+        fields = ['category', 'price']
 
     def filter_by_order(self, queryset, price, value):
         expression = 'price' if value == 'ascending' else '-price'
