@@ -1,0 +1,44 @@
+{% extends "shop/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% load static %}
+<div class="row mx-auto container">
+    <div class="col-lg-6">
+        <div class="box-element2 px-5 pb-5 pt-4">
+            <h3>Continue as a Guest</h3>
+            <hr>
+            <div class=' pt-1 mb-4'>
+                <small class='text-muted'> Don't have an account? <a class = 'ml-2' href='{% url 'signup' %}'>Sign Up Now</a></small>
+            </div>
+
+            <th>
+                <a class="btn btn-success" href="{% url 'shop:checkout' %}">Continue</a>
+            </th>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="box-element2 ">
+            <div class="pt-3 px-5">
+                <h3>Login</h3>
+                <hr>
+            </div>
+            <div class="mr-5 px-5">
+                <form method='POST'>
+                    {% csrf_token %}
+                    <fieldset class='form-group'>
+                        {{ form|crispy }}
+                        <div class='form-group'>
+                            <button class='btn btn-outline-info', type='submit'>Login</button>
+                        </div>
+
+                    </fieldset>
+                </form>
+
+            </div>
+
+
+        </div>
+    </div>
+</div>
+{% endblock %}

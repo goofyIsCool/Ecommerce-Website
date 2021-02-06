@@ -4,42 +4,58 @@
 <div class="row mx-auto container">
     <div class="col-lg-6">
         <div class="box-element2" id="form-wrapper">
-            <form id="form">
+            <form id="form" class="px-4 mt-2">
+                <button type="button" class="btn btn-default" aria-label="Left Align">
+                    <span class="glyphicon glyphicon-chevron-left"</span>
+                    <a href="{% url 'shop:products' %}">Continue Shopping</a>
+                </button>
                 {% csrf_token %}
                 <div id="user-info">
-                    <p class="mt-3">Customer's: </p>
+                    <h5 class="mt-3">Customer: </h5>
+
 					<div class="form-field">
-						<h6> Name: </h6><input required class="form-control" type="text" name="name">
+                        <label class="control-label" for="username">Name</label><span class="required">*</span>
+                        <input required class="form-control" type="text" name="name">
 					</div>
                     <div class="form-field">
-						<h6> Surname: </h6><input required class="form-control" type="text" name="surname">
+						<label class="control-label" for="username">Surname</label><span class="required">*</span>
+                        <input required class="form-control" type="text" name="surname">
 					</div>
 					<div class="form-field">
-						<h6> Email: </h6><input required class="form-control" type="email" name="email">
+						<label class="control-label" for="username">E-mail</label><span class="required">*</span>
+                        <input required class="form-control" type="text" name="email">
 					</div>
                     <div class="form-field">
-						<h6> Phone: </h6><input required class="form-control" type="text" name="phone">
+                        <label class="control-label" for="username">Phone</label><span class="required">*</span>
+						<input required class="form-control" type="text" name="phone">
 					</div>
 				</div>
                 <div id="shipping-info">
-                    <p class="mt-3">Shipping Information:</p>
+                    <h5 class="mt-3">Shipping Address:</h5>
                     <hr>
                     <div class="form-field">
-                        <h6> Adress: </h6><input class="form-control" type="text" name="address">
+                        <label class="control-label" for="username">Street</label><span class="required">*</span>
+                        <input class="form-control" type="text" name="address">
                     </div>
                     <div class="form-field">
-                        <h6> City: </h6><input class="form-control" type="text" name="city">
+                        <label class="control-label" for="username">City</label><span class="required">*</span>
+                        <input class="form-control" type="text" name="city">
                     </div>
                     <div class="form-field">
-                        <h6> State: </h6><input class="form-control" type="text" name="state">
+                        <label class="control-label" for="username">State</label><span class="required">*</span>
+                        <input class="form-control" type="text" name="state">
                     </div>
                     <div class="form-field">
-                        <h6> Zip code: </h6><input class="form-control" type="text" name="zipcode" >
+                        <label class="control-label" for="username">Zip code</label><span class="required">*</span>
+                        <input class="form-control" type="text" name="zipcode" >
                     </div>
                     <div class="form-field">
-                        <h6> Country: </h6><input class="form-control" type="text" name="country">
+                        <label class="control-label" for="username">Country</label><span class="required">*</span>
+                        <input class="form-control" type="text" name="country">
                     </div>
                 </div>
+                <br>
+                <span class="required">*</span><label class="control-label">-Required</label>
                 <hr>
                 <input id="form-button" class="btn btn-success btn-block" type="submit" value="Continue">
             </form>
@@ -62,9 +78,9 @@
             {% for item in items %}
             <div class="cart-row">
                 {% if user.is_authenticated %}
-				<div style="flex:2"><img class="row-image" src="{{ item.product.image.url }}" ></div>
+				            <div style="flex:2"><img class="row-image" src="{{ item.product.image.url }}" ></div>
 				{% else %}
-				<div style="flex:2"><img class="row-image" src="{{ item.product.imageURL }}" ></div>
+				            <div style="flex:2"><img class="row-image" src="{{ item.product.imageURL }}" ></div>
 				{% endif %}
 
 

@@ -20,7 +20,7 @@ def signup(request):
             user.is_active = False
             user.save()
             current_site = get_current_site(request)
-            mail_subject = 'Activate your blog account.'
+            mail_subject = 'DALOC Activate your account.'
             message = render_to_string('user/acc_active_email.html', {
                 'user': user,
                 'domain': current_site.domain,
@@ -32,7 +32,9 @@ def signup(request):
                 mail_subject, message, to=[to_email]
             )
             email.send()
-            return HttpResponse('Please confirm your email address to complete the registration')
+            message = 'Please confirm your email address to complete the registration'
+            context = {'messages': message}
+            return render(request, "user/login.html", context)
     else:
         form = SignupForm()
 
@@ -50,6 +52,10 @@ def activate(request, uidb64, token):
         user.save()
         login(request, user)
 
-        return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
+        message = 'Thank you for your email confirmation. Now you can log into your account.'
+        context = {'messages': message}
+        return render(request, "user/login.html", context)
     else:
-        return HttpResponse('Activation link is invalid!')
+        message = 'Activation link is invalid!'
+        context = {'messages': message}
+        return render(request, "user/login.html", context)
