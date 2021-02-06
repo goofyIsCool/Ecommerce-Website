@@ -25,7 +25,7 @@ from user import views as user_views
 urlpatterns = [
     path('', include('shop.urls', namespace="shop")),
     path('admin/', admin.site.urls),
-    path('register/', user_views.register, name='register'),
+    path('signup/', user_views.signup, name='signup'),
     path('login/', auth_views.LoginView.as_view(template_name='user/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='user/logout.html'), name='logout'),
     path('password-reset/', auth_views.PasswordResetView.as_view(
@@ -36,6 +36,8 @@ urlpatterns = [
         template_name='user/password_reset_confirm.html'), name='password_reset_confirm'),
     path('password-reset-complete/', auth_views.PasswordResetCompleteView.as_view(
         template_name='user/password_reset_complete.html'), name='password_reset_complete'),
+    path('reset/<uidb64>/<token>/',
+         user_views.activate, name='activate'),
 ]
 
 if settings.DEBUG:

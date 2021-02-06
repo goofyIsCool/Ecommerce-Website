@@ -1,6 +1,6 @@
-from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from . import views
+from django.contrib.auth import views as auth_views
 
 app_name = 'shop'
 
@@ -14,5 +14,6 @@ urlpatterns = [
     path('checkout/', views.checkout, name='checkout'),
     path('update_item/', views.updateItem, name='update_item'),
     path('process_order/', views.processOrder, name='process_order'),
-    path('shipping_update/', views.shipping_update, name='shipping_update')
+    path('guest/', auth_views.LoginView.as_view(template_name='shop/guestUserLogin.html'), name='guest'),
+    path('shipping_update/', views.shipping_update, name='shipping_update'),
 ]

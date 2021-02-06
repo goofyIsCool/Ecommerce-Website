@@ -3,8 +3,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
 
-class UserRegisterForm(UserCreationForm):
-    email = forms.EmailField(required=True)
+class SignupForm(UserCreationForm):
+    email = forms.EmailField(required=True, help_text='Required')
     first_name = forms.CharField(required=True, label='First name')
     last_name = forms.CharField(required=True, label='Last surname')
 

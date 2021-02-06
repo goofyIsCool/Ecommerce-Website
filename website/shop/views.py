@@ -12,6 +12,7 @@ import json
 from .utils import cookieCart, cartData, guestOrder
 import datetime
 from .filters import ProductFilterSet
+
 # from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 # Create your views here.
 
@@ -19,9 +20,23 @@ from .filters import ProductFilterSet
 def home(request):
     data = cartData(request)
     cartItems = data['cartItems']
+    recProdcuts = Product.objects.order_by('price')[:4]
+    newProducts = Product.objects.order_by('-release_date')[:4]
 
-    products = Product.objects.all()
-    context = {'product': products, 'cartItems': cartItems}
+    context = {}
+    query = ""
+    if request.GET:
+        query = request.GET['q']
+        queryset = product_querySet(query)
+        categories = Category.get_all_categories()
+        products = Product.objects.all()
+        context['object_list'] = queryset
+        context['categories'] = categories
+        context['filter'] = ProductFilterSet(request.GET, queryset=products)
+        return render(request, 'shop/products.html', context)
+
+    # products = Product.objects.all()
+    context = {'newProducts': newProducts, 'recProducts': recProdcuts, 'cartItems': cartItems}
     return render(request, 'shop/home.html', context)
 
 
@@ -29,9 +44,23 @@ class ProductListView(ListView):
 
     model = Product
     template_name = "shop/products.html"
-    paginate_by = 5
+    paginate_by = 8
+    ordering = ['title']
+
+    def get_queryset(self, *args, **kwargs):
+        products = None
+        categoryID = self.request.GET.get('category')
+        if categoryID:
+            products = Product.get_all_products_by_categoryid(categoryID)
+        else:
+            products = Product.get_all_products()
+
+        queryset = ProductFilterSet(self.request.GET, queryset=products).qs
+        return queryset
 
     def get_context_data(self, **kwargs):
+
+        context = super().get_context_data(**kwargs)
         if self.request.user.is_authenticated:
             customer = self.request.user.customer
             order, created = Order.objects.get_or_create(customer=customer, complete=False)
@@ -40,15 +69,16 @@ class ProductListView(ListView):
             cookieData = cookieCart(self.request)
             cartItems = cookieData['cartItems']
 
-        categories = Category.get_all_categories()
+        context['current_category'] = " "
         categoryID = self.request.GET.get('category')
         if categoryID:
             products = Product.get_all_products_by_categoryid(categoryID)
+            context['current_category'] = Category.objects.get(id=categoryID).name
         else:
             products = Product.get_all_products()
 
-        context = super().get_context_data(**kwargs)
         context['cartItems'] = cartItems
+        categories = Category.get_all_categories()
         context['categories'] = categories
         context['filter'] = ProductFilterSet(self.request.GET, queryset=products)
         return context
@@ -152,7 +182,8 @@ def processOrder(request):
     order.transaction_id = transaction_id
 
     if total == order.get_cart_total:
-        order.completed = True
+        order.complete = True
+
     order.save()
 
     ShippingAddress.objects.create(
@@ -194,10 +225,9 @@ def product_querySet(query=None):
     for q in queries:
         products = Product.objects.filter(
             Q(title__icontains=q),
-            Q(body__icontains=q)
         ).distinct()
 
-        for post in products:
-            querySet.append(post)
+        for product in products:
+            querySet.append(product)
 
     return list(set(querySet))

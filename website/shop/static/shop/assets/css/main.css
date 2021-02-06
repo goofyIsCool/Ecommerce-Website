@@ -23,6 +23,12 @@ h1,h2,h3,h4,h5,h6{
 	margin-top: 5px;
 }
 
+.box-element3{
+	box-shadow:hsl(0, 0%, 90%) 0 0 16px;
+	background-color: #fff;
+}
+
+
 .thumbnail{
 	width: 100%;
 	height: 200px;

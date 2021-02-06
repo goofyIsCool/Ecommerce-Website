@@ -11,11 +11,11 @@ class ProductFilterSet(django_filters.FilterSet):
     )
     ordering = django_filters.ChoiceFilter(
         label='Ordering', choices=CHOICES, method='filter_by_order')
-    price = RangeFilter()
+    # price = RangeFilter()
 
     class Meta:
         model = Product
-        fields = ['price']
+        fields = ['category']
 
     def filter_by_order(self, queryset, price, value):
         expression = 'price' if value == 'ascending' else '-price'
