@@ -13,11 +13,11 @@
 					<th><h5>Total:<strong> {{ order.get_cart_total }} zł</strong></h5></th>
 					{% if user.is_authenticated %}
 						<th>
-							<a  style="float:right; margin:5px;" class="btn btn-success" href="{% url 'shop:checkout' %}">Checkout</a>
+							<a  style="float:right; margin:5px;" class="btn btn-outline-dark" href="{% url 'shop:checkout' %}">Checkout</a>
 						</th>
 					{% else %}
 						<th>
-							<a  style="float:right; margin:5px;" class="btn btn-success" href="{% url 'shop:guest' %}">Checkout</a>
+							<a  style="float:right; margin:5px;" class="btn btn-outline-dark" href="{% url 'shop:guest' %}">Checkout</a>
 						</th>
 					{% endif %}
 

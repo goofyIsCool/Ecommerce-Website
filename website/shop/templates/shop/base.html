@@ -83,7 +83,7 @@
                     <li class="nav-item"><a class="nav-link" href="{% url 'shop:contact' %}">Contact</a></li>
                 </ul>
                 <div class="form-inline ml-3 mr-auto mt-sm-2 mr-2">
-                    <form method="get">
+                    <form method="get" action="{% url 'shop:products' %}">
                         <label for="search-field"><i class="fa fa-search"></i>
                         <input type="text" class="search-field form-control" name="q" id="id_q" placeholder="Search...">
                     </form>
@@ -104,8 +104,9 @@
             {% endif %}
     </nav>
 
-    <div class="container">
+
         {% if messages %}
+        <div class="container">
             {% for message in messages %}
             <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
               {{ message }}
@@ -114,8 +115,9 @@
               </button>
             </div>
             {% endfor %}
+        </div>
         {% endif %}
-    </div>
+
 
     {% block content %}
     {% endblock %}

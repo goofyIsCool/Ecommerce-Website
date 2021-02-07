@@ -1,12 +1,12 @@
 {% extends 'shop/base.html' %}
 {% load static %}
 {% block content %}
-<div class="simple-slider mb-5">
+<div class="simple-slider">
     <div class="swiper-container">
         <div class="swiper-wrapper">
-            <div class="swiper-slide"><img src={% static 'images/clothing-2000.jpg' %} /></div>
-            <div class="swiper-slide"><img src={% static 'images/clothing-2000.jpg' %} /></div>
-            <div class="swiper-slide"><img src={% static 'images/clothing-2000.jpg' %} /></div>
+            <div class="swiper-slide"><img class="image" src={% static 'images/clothing-2000.jpg' %} /></div>
+            <div class="swiper-slide"><img class="image" src={% static 'images/clothing-2000.jpg' %} /></div>
+            <div class="swiper-slide"><img class="image" src={% static 'images/clothing-2000.jpg' %} /></div>
         </div>
         <div class="swiper-pagination"></div>
         <div class="swiper-button-prev"></div>
@@ -21,7 +21,7 @@
             </div>
             <div class="row mx-auto box-container pb-3 px-3" id="recommendedQuerySet">
                 {% for product in recProducts %}
-                    <div class="card mx-auto my-2">
+                    <div class="card mx-auto my-auto">
                         <div class="col">
                             <div class="view overlay mt-3">
                                 <a href="{{ product.get_absolute_url }}"><img src="{{ product.image.url }}" width="225" height="225" class="card-img-top"></a>
@@ -39,7 +39,7 @@
         </div>
         <div class="container mb-5">
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-4 mx-auto">
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">Title</h4>
@@ -49,7 +49,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 mx-auto">
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">Title</h4>
@@ -60,7 +60,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-4 mx-auto">
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">Title</h4>
@@ -106,7 +106,7 @@
 
     </div>
 </div>
-<div class="newsletter-subscribe mb-5"><iframe allowfullscreen="" frameborder="0" src="https://cdn.bootstrapstudio.io/placeholders/map.html" width="100%" height="400"></iframe>
+<div class="newsletter-subscribe"><iframe allowfullscreen="" frameborder="0" src="https://cdn.bootstrapstudio.io/placeholders/map.html" width="100%" height="400"></iframe>
 <div class="newsletter-subscribe">
     <div class="container">
         <div class="intro">

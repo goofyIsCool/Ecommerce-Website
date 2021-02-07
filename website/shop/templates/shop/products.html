@@ -3,9 +3,10 @@
 {% load my_tags %}
 {% block content %}
 {% load static %}
-<div class="my-5">
+
+<div class="my-5 container-fluid mx-auto">
     <div class="row">
-        <div class="col-md-2 ml-auto">
+        <div class="col-md-2 mx-auto">
             <div class="box-element2">
                 <div class="mx-3 mt-4">
                     <h3> Categories </h3>
@@ -19,7 +20,7 @@
                 </div>
                 <form method="get" class="mx-3 mb-5">
                     {{ filter.form|crispy }}
-                    <button type="submit">Search</button>
+                    <button class="btn btn-outline-secondary" style="border-radius:10px;" type="submit">Search</button>
                 </form>
             </div>
         </div>
@@ -31,20 +32,22 @@
                     </div>
 
                     <div class="row-md-8 mx-auto">
-                        <div class="row wow fadeIn my-3">
+                        <div class="row wow fadeIn">
                           {% for product in object_list %}
-                            <div class="card mx-3 my-2">
-                                <div class="col">
-                                    <div class="view overlay mt-3">
-                                        <a href="{{ product.get_absolute_url }}"><img src="{{ product.image.url }}" width="225" height="225" class="card-img-top"></a>
-                                    </div>
-                        			<div class="box-element">
-                                        <a href="{{ product.get_absolute_url }}"><h5><strong>{{product.title}}</strong></h5></a>
-                        				<hr>
-                        				<button data-product="{{ product.id }}" data-action="add" class="btn btn-outline-secondary update-cart">Add to Cart</button>
-                        				<h5 style="display: inline-block; float:right;">{{product.price}} zł</h5>
-                        			</div>
-                        		</div>
+                            <div class="mx-3 my-auto">
+                                <div class="card my-2">
+                                    <div class="col">
+                                        <div class="view overlay mt-3">
+                                            <a href="{{ product.get_absolute_url }}"><img src="{{ product.image.url }}" width="225" height="225" class="card-img-top"></a>
+                                        </div>
+                            			<div class="box-element">
+                                            <a href="{{ product.get_absolute_url }}"><h5><strong>{{product.title}}</strong></h5></a>
+                            				<hr>
+                            				<button data-product="{{ product.id }}" data-action="add" class="btn btn-outline-secondary update-cart">Add to Cart</button>
+                            				<h5 style="display: inline-block; float:right;">{{product.price}} zł</h5>
+                            			</div>
+                            		</div>
+                                </div>
                             </div>
                           {% endfor %}
                         </div>
@@ -58,7 +61,7 @@
                         <h2 class="card-title">
                             No Results
                         </h2>
-                        <p class="card-text">There were no results matching your search</p>
+                        <p class="card-text">There were no results matching your search: {{query}}</p>
                     </div>
                 </div>
             </div>
@@ -88,6 +91,5 @@
         {% endif %}
     </div>
 </center>
-
 
 {% endblock %}

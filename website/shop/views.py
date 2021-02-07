@@ -22,20 +22,6 @@ def home(request):
     cartItems = data['cartItems']
     recProdcuts = Product.objects.order_by('price')[:4]
     newProducts = Product.objects.order_by('-release_date')[:4]
-
-    context = {}
-    query = ""
-    if request.GET:
-        query = request.GET['q']
-        queryset = product_querySet(query)
-        categories = Category.get_all_categories()
-        products = Product.objects.all()
-        context['object_list'] = queryset
-        context['categories'] = categories
-        context['filter'] = ProductFilterSet(request.GET, queryset=products)
-        return render(request, 'shop/products.html', context)
-
-    # products = Product.objects.all()
     context = {'newProducts': newProducts, 'recProducts': recProdcuts, 'cartItems': cartItems}
     return render(request, 'shop/home.html', context)
 
@@ -48,6 +34,11 @@ class ProductListView(ListView):
     ordering = ['title']
 
     def get_queryset(self, *args, **kwargs):
+        if 'q' in self.request.GET:
+            query = self.request.GET['q']
+            queryset = product_querySet(query)
+            return queryset
+
         products = None
         categoryID = self.request.GET.get('category')
         if categoryID:
@@ -76,6 +67,9 @@ class ProductListView(ListView):
             context['current_category'] = Category.objects.get(id=categoryID).name
         else:
             products = Product.get_all_products()
+
+        query = ""
+        queryset = []
 
         context['cartItems'] = cartItems
         categories = Category.get_all_categories()
@@ -198,7 +192,7 @@ def processOrder(request):
     return JsonResponse('Payment complete!', safe=False)
 
 
-@login_required
+@ login_required
 def shipping_update(request):
     if request.method == 'POST':
         shipping_form = ShippingUpdateForm(request.POST, instance=request.user.customer)

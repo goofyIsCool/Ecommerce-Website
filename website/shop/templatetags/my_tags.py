@@ -1,5 +1,5 @@
 from django import template
-
+from copy import copy
 register = template.Library()
 
 
@@ -29,5 +29,10 @@ def param_replace(context, **kwargs):
         d[k] = v
     for k in [k for k, v in d.items() if not v]:
         del d[k]
+
+    tmp = copy(d)
+    for k in tmp.items():
+        if k[0] == 'q':
+            del d[k[0]]
 
     return d.urlencode()
