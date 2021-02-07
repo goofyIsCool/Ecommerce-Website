@@ -1,4 +1,4 @@
-from django.urls import path, include
+from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views
 
@@ -16,4 +16,5 @@ urlpatterns = [
     path('process_order/', views.processOrder, name='process_order'),
     path('guest/', auth_views.LoginView.as_view(template_name='shop/guestUserLogin.html'), name='guest'),
     path('shipping_update/', views.shipping_update, name='shipping_update'),
+    path('order_confirmation/', views.confirmation, name='order_confirmation'),
 ]

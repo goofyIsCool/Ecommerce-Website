@@ -15,16 +15,16 @@
 </div>
 <div class="container mx-auto">
     <div class="mt-4">
-        <div class="box-element3 my-5">
+        <div class="container-fluid my-3 ">
             <div class="pt-3 pl-3">
                 <h1 class="text-left ml-3">Bestsellers</h1>
             </div>
             <div class="row mx-auto box-container pb-3 px-3" id="recommendedQuerySet">
                 {% for product in recProducts %}
-                    <div class="card mx-auto my-auto">
+                    <div class="card mx-auto my-2">
                         <div class="col">
                             <div class="view overlay mt-3">
-                                <a href="{{ product.get_absolute_url }}"><img src="{{ product.image.url }}" width="225" height="225" class="card-img-top"></a>
+                                <a href="{{ product.get_absolute_url }}"><img src="{{ product.image1.url }}" width="225" height="225" class="card-img-top"></a>
                             </div>
                             <div class="box-element">
                                 <a href="{{ product.get_absolute_url }}"><h5><strong>{{product.title}}</strong></h5></a>
@@ -38,7 +38,7 @@
             </div>
         </div>
         <div class="container mb-5">
-            <div class="row">
+            <div class="row my-2 mx-auto">
                 <div class="col-md-4 mx-auto">
                     <div class="card">
                         <div class="card-body">
@@ -72,16 +72,17 @@
                 </div>
             </div>
         </div>
-        <div class="box-element3">
+        <div class="container-fluid my-5">
+            <hr />
             <div class="pt-3 pl-3">
                 <h1 class="text-left ml-3">New</h1>
             </div>
-            <div class="row mb-5 mx-auto box-container pb-3 px-3" id="newQuerySet">
+            <div class="row mb-5 mx-auto pb-3 px-3">
                 {% for product in newProducts %}
                     <div class="card mx-auto my-2">
                         <div class="col">
                             <div class="view overlay mt-3">
-                                <a href="{{ product.get_absolute_url }}"><img src="{{ product.image.url }}" width="225" height="225" class="card-img-top"></a>
+                                <a href="{{ product.get_absolute_url }}"><img src="{{ product.image1.url }}" width="225" height="225" class="card-img-top"></a>
                             </div>
                             <div class="box-element">
                                 <a href="{{ product.get_absolute_url }}"><h5><strong>{{product.title}}</strong></h5></a>

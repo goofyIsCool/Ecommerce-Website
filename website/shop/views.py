@@ -68,9 +68,6 @@ class ProductListView(ListView):
         else:
             products = Product.get_all_products()
 
-        query = ""
-        queryset = []
-
         context['cartItems'] = cartItems
         categories = Category.get_all_categories()
         context['categories'] = categories
@@ -225,3 +222,7 @@ def product_querySet(query=None):
             querySet.append(product)
 
     return list(set(querySet))
+
+
+def confirmation(request):
+    return render(request, 'shop/order_confirmation.html')

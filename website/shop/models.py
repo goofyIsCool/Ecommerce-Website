@@ -15,6 +15,11 @@ SIZE_CHOICES = (
     ('XXL', 'extra extra large')
 )
 
+PAYMENT_CHOICES = (
+    ('d', 'delivery'),
+    ('b', 'bank'),
+)
+
 
 class Customer(models.Model):
     name = models.CharField(default='', max_length=200)
@@ -54,7 +59,10 @@ class Product(models.Model):
     slug = models.SlugField()
     description = models.TextField(
         default="", max_length=100)
-    image = models.ImageField(default='default.jpg', upload_to='product_pics')
+    image1 = models.ImageField(default='default.jpg', upload_to='product_pics')
+    image2 = models.ImageField(default='default.jpg', upload_to='product_pics')
+    image3 = models.ImageField(default='default.jpg', upload_to='product_pics')
+    image4 = models.ImageField(default='default.jpg', upload_to='product_pics')
     release_date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
@@ -64,6 +72,9 @@ class Product(models.Model):
         return reverse("shop:product", kwargs={
             'slug': self.slug,
         })
+
+    def get_category_display(self):
+        return self.category
 
     @staticmethod
     def get_all_products():
@@ -79,11 +90,29 @@ class Product(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
-        img = Image.open(self.image.path)
+        img = Image.open(self.image1.path)
         if img.width > 500 or img.height > 700:
             output_size = (500, 700)
             img.thumbnail(output_size)
-            img.save(self.image.path)
+            img.save(self.image1.path)
+
+        img = Image.open(self.image2.path)
+        if img.width > 500 or img.height > 700:
+            output_size = (500, 700)
+            img.thumbnail(output_size)
+            img.save(self.image2.path)
+
+        img = Image.open(self.image3.path)
+        if img.width > 500 or img.height > 700:
+            output_size = (500, 700)
+            img.thumbnail(output_size)
+            img.save(self.image3.path)
+
+        img = Image.open(self.image4.path)
+        if img.width > 500 or img.height > 700:
+            output_size = (500, 700)
+            img.thumbnail(output_size)
+            img.save(self.image4.path)
 
 
 class Order(models.Model):
@@ -91,6 +120,7 @@ class Order(models.Model):
     date_ordered = models.DateTimeField(auto_now_add=True)
     complete = models.BooleanField(default=False)
     transaction_id = models.CharField(max_length=100, null=True)
+    payment = models.CharField(choices=PAYMENT_CHOICES, max_length=1, default='d')
 
     def __str__(self):
         return str(self.id)
