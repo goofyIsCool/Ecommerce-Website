@@ -42,3 +42,11 @@ html, body {
     height: 100%;
     width: 100%;
 }
+
+.quantity-input-box {
+    max-width: 40px;
+    max-height: 30px;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+}

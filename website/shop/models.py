@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import reverse
 from PIL import Image
 from django.utils import timezone
+import decimal
 # Create your models here.
 
 SIZE_CHOICES = (
@@ -56,25 +57,26 @@ class Product(models.Model):
     discount = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
     size = models.CharField(choices=SIZE_CHOICES, max_length=3, default='S')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, default=1)
+    pack = models.IntegerField(default=0)
     slug = models.SlugField()
     description = models.TextField(
         default="", max_length=100)
     image1 = models.ImageField(default='default.jpg', upload_to='product_pics')
     image2 = models.ImageField(default='default.jpg', upload_to='product_pics')
     image3 = models.ImageField(default='default.jpg', upload_to='product_pics')
-    image4 = models.ImageField(default='default.jpg', upload_to='product_pics')
     release_date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.title
 
+    @staticmethod
+    def get_brutto_price(self):
+        return self.price*decimal.Decimal(1.23)
+
     def get_absolute_url(self):
         return reverse("shop:product", kwargs={
             'slug': self.slug,
         })
-
-    def get_category_display(self):
-        return self.category
 
     @staticmethod
     def get_all_products():
@@ -90,29 +92,13 @@ class Product(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
-        img = Image.open(self.image1.path)
-        if img.width > 500 or img.height > 700:
-            output_size = (500, 700)
-            img.thumbnail(output_size)
-            img.save(self.image1.path)
-
-        img = Image.open(self.image2.path)
-        if img.width > 500 or img.height > 700:
-            output_size = (500, 700)
-            img.thumbnail(output_size)
-            img.save(self.image2.path)
-
-        img = Image.open(self.image3.path)
-        if img.width > 500 or img.height > 700:
-            output_size = (500, 700)
-            img.thumbnail(output_size)
-            img.save(self.image3.path)
-
-        img = Image.open(self.image4.path)
-        if img.width > 500 or img.height > 700:
-            output_size = (500, 700)
-            img.thumbnail(output_size)
-            img.save(self.image4.path)
+        images = [self.image1, self.image2, self.image3]
+        for image in images:
+            img = Image.open(self.image.path)
+            if img.width > 500 or img.height > 700:
+                output_size = (500, 700)
+                img.thumbnail(output_size)
+                img.save(self.image.path)
 
 
 class Order(models.Model):
@@ -123,7 +109,10 @@ class Order(models.Model):
     payment = models.CharField(choices=PAYMENT_CHOICES, max_length=1, default='d')
 
     def __str__(self):
-        return str(self.id)
+        try:
+            return (str(self.id) + " " + f'{self.customer.user.username}')
+        except:
+            return str(str(self.id) + " Guest: " + self.customer.name + " " + self.customer.surname)
 
     @property
     def get_cart_total(self):
@@ -131,6 +120,21 @@ class Order(models.Model):
         total = sum([item.get_total for item in orderItems])
         return total
 
+    @property
+    def get_cart_total_vat(self):
+        orderItems = self.orderitem_set.all()
+        total = sum([item.get_total for item in orderItems])
+        print(type(total))
+        return total*decimal.Decimal(0.23)
+
+    @property
+    def get_cart_total_brutto(self):
+        orderItems = self.orderitem_set.all()
+        total = sum([item.get_total for item in orderItems])
+        print(type(total))
+        return total*decimal.Decimal(1.23)
+
+    # item quantity
     @property
     def get_cart_items(self):
         orderItems = self.orderitem_set.all()

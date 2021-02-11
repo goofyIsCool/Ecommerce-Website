@@ -4,40 +4,48 @@ for (var i = 0; i < updateBtns.length; i++) {
     updateBtns[i].addEventListener('click', function (){
         var productId = this.dataset.product
         var action = this.dataset.action
-        console.log('productId:', productId, 'action', action)
+        var pack = parseInt(this.dataset.pack)
 
-        console.log('USER:', user)
+        console.log("pack: " + pack)
+        try {
+            var inputVal = parseInt(document.getElementById("quantity").value);
+            if (inputVal%pack != 0){
+                inputVal += pack - inputVal%pack
+            }
+        } catch {
+            var inputVal = pack
+        }
+
+        console.log("inputVal: " + inputVal)
+        console.log("pack: " + pack)
         if (user == 'AnonymousUser') {
-            addCookieItem(productId, action)
+            addCookieItem(productId, action, inputVal)
         }
         else {
-            updateUserOrder(productId, action)
+            updateUserOrder(productId, action, inputVal)
         }
     })
 }
 
-function addCookieItem(productId, action) {
+function addCookieItem(productId, action, quantity) {
     console.log('User is not authenticated')
-
     if (action === 'add'){
         if (cart[productId] == undefined) {
-            cart[productId] = {'quantity':1}
+            cart[productId] = {'quantity': quantity}
         }else{
-            cart[productId]['quantity'] += 1
+            cart[productId]['quantity'] += quantity
         }
     }
 
     if (action === 'remove'){
-        cart[productId]['quantity'] -= 1
+        cart[productId]['quantity'] -= quantity
 
         if (cart[productId]['quantity'] <= 0){
-            console.log("Remove Item")
             delete cart[productId]
         }
     }
     else if (action === 'removeAll'){
         cart[productId]['quantity'] = 0
-        console.log("Remove Item")
         delete cart[productId]
     }
 
@@ -47,7 +55,7 @@ function addCookieItem(productId, action) {
 }
 
 
-function updateUserOrder(productId, action){
+function updateUserOrder(productId, action, inputVal){
 	console.log('User is authenticated, sending data...')
 
 		var url = '/update_item/'
@@ -58,7 +66,7 @@ function updateUserOrder(productId, action){
 				'Content-Type':'application/json',
                 'X-csrftoken': csrftoken,
             },
-			body:JSON.stringify({'productId':productId, 'action':action})
+			body:JSON.stringify({'productId':productId, 'action':action, 'inputVal':inputVal})
 		})
 
 		.then((response) =>{
