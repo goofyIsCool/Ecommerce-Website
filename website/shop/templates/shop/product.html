@@ -2,51 +2,69 @@
 {% block content %}
 {% load static %}
 
-<main class="mb-5 pt-4">
-    <div class="container dark-grey-text mt-5">
+<main>
+    <div class="container-fluid dark-grey-text">
 
       <!--Grid row-->
-      <div class="row wow fadeIn mb-5">
-
-        <!--Grid column-->
-        <div class="col-md-6 mb-4">
-
-          <img src="{{ object.image.url }}" class="img-fluid" alt="" width=400px height=600px>
-
+      <div class="row wow fadeIn my-auto mx-auto box-element3 p-5 mx-auto">
+        <div class="col-md-6">
+            <div class="simple-slider">
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide"><center><img class="displayed-img" src="{{ object.image1.url }}" /></center></div>
+                        <div class="swiper-slide"><center><img class="displayed-img" src="{{ object.image2.url }}" /></center></div>
+                        <div class="swiper-slide"><center><img class="displayed-img" src="{{ object.image3.url }}" /></center></div>
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
         </div>
-        <!--Grid column-->
 
         <!--Grid column-->
-        <div class="col-md-6 mb-4">
-
+        <div class="col-md-6">
+          <div class="my-auto mx-auto pt-5">
+              <h2>{{object.title}}</h2>
+          </div>
           <!--Content-->
-          <div class="p-4">
-
-            <div class="mb-3">
-              <a href="">
-                <span class="badge purple mr-1">{{ object.get_category_display }}</span>
+          <div class="mx-auto my-auto">
+            <div class="pb-5">
+              <a href="/products/?=category={{object.category}}">
+                <span class="">{{object.category}}</span>
               </a>
             </div>
 
-            <p class="lead">
+
+            <span>Package: {{object.pack}}</span>
+            <p class="">Price:
               {% if object.discount %}
               <span class="mr-1">
-                <del>{{ object.price }} zł</del>
+                <del>{{ object.price }}zł</del>
               </span>
-              <span>${{ object.discount }}</span>
+              <span>{{ object.discount }}zł</span>
               {% else %}
-              <span>{{ object.price }} zł</span>
+              <span>{{ object.price }}zł</span>
               {% endif %}
             </p>
 
+            <div class="mx-auto row">
+                <div class="">
+                    <input class="text quantity-input-box" id="quantity{{object.id}}" value="{{ object.pack }}">
+                </div>
+                <div class="mx-1">
+                    <a data-productId="{{ object.id }}" data-action="add" data-pack={{ object.pack }} class="update-cart btn btn-primary btn-md my-0 p">
+                      Add to cart
+                    </a>
+                </div>
+            </div>
+            <div class="m-auto pt-2">
+                <p>The minimum purchase order quantity for the product is {{ object.pack }}</p>
+            </div>
+
             <p class="lead font-weight-bold">Description</p>
 
-            <p>{{ object.description }}</p>
-
-            <a data-product="{{ object.id }}" data-action="add" class="update-cart btn btn-primary btn-md my-0 p">
-              Add to cart
-              <i class="fas fa-shopping-cart ml-1"></i>
-            </a>
+            {% if object.description %}
+                <p>{{ object.description }}</p>
+            {% endif %}
 
           </div>
           <!--Content-->
@@ -110,5 +128,4 @@
     </div>
 
  </main>
-
 {% endblock %}

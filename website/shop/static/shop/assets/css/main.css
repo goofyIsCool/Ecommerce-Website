@@ -12,6 +12,7 @@ h1,h2,h3,h4,h5,h6{
 	padding: 10px;
 	margin-bottom: 5px;
 	margin-top: 5px;
+	width:100%;
 }
 
 .box-element2{
@@ -28,6 +29,10 @@ h1,h2,h3,h4,h5,h6{
 	background-color: #fff;
 }
 
+.background{
+	background-color: #fff;
+}
+
 
 .thumbnail{
 	width: 100%;
@@ -40,7 +45,6 @@ h1,h2,h3,h4,h5,h6{
 .product{
 	border-radius: 0 0 4px 4px;
 }
-
 
 
 #cart-icon{

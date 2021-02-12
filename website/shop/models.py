@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import reverse
 from PIL import Image
 from django.utils import timezone
+import decimal
 # Create your models here.
 
 SIZE_CHOICES = (
@@ -13,6 +14,11 @@ SIZE_CHOICES = (
     ('L', 'large'),
     ('XL', 'extra large'),
     ('XXL', 'extra extra large')
+)
+
+PAYMENT_CHOICES = (
+    ('p', 'Przelew'),
+    ('d', 'Przy odbiorze'),
 )
 
 
@@ -51,14 +57,21 @@ class Product(models.Model):
     discount = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
     size = models.CharField(choices=SIZE_CHOICES, max_length=3, default='S')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, default=1)
+    pack = models.IntegerField(default=0)
     slug = models.SlugField()
     description = models.TextField(
         default="", max_length=100)
-    image = models.ImageField(default='default.jpg', upload_to='product_pics')
+    image1 = models.ImageField(default='default.jpg', upload_to='product_pics')
+    image2 = models.ImageField(default='default.jpg', upload_to='product_pics')
+    image3 = models.ImageField(default='default.jpg', upload_to='product_pics')
     release_date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.title
+
+    @staticmethod
+    def get_brutto_price(self):
+        return self.price*decimal.Decimal(1.23)
 
     def get_absolute_url(self):
         return reverse("shop:product", kwargs={
@@ -79,11 +92,13 @@ class Product(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
-        img = Image.open(self.image.path)
-        if img.width > 500 or img.height > 700:
-            output_size = (500, 700)
-            img.thumbnail(output_size)
-            img.save(self.image.path)
+        images = [self.image1, self.image2, self.image3]
+        for image in images:
+            img = Image.open(image.path)
+            if img.width > 500 or img.height > 700:
+                output_size = (500, 700)
+                img.thumbnail(output_size)
+                img.save(image.path)
 
 
 class Order(models.Model):
@@ -91,9 +106,11 @@ class Order(models.Model):
     date_ordered = models.DateTimeField(auto_now_add=True)
     complete = models.BooleanField(default=False)
     transaction_id = models.CharField(max_length=100, null=True)
+    payment = models.CharField(choices=PAYMENT_CHOICES, max_length=1, default='d')
 
-    def __str__(self):
-        return str(self.id)
+    @property
+    def get_payment_name(self):
+        return self.payment
 
     @property
     def get_cart_total(self):
@@ -101,6 +118,21 @@ class Order(models.Model):
         total = sum([item.get_total for item in orderItems])
         return total
 
+    @property
+    def get_cart_total_vat(self):
+        orderItems = self.orderitem_set.all()
+        total = sum([item.get_total for item in orderItems])
+        print(type(total))
+        return total*decimal.Decimal(0.23)
+
+    @property
+    def get_cart_total_brutto(self):
+        orderItems = self.orderitem_set.all()
+        total = sum([item.get_total for item in orderItems])
+        print(type(total))
+        return total*decimal.Decimal(1.23)
+
+    # item quantity
     @property
     def get_cart_items(self):
         orderItems = self.orderitem_set.all()
@@ -131,4 +163,7 @@ class ShippingAddress(models.Model):
     release_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.address
+        if self.customer.name == '':
+            return "Guest: " + self.address
+        else:
+            return self.customer.name + ": " + self.address

@@ -12,7 +12,7 @@ import json
 from .utils import cookieCart, cartData, guestOrder
 import datetime
 from .filters import ProductFilterSet
-
+from django.http import HttpResponse
 # from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 # Create your views here.
 
@@ -22,20 +22,6 @@ def home(request):
     cartItems = data['cartItems']
     recProdcuts = Product.objects.order_by('price')[:4]
     newProducts = Product.objects.order_by('-release_date')[:4]
-
-    context = {}
-    query = ""
-    if request.GET:
-        query = request.GET['q']
-        queryset = product_querySet(query)
-        categories = Category.get_all_categories()
-        products = Product.objects.all()
-        context['object_list'] = queryset
-        context['categories'] = categories
-        context['filter'] = ProductFilterSet(request.GET, queryset=products)
-        return render(request, 'shop/products.html', context)
-
-    # products = Product.objects.all()
     context = {'newProducts': newProducts, 'recProducts': recProdcuts, 'cartItems': cartItems}
     return render(request, 'shop/home.html', context)
 
@@ -44,10 +30,15 @@ class ProductListView(ListView):
 
     model = Product
     template_name = "shop/products.html"
-    paginate_by = 8
+    paginate_by = 16
     ordering = ['title']
 
     def get_queryset(self, *args, **kwargs):
+        if 'q' in self.request.GET:
+            query = self.request.GET['q']
+            queryset = product_querySet(query)
+            return queryset
+
         products = None
         categoryID = self.request.GET.get('category')
         if categoryID:
@@ -102,6 +93,17 @@ class ItemDetailView(DetailView):
         return context
 
 
+class OrderListView(ListView):
+    model = Order
+    template_name = "shop/order_history.html"
+
+    def get_queryset(self, *args, **kwargs):
+        customer = self.request.user.customer
+        queryset = Order.objects.filter(customer=customer, complete=True)
+
+        return queryset
+
+
 def cart(request):
     data = cartData(request)
     cartItems = data['cartItems']
@@ -139,12 +141,43 @@ def contact(request):
     return render(request, 'shop/contact.html', context)
 
 
+def addToCart(request):
+    if request.method == 'GET':
+        productId = request.GET['productId']
+        action = request.GET['action']
+        quantity = int(request.GET['inputVal'])
+
+        customer = request.user.customer
+        product = Product.objects.get(id=productId)
+        order, created = Order.objects.get_or_create(customer=customer, complete=False)
+
+        orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
+
+        if action == 'add':
+            orderItem.quantity += quantity
+        elif action == 'remove':
+            orderItem.quantity = (orderItem.quantity - orderItem.product.pack)
+        elif action == 'removeAll':
+            orderItem.quantity = 0
+
+        orderItem.save()  # saving it to store in database
+
+        if orderItem.quantity <= 0:
+            orderItem.delete()
+
+        return HttpResponse(order.get_cart_items)  # Sending an success response
+    else:
+        return HttpResponse(order.get_cart_items)
+
+
 def updateItem(request):
     data = json.loads(request.body)
     productId = data['productId']
     action = data['action']
+    quantity = data['inputVal']
     print('Action:', action)
     print('Product:', productId)
+    print('Quantity:', quantity)
 
     customer = request.user.customer
     product = Product.objects.get(id=productId)
@@ -153,9 +186,9 @@ def updateItem(request):
     orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
 
     if action == 'add':
-        orderItem.quantity = (orderItem.quantity + 1)
+        orderItem.quantity += quantity
     elif action == 'remove':
-        orderItem.quantity = (orderItem.quantity - 1)
+        orderItem.quantity = (orderItem.quantity - orderItem.product.pack)
     elif action == 'removeAll':
         orderItem.quantity = 0
 
@@ -198,7 +231,7 @@ def processOrder(request):
     return JsonResponse('Payment complete!', safe=False)
 
 
-@login_required
+@ login_required
 def shipping_update(request):
     if request.method == 'POST':
         shipping_form = ShippingUpdateForm(request.POST, instance=request.user.customer)
@@ -231,3 +264,7 @@ def product_querySet(query=None):
             querySet.append(product)
 
     return list(set(querySet))
+
+
+def confirmation(request):
+    return render(request, 'shop/order_confirmation.html')

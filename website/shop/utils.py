@@ -1,5 +1,6 @@
 import json
-from .models import*
+from .models import Product, Order, Customer, OrderItem
+import decimal
 
 
 def cookieCart(request):
@@ -9,15 +10,16 @@ def cookieCart(request):
         cart = {}
 
     items = []
-    order = {'get_cart_total': 0, 'get_cart_items': 0}
-    cartItems = order['get_cart_items']
+    order = {'get_cart_total': 0, 'get_cart_total_brutto': 0,
+             'get_cart_total_vat': 0, 'get_cart_items': 0}
 
+    cartItems = order['get_cart_items']
     for i in cart:
         try:
             cartItems += cart[i]["quantity"]
 
             product = Product.objects.get(id=i)
-            total = (product.price * cart[i]["quantity"])
+            total = (product.price * product.pack * cart[i]["quantity"])
 
             order['get_cart_total'] += total
             order['get_cart_items'] += cart[i]["quantity"]
@@ -27,12 +29,16 @@ def cookieCart(request):
                     'id': product.id,
                     'title': product.title,
                     'price': product.price,
-                    'imageURL': product.image.url,
+                    'image': product.image1.url,
+                    'url': product.get_absolute_url,
                 },
                 'quantity': cart[i]["quantity"],
                 'get_total': total,
+                'pack': product.pack,
             }
             items.append(item)
+            order['get_cart_total_vat'] += total*decimal.Decimal(0.23)
+            order['get_cart_total_brutto'] += total*decimal.Decimal(1.23)
         except:
             pass
 
@@ -75,7 +81,6 @@ def guestOrder(request, data):
     order = Order.objects.create(customer=customer, complete=False)
     for item in items:
         product = Product.objects.get(id=item['product']['id'])
-
         orderItem = OrderItem.objects.create(
             product=product,
             order=order,

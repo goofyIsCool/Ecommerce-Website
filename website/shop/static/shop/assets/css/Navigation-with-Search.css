@@ -115,3 +115,8 @@
 	background-color: white;
 	border-radius: 4px;
 }
+
+.image{
+    width:100%;
+    height:100%;
+}

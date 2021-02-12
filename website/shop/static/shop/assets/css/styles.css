@@ -24,3 +24,32 @@ html, body {
 .card-body{
     width: 100%;
 }
+
+.card-img-top{
+    width: 100%;
+    height: 100%;
+    max-width: 225px;
+    max-height: 225px;
+}
+
+.small-img {
+    max-width: 100px;
+    max-height: 100px;
+    height: 100%;
+    width: 100%;
+}
+
+.displayed-img {
+    max-width: 400px;
+    max-height: 700px;
+    height: 100%;
+    width: 100%;
+}
+
+.quantity-input-box {
+    max-width: 40px;
+    max-height: 30px;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+}
