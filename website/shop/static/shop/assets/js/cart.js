@@ -78,6 +78,9 @@
 // 		});
 // }
 
+const cartItems = document.getElementById('cartItems');
+var counter = 0;
+cartItems.innerHTML = counter;
 
 $('.update-cart').click(function(){
     var productId = $(this).attr("data-productId");
@@ -110,7 +113,7 @@ $('.update-cart').click(function(){
         },
         success: function( data )
         {
-            $( '#cartItems' ).text(data);
+            counter += 1;
             console.log(data)
         }
      })
