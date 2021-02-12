@@ -47,7 +47,7 @@
 				<div class="mx-auto" style="flex:1"><strong></strong></div>
 			</div>
 			{% for item in items %}
-			<div class="cart-row px-3">
+			<div id="product{{item.product.id}}" class="cart-row px-3">
 				{% if user.is_authenticated %}
 				<div class="mx-auto" style="flex:2"><a href="{{ item.product.get_absolute_url }}"><img class="row-image ml-5" src="{{ item.product.image1.url }}" ></a></div>
 				<div class="mx-auto" style="flex:2">
@@ -63,17 +63,17 @@
 				<div class="mx-auto" style="flex:1"><p>{{item.product.price|floatformat:2}} zł</p></div>
 				<div class="mx-auto row" style="flex:1">
 					<div class="column">
-						<input class="text quantity-input-box" id="quantity{{item.id}}" value="{{item.quantity}}"></input>
+						<input class="text quantity-input-box" id="quantity{{item.product.id}}" value="{{item.quantity}}"></input>
 					</div>
 					<div class="column quantity">
-						<img class="chg-quantity update-cart" data-productId={{item.product.id}} data-action='add' data-pack="{{ item.pack }}" src="{% static  'images/arrow-up.png' %}">
-						<img class="chg-quantity update-cart" data-productId={{item.product.id}} data-action='remove' data-pack="{{ item.pack }}" src="{% static  'images/arrow-down.png' %}">
+						<img class="chg-quantity update-cart" data-productId={{item.product.id}} data-action='add' data-pack="{{ item.product.pack }}" src="{% static  'images/arrow-up.png' %}">
+						<img class="chg-quantity update-cart" data-productId={{item.product.id}} data-action='remove' data-pack="{{ item.product.pack }}" src="{% static  'images/arrow-down.png' %}">
 					</div>
 				</div>
 				<div class="column mx-auto" style="flex:1">
 					<p>{{item.get_total}}zł</p>
 				</div>
-				<div class="mx-auto" style="flex:1"><img class="chg-quantity update-cart" data-productId={{item.product.id}} data-action='removeAll' data-pack="{{ item.pack }}" src="{% static  'images/remove.png' %}"></div>
+				<div class="mx-auto" style="flex:1"><img class="chg-quantity update-cart" data-productId={{item.product.id}} data-action='removeAll' data-pack="{{ item.product.pack }}" src="{% static  'images/remove.png' %}"></div>
 			</div>
 			{% endfor %}
 		</div>

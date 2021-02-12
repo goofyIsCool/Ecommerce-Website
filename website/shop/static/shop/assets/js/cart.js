@@ -82,11 +82,13 @@
 $('.update-cart').click(function(){
     var productId = $(this).attr("data-productId");
     var action = $(this).attr("data-action");
-    var pack = parseInt($(this).attr("data-pack"));
+    var pack = parseInt(this.dataset.pack);
+    console.log(pack)
 
     try {
         var inputVal = parseInt(document.getElementById("quantity"+productId).value);
         console.log("quantity"+productId)
+        console.log(inputVal)
         if (inputVal%pack != 0){
             inputVal += pack - inputVal%pack
         }
@@ -94,7 +96,8 @@ $('.update-cart').click(function(){
         var inputVal = pack
     }
 
-
+    console.log(pack)
+    console.log(inputVal)
     var url = '/add_to_cart/'
     $.ajax(
     {

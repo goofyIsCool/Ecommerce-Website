@@ -163,4 +163,7 @@ class ShippingAddress(models.Model):
     release_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.address
+        if self.customer.name == '':
+            return "Guest: " + self.address
+        else:
+            return self.customer.name + ": " + self.address
