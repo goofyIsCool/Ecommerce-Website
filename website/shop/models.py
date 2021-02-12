@@ -17,8 +17,8 @@ SIZE_CHOICES = (
 )
 
 PAYMENT_CHOICES = (
-    ('d', 'delivery'),
-    ('b', 'bank'),
+    ('p', 'Przelew'),
+    ('d', 'Przy odbiorze'),
 )
 
 
@@ -94,11 +94,11 @@ class Product(models.Model):
 
         images = [self.image1, self.image2, self.image3]
         for image in images:
-            img = Image.open(self.image.path)
+            img = Image.open(image.path)
             if img.width > 500 or img.height > 700:
                 output_size = (500, 700)
                 img.thumbnail(output_size)
-                img.save(self.image.path)
+                img.save(image.path)
 
 
 class Order(models.Model):
@@ -108,11 +108,9 @@ class Order(models.Model):
     transaction_id = models.CharField(max_length=100, null=True)
     payment = models.CharField(choices=PAYMENT_CHOICES, max_length=1, default='d')
 
-    def __str__(self):
-        try:
-            return (str(self.id) + " " + f'{self.customer.user.username}')
-        except:
-            return str(str(self.id) + " Guest: " + self.customer.name + " " + self.customer.surname)
+    @property
+    def get_payment_name(self):
+        return self.payment
 
     @property
     def get_cart_total(self):

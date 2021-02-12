@@ -12,7 +12,7 @@ import json
 from .utils import cookieCart, cartData, guestOrder
 import datetime
 from .filters import ProductFilterSet
-
+from django.http import HttpResponse
 # from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 # Create your views here.
 
@@ -30,7 +30,7 @@ class ProductListView(ListView):
 
     model = Product
     template_name = "shop/products.html"
-    paginate_by = 8
+    paginate_by = 16
     ordering = ['title']
 
     def get_queryset(self, *args, **kwargs):
@@ -93,6 +93,17 @@ class ItemDetailView(DetailView):
         return context
 
 
+class OrderListView(ListView):
+    model = Order
+    template_name = "shop/order_history.html"
+
+    def get_queryset(self, *args, **kwargs):
+        customer = self.request.user.customer
+        queryset = Order.objects.filter(customer=customer, complete=True)
+
+        return queryset
+
+
 def cart(request):
     data = cartData(request)
     cartItems = data['cartItems']
@@ -128,6 +139,35 @@ def contact(request):
 
     context = {'cartItems': cartItems}
     return render(request, 'shop/contact.html', context)
+
+
+def addToCart(request):
+    if request.method == 'GET':
+        productId = request.GET['productId']
+        action = request.GET['action']
+        quantity = int(request.GET['inputVal'])
+
+        customer = request.user.customer
+        product = Product.objects.get(id=productId)
+        order, created = Order.objects.get_or_create(customer=customer, complete=False)
+
+        orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
+
+        if action == 'add':
+            orderItem.quantity += quantity
+        elif action == 'remove':
+            orderItem.quantity = (orderItem.quantity - orderItem.product.pack)
+        elif action == 'removeAll':
+            orderItem.quantity = 0
+
+        orderItem.save()  # saving it to store in database
+
+        if orderItem.quantity <= 0:
+            orderItem.delete()
+
+        return HttpResponse(order.get_cart_items)  # Sending an success response
+    else:
+        return HttpResponse(order.get_cart_items)
 
 
 def updateItem(request):

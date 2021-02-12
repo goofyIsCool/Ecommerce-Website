@@ -1,0 +1,32 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+
+    <div class="column mx-auto p-5">
+        <div class="mx-auto py-1">
+            <h1>History of orders: </h1>
+        </div>
+
+        {% for order in object_list %}
+        <div class="box-element2 p-4" style="border-radius:5px">
+            <div class="column">
+                <div class="row">
+                    <dic class="col-sm mx-auto"><p>Transaction id: {{order.transaction_id}}</p></dic>
+                    <dic class="col-sm mx-auto" style="text-align: right"><p>Date: {{order.date_ordered}}</p></dic>
+                </div>
+                <div class="row">
+                    <dic class="col-sm mx-auto"><p>Vat: {{order.get_cart_total_brutto|floatformat:2}}zł</p></dic>
+                    <dic class="col-sm mx-auto" style="text-align: right"><p>Payment method: <strong>{{order.get_payment_display}}</strong></p></dic>
+                </div>
+                <div>
+                    <dic><p>Total: {{order.get_cart_total_vat|floatformat:2}}zł</p></dic>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+
+</div>
+{% endblock content %}

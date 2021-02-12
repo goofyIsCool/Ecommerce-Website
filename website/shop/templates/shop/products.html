@@ -5,7 +5,7 @@
 {% load static %}
 
 <div class="my-auto container-fluid mx-auto">
-    <div class="row py-4">
+    <div class="row py-5">
         <div class="col-md-2 mx-auto">
             <div class="box-element2">
                 <div class="mx-3">
@@ -43,7 +43,7 @@
                             			<div class="box-element mx-auto">
                                             <a href="{{ product.get_absolute_url }}"><h5><strong>{{product.title}}</strong></h5></a>
                             				<hr>
-                            				<button data-product="{{ product.id }}" data-action="add" data-pack="{{ product.pack }}" class="btn btn-outline-secondary update-cart">Add to Cart</button>
+                            				<button data-productId="{{ product.id }}" data-action="add" data-pack="{{ product.pack }}" class="btn btn-outline-secondary update-cart">Add to Cart</button>
                             				<h5 style="display: inline-block; float:right;">{{product.price}} zł</h5>
                             			</div>
                             		</div>

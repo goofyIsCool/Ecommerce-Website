@@ -30,7 +30,7 @@
                             <div class="box-element">
                                 <a href="{{ product.get_absolute_url }}"><h5><strong>{{product.title}}</strong></h5></a>
                                 <hr>
-                                <button data-product="{{ product.id }}" data-action="add" data-pack="{{ product.pack }}" class="btn btn-outline-secondary update-cart">Add to Cart</button>
+                                <button data-productId="{{ product.id }}" data-action="add" data-pack="{{ product.pack }}" class="btn btn-outline-secondary update-cart">Add to Cart</button>
                                 <h5 style="display: inline-block; float:right;">{{product.price}} zł</h5>
                             </div>
                         </div>
@@ -89,7 +89,7 @@
                             <div class="box-element">
                                 <a href="{{ product.get_absolute_url }}"><h5><strong>{{product.title}}</strong></h5></a>
                                 <hr>
-                                <button data-product="{{ product.id }}" data-action="add" data-pack="{{ product.pack }}" class="btn btn-outline-secondary update-cart">Add to Cart</button>
+                                <button data-productId="{{ product.id }}" data-action="add" data-pack="{{ product.pack }}" class="btn btn-outline-secondary update-cart">Add to Cart</button>
                                 <h5 style="display: inline-block; float:right;">{{product.price}} zł</h5>
                             </div>
                         </div>
