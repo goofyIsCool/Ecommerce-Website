@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Product, OrderItem, Order, ShippingAddress, Category
+from .models import Product, OrderItem, Order, ShippingAddress, Category, Customer
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
@@ -7,12 +7,13 @@ from django.db.models import Q
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.http import JsonResponse
-from .forms import ShippingUpdateForm
+from .forms import ShippingUpdateForm, UserUpdateForm, ProfileUpdateForm
 import json
-from .utils import cookieCart, cartData, guestOrder
+from .utils import cartData
 import datetime
 from .filters import ProductFilterSet
 from django.http import HttpResponse
+import decimal
 # from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 # Create your views here.
 
@@ -22,7 +23,17 @@ def home(request):
     cartItems = data['cartItems']
     recProdcuts = Product.objects.order_by('price')[:4]
     newProducts = Product.objects.order_by('-release_date')[:4]
-    context = {'newProducts': newProducts, 'recProducts': recProdcuts, 'cartItems': cartItems}
+
+    try:
+        customer = request.user.customer
+    except:
+        device = request.COOKIES['device']
+        customer, created = Customer.objects.get_or_create(device=device)
+
+    order, created = Order.objects.get_or_create(customer=customer, complete=False)
+
+    context = {'newProducts': newProducts, 'recProducts': recProdcuts,
+               'cartItems': cartItems, 'order': order}
     return render(request, 'shop/home.html', context)
 
 
@@ -30,7 +41,7 @@ class ProductListView(ListView):
 
     model = Product
     template_name = "shop/products.html"
-    paginate_by = 16
+    paginate_by = 8
     ordering = ['title']
 
     def get_queryset(self, *args, **kwargs):
@@ -49,17 +60,16 @@ class ProductListView(ListView):
         queryset = ProductFilterSet(self.request.GET, queryset=products).qs
         return queryset
 
-    def get_context_data(self, **kwargs):
-
-        context = super().get_context_data(**kwargs)
-        if self.request.user.is_authenticated:
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        try:
             customer = self.request.user.customer
-            order, created = Order.objects.get_or_create(customer=customer, complete=False)
-            cartItems = order.get_cart_items
-        else:
-            cookieData = cookieCart(self.request)
-            cartItems = cookieData['cartItems']
+        except:
+            device = self.request.COOKIES['device']
+            customer, created = Customer.objects.get_or_create(device=device)
 
+        order, created = Order.objects.get_or_create(customer=customer, complete=False)
+        cartItems = order.get_cart_items
         context['current_category'] = " "
         categoryID = self.request.GET.get('category')
         if categoryID:
@@ -68,6 +78,7 @@ class ProductListView(ListView):
         else:
             products = Product.get_all_products()
 
+        context['order'] = order
         context['cartItems'] = cartItems
         categories = Category.get_all_categories()
         context['categories'] = categories
@@ -79,16 +90,16 @@ class ItemDetailView(DetailView):
     model = Product
     template_name = "shop/product.html"
 
-    def get_context_data(self, **kwargs):
-        if self.request.user.is_authenticated:
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        try:
             customer = self.request.user.customer
-            order, created = Order.objects.get_or_create(customer=customer, complete=False)
-            cartItems = order.get_cart_items
-        else:
-            cookieData = cookieCart(self.request)
-            cartItems = cookieData['cartItems']
+        except:
+            device = self.request.COOKIES['device']
+            customer, created = Customer.objects.get_or_create(device=device)
 
-        context = super().get_context_data(**kwargs)
+        order, created = Order.objects.get_or_create(customer=customer, complete=False)
+        cartItems = order.get_cart_items
         context['cartItems'] = cartItems
         return context
 
@@ -96,12 +107,49 @@ class ItemDetailView(DetailView):
 class OrderListView(ListView):
     model = Order
     template_name = "shop/order_history.html"
+    paginate_by = 10
 
     def get_queryset(self, *args, **kwargs):
         customer = self.request.user.customer
         queryset = Order.objects.filter(customer=customer, complete=True)
 
         return queryset
+
+
+class OrderProductsListView(ListView):
+    model = OrderItem
+    template_name = "shop/orders_products.html"
+
+    def get_context_data(self, *args, **kwargs):
+        orderId = self.kwargs['orderId']
+        order = Order.objects.get(id=orderId)
+        orderItems = OrderItem.objects.filter(order=order)
+        context = {'order': order, 'items': orderItems}
+        return context
+
+
+@login_required
+def profile(request):
+    if request.method == 'POST':
+        u_form = UserUpdateForm(request.POST, instance=request.user)
+        p_form = ProfileUpdateForm(request.POST, instance=request.user.customer)
+        if u_form.is_valid() and p_form.is_valid():
+            u_form.save()
+            p_form.save()
+            messages.success(request, f'Your account has been updated!')
+            return redirect('shop:profile')
+    else:
+        u_form = UserUpdateForm(instance=request.user)
+        p_form = ProfileUpdateForm(instance=request.user.customer)
+
+    user = request.user
+    context = {
+        'u_form': u_form,
+        'p_form': p_form,
+        'user': user,
+    }
+
+    return render(request, "shop/profile.html", context)
 
 
 def cart(request):
@@ -147,10 +195,14 @@ def addToCart(request):
         action = request.GET['action']
         quantity = int(request.GET['inputVal'])
 
-        customer = request.user.customer
+        try:
+            customer = request.user.customer
+        except:
+            device = request.COOKIES['device']
+            customer, created = Customer.objects.get_or_create(device=device)
+
         product = Product.objects.get(id=productId)
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
-
         orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
 
         if action == 'add':
@@ -166,56 +218,27 @@ def addToCart(request):
             orderItem.delete()
 
         return HttpResponse(order.get_cart_items)  # Sending an success response
-    else:
-        return HttpResponse(order.get_cart_items)
+
+    return HttpResponse(order.get_cart_items)
 
 
-def updateItem(request):
-    data = json.loads(request.body)
-    productId = data['productId']
-    action = data['action']
-    quantity = data['inputVal']
-    print('Action:', action)
-    print('Product:', productId)
-    print('Quantity:', quantity)
-
-    customer = request.user.customer
-    product = Product.objects.get(id=productId)
-    order, created = Order.objects.get_or_create(customer=customer, complete=False)
-
-    orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
-
-    if action == 'add':
-        orderItem.quantity += quantity
-    elif action == 'remove':
-        orderItem.quantity = (orderItem.quantity - orderItem.product.pack)
-    elif action == 'removeAll':
-        orderItem.quantity = 0
-
-    orderItem.save()
-
-    if orderItem.quantity <= 0:
-        orderItem.delete()
-
-    return JsonResponse('Item was added', safe=False)
-
-
-# @csrf_exempt
 def processOrder(request):
     transaction_id = datetime.datetime.now().timestamp()
     data = json.loads(request.body)
 
-    if (request.user.is_authenticated):
+    try:
         customer = request.user.customer
-        order, created = Order.objects.get_or_create(customer=customer, complete=False)
-    else:
-        customer, order = guestOrder(request, data)
+    except:
+        device = request.COOKIES['device']
+        customer, created = Customer.objects.get_or_create(device=device)
 
     total = float(data['form']['total'])
+    order, created = Order.objects.get_or_create(customer=customer, complete=False)
     order.transaction_id = transaction_id
 
     if total == order.get_cart_total:
         order.complete = True
+        order.total = decimal.Decimal(order.get_cart_total)
 
     order.save()
 

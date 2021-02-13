@@ -1,32 +1,68 @@
-{% extends 'shop/base.html' %}
-{% load static %}
-{% block content %}
-<div class="container">
+{% extends "shop/base.html" %}
 
+{% block content %}
+{% load static %}
+
+<div class="container">
     <div class="column mx-auto p-5">
         <div class="mx-auto py-1">
             <h1>History of orders: </h1>
         </div>
+        {% if object_list %}
+        {% for ord in object_list %}
+        <div class="box-element2 p-4 my-4" style="border-radius:5px">
 
-        {% for order in object_list %}
-        <div class="box-element2 p-4" style="border-radius:5px">
             <div class="column">
                 <div class="row">
-                    <dic class="col-sm mx-auto"><p>Transaction id: {{order.transaction_id}}</p></dic>
-                    <dic class="col-sm mx-auto" style="text-align: right"><p>Date: {{order.date_ordered}}</p></dic>
+                    <a href={{ ord.get_absolute_url }}><div class="col-sm mx-auto"><p>Transaction id: {{ord.transaction_id}}</p></div></a>
+                    <div class="col-sm mx-auto" style="text-align: right"><p>Date: {{ord.date_ordered}}</p></div>
                 </div>
                 <div class="row">
-                    <dic class="col-sm mx-auto"><p>Vat: {{order.get_cart_total_brutto|floatformat:2}}zł</p></dic>
-                    <dic class="col-sm mx-auto" style="text-align: right"><p>Payment method: <strong>{{order.get_payment_display}}</strong></p></dic>
+                    <div class="col-sm mx-auto"><p>Vat: {{ord.get_cart_total_brutto|floatformat:2}}zł</p></div>
+                    <div class="col-sm mx-auto" style="text-align: right"><p>Payment method: <strong>{{ord.get_payment_display}}</strong></p></div>
                 </div>
                 <div>
-                    <dic><p>Total: {{order.get_cart_total_vat|floatformat:2}}zł</p></dic>
+                    <div><p>Total: {{ord.get_cart_total_vat|floatformat:2}}zł</p></div>
+                </div>
+            </div>
+
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="container mx-auto">
+            <div class="box-element2 m-auto">
+                <div class="card-body mt-2 mb-2">
+                    <h2 class="card-title">
+                        No Results
+                    </h2>
+                    <p class="card-text">You haven't ordered anything yet</p>
                 </div>
             </div>
         </div>
-        {% endfor %}
-
+        {% endif %}
     </div>
 
+    <center>
+        <div class="container-fluid">
+            {% if is_paginated %}
+                {% if page_obj.has_previous %}
+                    <a class='btn btn-outline-info mb-4' href='?page=1'>First</a>
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                        <a class='btn btn-info mb-4' href="?page={{ num }}">{{ num }}</a>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3'  %}
+                        <a class='btn btn-outline-info mb-4' href='?page={{ num }}'>{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                    <a class='btn btn-outline-info mb-4' href='?page={{ page_obj.paginator.num_pages }}'>Last</a>
+                {% endif %}
+
+            {% endif %}
+        </div>
+    </center>
 </div>
 {% endblock content %}

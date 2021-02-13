@@ -1,0 +1,31 @@
+{% extends "shop/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% load static %}
+
+<div class="container my-5" >
+    <div class="mx-auto my-auto py-3 px-3">
+        <h1>{{ user.customer.name }} {{ user.customer.surname }}</h1>
+    </div>
+
+    <form method='POST' enctype='multipart/form-data' class="mx-auto">
+          {% csrf_token %}
+          <div class="col-md-6">
+              <fieldset class='form-group' >
+                  <legend class='border-bottom mb-4'>Profile Info</legend>
+
+                  {{ p_form|crispy }}
+                  {{ u_form|crispy }}
+
+                  <div class='form-group'>
+                      <button class='btn btn-outline-info', type='submit'>Update</button>
+                  </div>
+              </fieldset>
+          </div>
+          <div class="col-md-6">
+
+          </div>
+      </form>
+</div>
+
+{% endblock content %}

@@ -17,10 +17,14 @@ class ShippingAddressAdmin(admin.ModelAdmin):
     list_display = ['customer', 'address', 'country', 'city', 'state', ]
 
 
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ['customer', 'transaction_id', 'payment', 'total', 'complete']
+
+
 # Register your models here.
 admin.site.register(Product, ProductAdmin)
 admin.site.register(OrderItem)
-admin.site.register(Order)
+admin.site.register(Order, OrderAdmin)
 admin.site.register(Customer)
 admin.site.register(ShippingAddress, ShippingAddressAdmin)
 admin.site.register(Category)

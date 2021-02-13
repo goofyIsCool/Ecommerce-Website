@@ -20,7 +20,7 @@ def signup(request):
             user.is_active = False
             user.save()
             current_site = get_current_site(request)
-            mail_subject = 'DALOC Activate your account.'
+            mail_subject = 'Moda Wólka Activate your account.'
             message = render_to_string('user/acc_active_email.html', {
                 'user': user,
                 'domain': current_site.domain,

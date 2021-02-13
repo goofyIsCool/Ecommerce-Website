@@ -56,15 +56,20 @@
         return null;
     }
 
-    var cart = JSON.parse(getCookie('cart'))
+    function uuidv4() {
+	  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+	    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+	    return v.toString(16);
+	  });
+	}
 
-    if(cart == undefined){
-        cart = {}
-        console.log("Cart was created!")
-        document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/";
-    }
+	let device = getCookie('device')
 
-    console.log("Cart:", cart)
+	if (device == null || device == undefined){
+		device = uuidv4()
+	}
+
+	document.cookie ='device=' + device + ";domain=;path=/"
 
     </script>
 
@@ -95,8 +100,8 @@
                         <ul class="nav navbar-nav">
                             <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">Konto</a>
                                 <div class="dropdown-menu">
-                                <a class="dropdown-item" href="#">Profil</a>
-                                <a class="dropdown-item" href="{% url 'shop:order_history'%}">Historia Zamówień</a>
+                                <a class="dropdown-item" href="{% url 'shop:profile'%}">Profil</a>
+                                <a class="dropdown-item" href="{% url 'shop:orders'%}">Historia Zamówień</a>
                                 <a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
                             </li>
                         </ul>
@@ -154,7 +159,47 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.3.1/js/swiper.jquery.min.js"></script>
     <script src="{% static 'shop/assets/js/Simple-Slider.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="{% static 'shop/assets/js/cart.js' %}"></script>
+
+    <script type="text/javascript">
+    const cartItems = document.getElementById('cartItems');
+    var counter = '{{ cartItems }}';
+    cartItems.innerHTML = counter;
+
+    $('.update-cart').click(function(){
+        var productId = $(this).attr("data-productId");
+        var action = $(this).attr("data-action");
+        var pack = parseInt(this.dataset.pack);
+
+        try {
+            var inputVal = parseInt(document.getElementById("quantity"+productId).value);
+            console.log("quantity"+productId)
+            console.log(inputVal)
+            if (inputVal%pack != 0){
+                inputVal += pack - inputVal%pack
+            }
+        } catch {
+            var inputVal = pack
+        }
+
+        var url = '/add_to_cart/'
+        $.ajax(
+        {
+            type:'GET',
+            url: url,
+            data:{
+                 productId: productId,
+                 action: action,
+                 inputVal: inputVal,
+            },
+            success: function( data )
+            {
+                cartItems.innerHTML = data
+                $('#product'+productId).remove();
+            }
+         })
+    });
+
+    </script>
 </body>
 
 </html>

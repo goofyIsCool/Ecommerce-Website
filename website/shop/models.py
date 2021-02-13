@@ -29,6 +29,7 @@ class Customer(models.Model):
     phone = models.CharField(default='', max_length=20)
     nip = models.CharField(default='', max_length=20, null=True, blank=True)
     email = models.EmailField(null=False)
+    device = models.CharField(max_length=200, null=True, blank=True)
 
     def __str__(self):
         try:
@@ -107,6 +108,12 @@ class Order(models.Model):
     complete = models.BooleanField(default=False)
     transaction_id = models.CharField(max_length=100, null=True)
     payment = models.CharField(choices=PAYMENT_CHOICES, max_length=1, default='d')
+    total = models.DecimalField(null=True, blank=True, decimal_places=2, max_digits=10)
+
+    def get_absolute_url(self):
+        return reverse("shop:order", kwargs={
+            'orderId': self.id,
+        })
 
     @property
     def get_payment_name(self):
@@ -122,14 +129,12 @@ class Order(models.Model):
     def get_cart_total_vat(self):
         orderItems = self.orderitem_set.all()
         total = sum([item.get_total for item in orderItems])
-        print(type(total))
         return total*decimal.Decimal(0.23)
 
     @property
     def get_cart_total_brutto(self):
         orderItems = self.orderitem_set.all()
         total = sum([item.get_total for item in orderItems])
-        print(type(total))
         return total*decimal.Decimal(1.23)
 
     # item quantity
