@@ -59,15 +59,15 @@
 					<div class="column">
 						<input class="text quantity-input-box" id="quantity{{item.product.id}}" value="{{item.quantity}}"></input>
 					</div>
-					<div class="column quantity">
-						<img class="chg-quantity update-cart" data-productId={{item.product.id}} data-action='add' data-pack="{{ item.product.pack }}" src="{% static  'images/arrow-up.png' %}">
-						<img class="chg-quantity update-cart" data-productId={{item.product.id}} data-action='remove' data-pack="{{ item.product.pack }}" src="{% static  'images/arrow-down.png' %}">
-					</div>
+					<!-- <div class="column quantity">
+						<img class="chg-quantity" data-productId={{item.product.id}} data-action='add' data-pack="{{ item.product.pack }}" src="{% static  'images/arrow-up.png' %}">
+						<img class="chg-quantity" data-productId={{item.product.id}} data-action='remove' data-pack="{{ item.product.pack }}" src="{% static  'images/arrow-down.png' %}">
+					</div> -->
 				</div>
 				<div class="column mx-auto" style="flex:1">
 					<p>{{item.get_total}}zł</p>
 				</div>
-				<div class="mx-auto" style="flex:1"><img class="chg-quantity update-cart" data-productId={{item.product.id}} data-action='removeAll' data-pack="{{ item.product.pack }}" src="{% static  'images/remove.png' %}"></div>
+				<div class="mx-auto" style="flex:1"><img class="chg-quantity" data-productId={{item.product.id}} data-action='removeAll' data-pack="{{ item.product.pack }}" src="{% static  'images/remove.png' %}"></div>
 			</div>
 			{% endfor %}
 		</div>

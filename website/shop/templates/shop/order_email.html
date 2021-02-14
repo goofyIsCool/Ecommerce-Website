@@ -1,0 +1,19 @@
+{% autoescape off %}
+    Cześć {{ customer.name }} {{ customer.surname }},
+
+    Oto twoje zamówienie:
+    {% for orderItem in orderItems %}
+    {{orderItem.product.title}} {{orderItem.get_total}}
+    Ilość: {{orderItem.quantity}}
+
+    {% endfor %}
+
+    Dostawa: 20 zł
+    Netto: {{order.get_cart_total|floatformat:2}} zł
+    Podatek: {{order.get_cart_total_vat|floatformat:2}} zł
+    Brutto: {{order.get_cart_total_brutto|floatformat:2}} zł
+    Razem: {{order.get_cart_total_total}} zł
+
+    Come back! http://{{ domain }}
+
+{% endautoescape %}

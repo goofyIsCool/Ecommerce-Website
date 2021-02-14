@@ -17,8 +17,8 @@ SIZE_CHOICES = (
 )
 
 PAYMENT_CHOICES = (
-    ('p', 'Przelew'),
-    ('d', 'Przy odbiorze'),
+    ('Przelewem', 'Przelewew'),
+    ('Pobranie', 'Za Pobraniem'),
 )
 
 
@@ -107,8 +107,11 @@ class Order(models.Model):
     date_ordered = models.DateTimeField(auto_now_add=True)
     complete = models.BooleanField(default=False)
     transaction_id = models.CharField(max_length=100, null=True)
-    payment = models.CharField(choices=PAYMENT_CHOICES, max_length=1, default='d')
+    payment = models.CharField(max_length=9, choices=PAYMENT_CHOICES, default='d')
+    delivery = models.CharField(max_length=6, default='Kurier')
     total = models.DecimalField(null=True, blank=True, decimal_places=2, max_digits=10)
+    message = models.CharField(max_length=500, null=True, blank=True)
+    Terms_and_conditions = models.BooleanField(default=False)
 
     def get_absolute_url(self):
         return reverse("shop:order", kwargs={

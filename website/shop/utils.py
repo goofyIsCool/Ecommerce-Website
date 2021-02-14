@@ -2,7 +2,6 @@ from .models import Order, Customer
 
 
 def cartData(request):
-
     try:
         customer = request.user.customer
     except:

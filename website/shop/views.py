@@ -14,6 +14,9 @@ import datetime
 from .filters import ProductFilterSet
 from django.http import HttpResponse
 import decimal
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
+from django.core.mail import EmailMessage
 # from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 # Create your views here.
 
@@ -242,6 +245,8 @@ def processOrder(request):
 
     order.save()
 
+    orderItems = OrderItem.objects.filter(order=order)
+
     ShippingAddress.objects.create(
         customer=customer,
         order=order,
@@ -251,6 +256,24 @@ def processOrder(request):
         country=data['shipping']['country'],
         zip_code=data['shipping']['zipcode'],
     )
+
+    current_site = get_current_site(request)
+    mail_subject = 'Your Wólka Moda order.'
+    message = render_to_string('shop/order_email.html', {
+        'customer': customer,
+        'domain': current_site.domain,
+        'orderItems': orderItems,
+        'order': order
+    })
+    to_email = customer.email
+    email = EmailMessage(
+        mail_subject, message, to=[to_email]
+    )
+    email.send()
+
+    # message = 'Please check your email address to complete the registration'
+    # context = {'messages': message}
+
     return JsonResponse('Payment complete!', safe=False)
 
 
