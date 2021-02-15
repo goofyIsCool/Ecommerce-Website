@@ -7,6 +7,7 @@ app_name = 'shop'
 urlpatterns = [
     path('', views.home, name='home'),
     path('faq/', views.faq, name='faq'),
+    path('about/', views.about, name='about'),
     path('contact/', views.contact, name='contact'),
     path('products/', views.ProductListView.as_view(), name='products'),
     path('product/<slug>/', views.ItemDetailView.as_view(), name='product'),
@@ -20,4 +21,5 @@ urlpatterns = [
     path('shipping_update/', views.shipping_update, name='shipping_update'),
     path('order_confirmation/', views.confirmation, name='order_confirmation'),
     path('profile/', views.profile, name='profile'),
+    path('regulamin/', views.regulamin, name='regulamin'),
 ]

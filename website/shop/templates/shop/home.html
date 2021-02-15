@@ -8,9 +8,6 @@
             <div class="swiper-slide"><img class="image" src={% static 'images/clothing-2000.jpg' %} /></div>
             <div class="swiper-slide"><img class="image" src={% static 'images/clothing-2000.jpg' %} /></div>
         </div>
-        <div class="swiper-pagination"></div>
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
     </div>
 </div>
 <div class="container mx-auto">
@@ -18,7 +15,7 @@
         <div class="container-fluid my-3">
             <div class="pt-3 pl-3">
                 <hr />
-                <h1 class="text-left ml-3">Bestsellers</h1>
+                <h1 class="text-left ml-3">Bestsellery</h1>
             </div>
             <div class="row mx-auto pb-3 px-3">
                 {% for product in recProducts %}
@@ -30,7 +27,7 @@
                             <div class="box-element">
                                 <a href="{{ product.get_absolute_url }}"><h5><strong>{{product.title}}</strong></h5></a>
                                 <hr>
-                                <button data-productId="{{ product.id }}" data-action="add" data-pack="{{ product.pack }}" class="btn btn-outline-secondary update-cart">Add to Cart</button>
+                                <button data-productId="{{ product.id }}" data-action="add" data-pack="{{ product.pack }}" class="btn btn-outline-secondary update-cart">Dodaj</button>
                                 <h5 style="display: inline-block; float:right;">{{product.price}} zł</h5>
                             </div>
                         </div>
@@ -89,7 +86,7 @@
                             <div class="box-element">
                                 <a href="{{ product.get_absolute_url }}"><h5><strong>{{product.title}}</strong></h5></a>
                                 <hr>
-                                <button data-productId="{{ product.id }}" data-action="add" data-pack="{{ product.pack }}" class="btn btn-outline-secondary update-cart">Add to Cart</button>
+                                <button data-productId="{{ product.id }}" data-action="add" data-pack="{{ product.pack }}" class="btn btn-outline-secondary update-cart">Dodaj</button>
                                 <h5 style="display: inline-block; float:right;">{{product.price}} zł</h5>
                             </div>
                         </div>

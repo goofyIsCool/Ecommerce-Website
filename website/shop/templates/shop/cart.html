@@ -1,7 +1,7 @@
 {% extends 'shop/base.html' %}
 {% load static %}
 {% block content %}
-<div class="row container mx-auto">
+<div class="row container m-auto py-5">
 	<div class="col-lg-12">
 		<div class="box-element2">
 			<a  class="btn btn-outline-dark" href="{% url 'shop:products' %}">&#x2190; Continue Shopping</a>
@@ -15,15 +15,11 @@
 					<div class="mx-auto my-auto">
 						<th></br></th>
 					</div>
-					{% if user.is_authenticated %}
-						<th>
-							<a style="float:right; margin:5px;" class="btn btn-outline-dark" href="{% url 'shop:checkout' %}">Checkout</a>
-						</th>
-					{% else %}
-						<th>
-							<a style="float:right; margin:5px;" class="btn btn-outline-dark" href="{% url 'shop:guest' %}">Checkout</a>
-						</th>
-					{% endif %}
+
+					<th>
+						<a onclick="checkout()" style="float:right; margin:5px;" class="btn btn-outline-dark">Checkout</a>
+					</th>
+
 				</tr>
 				<tr>
 					<div class="mx-auto my-auto">
@@ -34,8 +30,6 @@
 				</tr>
 			</table>
 		</div>
-
-
 		<br>
 		<div class="box-element2 mb-5">
 			<div class="cart-row my-3 px-3">
@@ -49,7 +43,7 @@
 			{% for item in items %}
 			<div id="product{{item.product.id}}" class="cart-row px-3">
 
-				<div class="mx-auto" style="flex:2"><a href="{{ item.product.get_absolute_url }}"><img class="row-image ml-5" src="{{ item.product.image1.url }}" ></a></div>
+				<div class="mx-auto" style="flex:2"><a href="{{ item.product.get_absolute_url }}"><img class="row-image ml-5" style="height:100px" src="{{ item.product.image1.url }}" ></a></div>
 				<div class="mx-auto" style="flex:2">
 					<a href="{{ item.product.get_absolute_url }}"><p>{{item.product.title}}</p></a>
 				</div>
@@ -73,4 +67,19 @@
 		</div>
 	</div>
 </div>
+
+
+<script type="text/javascript">
+
+function checkout() {
+	total = '{{ order.get_cart_total }}'
+	if (total < 300){
+		alert("Minimalna wartość netto zamówienia to 300zł.");
+	}
+	else{
+		window.location.href = "{% url 'shop:guest' %}"
+	}
+}
+
+</script>
 {% endblock content %}

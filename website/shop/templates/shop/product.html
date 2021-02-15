@@ -6,7 +6,7 @@
     <div class="container-fluid dark-grey-text">
 
       <!--Grid row-->
-      <div class="row wow fadeIn my-auto mx-auto box-element3 p-5 mx-auto">
+      <div class="row wow fadeIn my-auto mx-auto p-5 mx-auto">
         <div class="col-md-6">
             <div class="simple-slider">
                 <div class="swiper-container">
@@ -28,14 +28,12 @@
           <!--Content-->
           <div class="mx-auto my-auto">
             <div class="pb-5">
-              <a href="/products/?=category={{object.category}}">
-                <span class="">{{object.category}}</span>
-              </a>
+              <span class="">{{object.category}}</span>
             </div>
 
 
-            <span>Package: {{object.pack}}</span>
-            <p class="">Price:
+            <span>Paczka: {{object.pack}}</span>
+            <p class="">Cena:
               {% if object.discount %}
               <span class="mr-1">
                 <del>{{ object.price }}zł</del>
@@ -52,12 +50,12 @@
                 </div>
                 <div class="mx-1">
                     <a data-productId="{{ object.id }}" data-action="add" data-pack={{ object.pack }} class="update-cart btn btn-primary btn-md my-0 p">
-                      Add to cart
+                     Dodaj
                     </a>
                 </div>
             </div>
             <div class="m-auto pt-2">
-                <p>The minimum purchase order quantity for the product is {{ object.pack }}</p>
+                <p>Produkty są sprzedawane w paczkach po: {{ object.pack }}</p>
             </div>
 
             <p class="lead font-weight-bold">Description</p>

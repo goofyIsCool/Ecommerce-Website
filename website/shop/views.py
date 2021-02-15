@@ -22,21 +22,21 @@ from django.core.mail import EmailMessage
 
 
 def home(request):
-    data = cartData(request)
-    cartItems = data['cartItems']
+    # data = cartData(request)
+    # cartItems = data['cartItems']
+
+    #
+    # try:
+    #     customer = request.user.customer
+    # except:
+    #     device = request.COOKIES['device']
+    #     customer, created = Customer.objects.get_or_create(device=device)
+    #
+    # order, created = Order.objects.get_or_create(customer=customer, complete=False)
+    #
     recProdcuts = Product.objects.order_by('price')[:4]
     newProducts = Product.objects.order_by('-release_date')[:4]
-
-    try:
-        customer = request.user.customer
-    except:
-        device = request.COOKIES['device']
-        customer, created = Customer.objects.get_or_create(device=device)
-
-    order, created = Order.objects.get_or_create(customer=customer, complete=False)
-
-    context = {'newProducts': newProducts, 'recProducts': recProdcuts,
-               'cartItems': cartItems, 'order': order}
+    context = {'newProducts': newProducts, 'recProducts': recProdcuts}
     return render(request, 'shop/home.html', context)
 
 
@@ -184,6 +184,14 @@ def faq(request):
     return render(request, 'shop/FAQ.html', context)
 
 
+def about(request):
+    data = cartData(request)
+    cartItems = data['cartItems']
+
+    context = {'cartItems': cartItems}
+    return render(request, 'shop/about.html', context)
+
+
 def contact(request):
     data = cartData(request)
     cartItems = data['cartItems']
@@ -247,6 +255,8 @@ def processOrder(request):
 
     orderItems = OrderItem.objects.filter(order=order)
 
+    print(customer)
+    print(order.complete)
     ShippingAddress.objects.create(
         customer=customer,
         order=order,
@@ -256,6 +266,13 @@ def processOrder(request):
         country=data['shipping']['country'],
         zip_code=data['shipping']['zipcode'],
     )
+
+    customer.name = data['form']['name']
+    customer.surname = data['form']['surname']
+    customer.email = data['form']['email']
+    customer.phone = data['form']['phone']
+
+    customer.save()
 
     current_site = get_current_site(request)
     mail_subject = 'Your Wólka Moda order.'
@@ -314,3 +331,7 @@ def product_querySet(query=None):
 
 def confirmation(request):
     return render(request, 'shop/order_confirmation.html')
+
+
+def regulamin(request):
+    return render(request, 'shop/regulamin.html')

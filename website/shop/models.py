@@ -66,6 +66,7 @@ class Product(models.Model):
     image2 = models.ImageField(default='default.jpg', upload_to='product_pics')
     image3 = models.ImageField(default='default.jpg', upload_to='product_pics')
     release_date = models.DateTimeField(default=timezone.now)
+    counter = models.IntegerField(default=0)  # licznik sprzedaży danego produktu
 
     def __str__(self):
         return self.title
