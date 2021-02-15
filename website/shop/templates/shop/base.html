@@ -147,9 +147,11 @@
                 <div class="col-sm-6 col-md-3 item">
                     <h3>About</h3>
                     <ul>
-                        <li><a href="#">Company</a></li>
-                        <li><a href="#">Team</a></li>
-                        <li><a href="#">Careers</a></li>
+                        <li><a href="{% url 'shop:home' %}">Home</a></li>
+                        <li><a href="{% url 'shop:products' %}">Produkty</a></li>
+                        <li><a href="{% url 'shop:faq' %}">FAQ</a></li>
+                        <li><a href="{% url 'shop:about' %}">About</a></li>
+                        <li><a href="{% url 'shop:contact' %}">Kontakt</a></li>
                     </ul>
                 </div>
                 <div class="col-md-6 item text">
@@ -158,7 +160,7 @@
                 </div>
                 <div class="col item social"><a href="#"><i class="icon ion-social-facebook"></i></a><a href="#"><i class="icon ion-social-twitter"></i></a><a href="#"><i class="icon ion-social-snapchat"></i></a><a href="#"><i class="icon ion-social-instagram"></i></a></div>
             </div>
-            <p class="copyright">Company DALOC © 2021</p>
+            <p class="copyright">Copyright © 2021 DALOC. All right reserved.</p>
         </div>
     </footer>
 </div>

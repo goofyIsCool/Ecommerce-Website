@@ -1,7 +1,7 @@
 .footer-dark {
   padding: 50px 0;
-  color: #f0f9ff;
-  background-color: #282d32;
+  color: white;
+  background-color: black;
 }
 
 .footer-dark h3 {
@@ -9,6 +9,7 @@
   margin-bottom: 12px;
   font-weight: bold;
   font-size: 16px;
+  color: #dad2d2;
 }
 
 .footer-dark ul {
@@ -20,7 +21,7 @@
 }
 
 .footer-dark ul a {
-  color: inherit;
+  color: white;
   text-decoration: none;
   opacity: 0.6;
 }
