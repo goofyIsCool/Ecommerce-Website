@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Website</title>
+    <title>Wólka Moda</title>
     <link rel="stylesheet" href="{% static 'shop/assets/bootstrap/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'shop/assets/fonts/font-awesome.min.css' %}">
     <link rel="stylesheet" href="{% static 'shop/assets/fonts/ionicons.min.css' %}">
@@ -19,7 +19,6 @@
     <link rel="stylesheet" href="{% static 'shop/assets/css/card.css' %}">
     <link rel="stylesheet" href="{% static 'shop/assets/css/styles.css' %}">
     <link rel="stylesheet" href="{% static 'shop/assets/css/main.css' %}">
-
 
     <script type="text/javascript">
 
@@ -82,54 +81,63 @@
 </head>
 <section>
     <div class="background">
-        <nav class="navbar navbar-light navbar-expand-md navigation-clean-search nav-box box-element3">
-            <div class="container"><a class="navbar-brand" href="{% url 'shop:home' %}">Website in Dev</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-                <div class="collapse navbar-collapse" id="navcol-1">
-                    <ul class="nav navbar-nav">
-                        <li class="nav-item"><a class="nav-link" href="{% url 'shop:home' %}">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'shop:products' %}">Produkty</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'shop:faq' %}">FAQ</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'shop:about' %}">About</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'shop:contact' %}">Kontakt</a></li>
-                    </ul>
-                    <div class="form-inline ml-3 mr-auto mt-sm-2 mr-2">
-                        <form method="get" action="{% url 'shop:products' %}">
-                            <label for="search-field"><i class="fa fa-search"></i>
-                            <input type="text" class="search-field form-control" name="q" id="id_q" placeholder="Search...">
-                        </form>
-                    </div>
-                    <a href="{% url 'shop:cart' %}"><img  id="cart-icon" src="{% static 'images/cart.png' %}"></a>
-        	    	<p id='cartItems'></p>
-                    {% if user.is_authenticated %}
-
-                        <ul class="nav navbar-nav">
-                            <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">Konto</a>
-                                <div class="dropdown-menu">
-                                <a class="dropdown-item" href="{% url 'shop:profile'%}">Profil</a>
-                                <a class="dropdown-item" href="{% url 'shop:orders'%}">Historia Zamówień</a>
-                                <a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
-                                </div>
-                            </li>
-                        </ul>
-
-                    {% else %}
-                    <ul class="nav navbar-nav">
-                        <li class="nav-item"><a class="nav-link" href="{% url 'signup' %}">Register</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
-                    </ul>
-                    {% endif %}
+        <nav class="navbar navbar-light navbar-expand-md navigation-clean-search">
+            <div class="container">
+                <ul class="nav navbar-nav">
+                    <li class="nav-item"><a class="nav-link2">Zamawiaj przez telefon: <a href="tel:+48 579 239 540">+48 579 239 540</a></a></li>
+                </ul>
+                <div class="form-inline">
+                    <form method="get" action="{% url 'shop:products' %}">
+                        <label for="search-field"><i class="fa fa-search"></i>
+                        <input type="text" class="search-field form-control" name="q" id="id_q" placeholder="Search...">
+                    </form>
                 </div>
+                <ul class="nav navbar-nav">
+                    <li class="nav-item">
+                        <div class="row">
+                            <a class="nav-link" href="{% url 'shop:cart' %}"><img  id="cart-icon" src="{% static 'images/cart.png' %}"></a>
+                            <p id='cartItems'></p>
+                        </div>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item dropdown"><a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#"><img  id="account-icon" src="{% static 'images/account.png' %}"></a>
+                        <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{% url 'shop:profile'%}">Profil</a>
+                        <a class="dropdown-item" href="{% url 'shop:orders'%}">Historia Zamówień</a>
+                        <a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                        </div>
+                    </li>
+                    {% else %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'signup' %}">Register</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+                    {% endif %}
+                </ul>
             </div>
         </nav>
+        <div class="navbar navbar-light navbar-expand-md navigation-clean-search nav-box mb-3">
+            <div class="container">
+                <div class="row justify-content-between">
+                    <a class="navbar-brand" href="{% url 'shop:home' %}">Website</a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+                    <div class="collapse navbar-collapse form-inline" id="navcol-1">
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item"><a class="nav-link" href="{% url 'shop:home' %}">Home</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'shop:products' %}">Produkty</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'shop:faq' %}">FAQ</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'shop:about' %}">About</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'shop:contact' %}">Kontakt</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 
 <body>
-<div class="content">
-    {% block content %}
-    {% endblock %}
-</div>
-
+    <div class="content">
+        {% block content %}
+        {% endblock %}
+    </div>
 </body>
 
 <div class="footer-dark">
@@ -164,7 +172,22 @@
         </div>
     </footer>
 </div>
-
+<div class="container-fluid">
+    <div class="m-auto py-5">
+        <div class="m-auto py-5">
+            <p class="info-text"><span style="font-size: 24px;"><strong><span style="color:black;">Serdecznie witamy na naszej stronie internetowej WolkaModa.pl</span></strong></span></p>
+        </div>
+        <div class="m-auto py-2">
+            <p class="info-text"><span style="font-size: 24px;"><span style="color:black;">Prezentujemy Państwu naszą stronę internetową zajmującą się <strong>hurtową sprzedażą odzieży damskiej</strong> z siedzibą w W&oacute;lce Kosowskiej pod Warszawą.</span> Została ona stworzona tak, aby pom&oacute;c Państwu w prosty, szybki i przejrzysty spos&oacute;b uzyskać dostęp do wszelkich oferowanych przez nas produkt&oacute;w. Zam&oacute;wienia można składać u nas 24h/7dni poprzez stronę internetową lub przez aplikację Messenger, gdzie w miarę możliwości staramy się odpowiadać na bieżąco.<span style="color:black;">&nbsp;Dołożymy wszelkich starań, aby państwa zakupy były łatwe i przyjemne, a przede wszystkim bezpieczne.&nbsp;</span>Z pewnością zaoszczędzi to Państwa cenny czas i obniży koszty transportu zam&oacute;wionych produkt&oacute;w.&nbsp;</span></p>
+        </div>
+        <div class="m-auto py-2">
+            <p class="info-text"><span style="font-size: 24px;">Posiadamy w ofercie odzież polskiej produkcji oraz wsp&oacute;łpracujemy tylko ze sprawdzonymi i wiarygodnymi partnerami handlowymi importującymi towar z Włoch, Francji oraz Turcji, kt&oacute;rzy oferują towary najlepszej jakości oraz najlepsze hurtowe ceny. Szeroki wachlarz oferowanych produkt&oacute;w pozwala nam sprostać oczekiwaniom nawet najbardziej wymagających Klient&oacute;w. <strong>Jeśli na stronie internetowej nie występuje poszukiwany przez państwa artykuł, bardzo prosimy o informację, w celu weryfikacji, czy dany produkt będzie możliwy na stanie dodatkowo</strong>. Naszym celem jest, aby każdy klient był zadowolony z zakup&oacute;w&nbsp;<span style='font-family:"Segoe UI Emoji",sans-serif;'>😊</span>.</span></p>
+        </div>
+        <div class="m-auto py-2">
+            <p sclass="info-text"><span style="font-size: 24px;"><span style="color:black;">Hurtownia WolkaModa.pl zaprasza do zakup&oacute;w. </span></span></p>
+        </div>
+    </div>
+</div>
 
 <script src="{% static 'shop/assets/js/jquery.min.js' %}"></script>
 <script src="{% static 'shop/assets/bootstrap/js/bootstrap.min.js' %}"></script>

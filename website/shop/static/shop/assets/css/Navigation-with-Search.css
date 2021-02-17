@@ -21,9 +21,9 @@
   color: black;
 }
 
-/* .navigation-clean-search .navbar-brand:hover {
+.navigation-clean-search .navbar-brand:hover {
   color: #222;
-} */
+}
 
 .navigation-clean-search .navbar-toggler {
   border-color: #ddd;
@@ -60,7 +60,16 @@
 
 .navigation-clean-search.navbar-light .navbar-nav .nav-link {
   color: #465765;
-  font-weight: 600;
+  font-size: 20px;
+  font-weight: 500;
+  font-family: "Poppins", sans-serif;
+}
+
+.navigation-clean-search.navbar-light .navbar-nav .nav-link2 {
+  color: #465765;
+  font-size: 15px;
+  font-weight: 500;
+  font-family: "Poppins", sans-serif;
 }
 
 
@@ -108,14 +117,14 @@
 }
 
 .navigation-clean-search .form-inline .search-field:focus {
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid grey;
 }
 
 .nav-box{
 	background-color: #fff;
     color: #5e5e5e;
-    border-bottom: 1px solid;
-    border-top: 1px solid;
+    border-bottom: 2px solid #eaeaea;
+    border-top: 2px solid #eaeaea;
 }
 
 .image{

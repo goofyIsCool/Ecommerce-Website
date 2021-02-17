@@ -61,7 +61,7 @@
 				<div class="column mx-auto" style="flex:1">
 					<p>{{item.get_total}}zł</p>
 				</div>
-				<div class="mx-auto" style="flex:1"><img class="chg-quantity" data-productId={{item.product.id}} data-action='removeAll' data-pack="{{ item.product.pack }}" src="{% static  'images/remove.png' %}"></div>
+				<div class="mx-auto" style="flex:1"><img class="chg-quantity update-cart2" data-productId={{item.product.id}} data-action='removeAll' data-pack="{{ item.product.pack }}" src="{% static  'images/remove.png' %}"></div>
 			</div>
 			{% endfor %}
 		</div>
@@ -70,16 +70,41 @@
 
 
 <script type="text/javascript">
-
-function checkout() {
-	total = '{{ order.get_cart_total }}'
-	if (total < 300){
-		alert("Minimalna wartość netto zamówienia to 300zł.");
+	function checkout() {
+		total = '{{ order.get_cart_total }}'
+		if (total < 300){
+			alert("Minimalna wartość netto zamówienia to 300zł.");
+		}
+		else{
+			window.location.href = "{% url 'shop:guest' %}"
+		}
 	}
-	else{
-		window.location.href = "{% url 'shop:guest' %}"
-	}
-}
 
+	$('.update-cart2').click(function(){
+		var productId = $(this).attr("data-productId");
+		var action = $(this).attr("data-action");
+		var pack = parseInt(this.dataset.pack);
+
+		inputVal = 0
+		console.log(productId)
+		console.log(action)
+		var url = '/add_to_cart/'
+		$.ajax(
+		{
+			type:'GET',
+			url: url,
+			data:{
+				 productId: productId,
+				 action: action,
+				 inputVal: inputVal,
+			},
+			success: function( data )
+			{
+				cartItems.innerHTML = data
+				alert("Produkt został usunięty z twojego koszyka");
+				$('#product'+productId).remove();
+			}
+		})
+	});
 </script>
 {% endblock content %}

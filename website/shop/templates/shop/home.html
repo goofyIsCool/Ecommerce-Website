@@ -12,12 +12,12 @@
 </div>
 <div class="container mx-auto">
     <div class="mt-4">
-        <div class="container-fluid my-3">
-            <div class="pt-3 pl-3">
+        <div class="container-fluid">
+            <div class="pt-3">
                 <hr />
-                <h1 class="text-left ml-3">Bestsellery</h1>
+                <h1 class="text-left">Bestsellery</h1>
             </div>
-            <div class="row mx-auto pb-3 px-3">
+            <div class="row mx-auto">
                 {% for product in recProducts %}
                     <div class="card mx-auto my-2">
                         <div class="col">
@@ -119,20 +119,5 @@
         </form>
     </div>
 </div>
-
-<!-- <script>
-    document.getElementById("recommended").addEventListener('click', function(e) {
-        e.preventDefault()
-        document.getElementById('recommendedQuerySet').classList.add('hidden')
-        document.getElementById('newQuerySet').classList.remove('hidden')
-    })
-
-    document.getElementById("new").addEventListener('click', function(e) {
-        e.preventDefault()
-        document.getElementById('newQuerySet').classList.add('hidden')
-        document.getElementById('recommendedQuerySet').classList.remove('hidden')
-    })
-
-</script> -->
 
 {% endblock content %}

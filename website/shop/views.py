@@ -22,21 +22,15 @@ from django.core.mail import EmailMessage
 
 
 def home(request):
-    # data = cartData(request)
-    # cartItems = data['cartItems']
+    try:
+        data = cartData(request)
+        cartItems = data['cartItems']
+    except:
+        cartItems = 0
 
-    #
-    # try:
-    #     customer = request.user.customer
-    # except:
-    #     device = request.COOKIES['device']
-    #     customer, created = Customer.objects.get_or_create(device=device)
-    #
-    # order, created = Order.objects.get_or_create(customer=customer, complete=False)
-    #
     recProdcuts = Product.objects.order_by('price')[:4]
     newProducts = Product.objects.order_by('-release_date')[:4]
-    context = {'newProducts': newProducts, 'recProducts': recProdcuts}
+    context = {'newProducts': newProducts, 'recProducts': recProdcuts, 'cartItems': cartItems}
     return render(request, 'shop/home.html', context)
 
 
@@ -65,14 +59,15 @@ class ProductListView(ListView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        try:
-            customer = self.request.user.customer
-        except:
-            device = self.request.COOKIES['device']
-            customer, created = Customer.objects.get_or_create(device=device)
 
-        order, created = Order.objects.get_or_create(customer=customer, complete=False)
-        cartItems = order.get_cart_items
+        try:
+            data = cartData(self.request)
+            cartItems = data['cartItems']
+        except:
+            cartItems = 0
+
+        context['cartItems'] = cartItems
+
         context['current_category'] = " "
         categoryID = self.request.GET.get('category')
         if categoryID:
@@ -81,11 +76,10 @@ class ProductListView(ListView):
         else:
             products = Product.get_all_products()
 
-        context['order'] = order
-        context['cartItems'] = cartItems
         categories = Category.get_all_categories()
         context['categories'] = categories
         context['filter'] = ProductFilterSet(self.request.GET, queryset=products)
+
         return context
 
 
@@ -95,16 +89,18 @@ class ItemDetailView(DetailView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        try:
-            customer = self.request.user.customer
-        except:
-            device = self.request.COOKIES['device']
-            customer, created = Customer.objects.get_or_create(device=device)
 
-        order, created = Order.objects.get_or_create(customer=customer, complete=False)
-        cartItems = order.get_cart_items
+        try:
+            data = cartData(self.request)
+            cartItems = data['cartItems']
+        except:
+            cartItems = 0
+
         context['cartItems'] = cartItems
+
         return context
+
+# Make the generic Views login_required
 
 
 class OrderListView(ListView):
@@ -156,48 +152,61 @@ def profile(request):
 
 
 def cart(request):
-    data = cartData(request)
-    cartItems = data['cartItems']
-    order = data['order']
-    items = data['items']
-
-    context = {'items': items, 'order': order, 'cartItems': cartItems}
-    return render(request, 'shop/cart.html', context)
+    try:
+        data = cartData(request)
+        cartItems = data['cartItems']
+        order = data['order']
+        items = data['items']
+        context = {'items': items, 'order': order, 'cartItems': cartItems}
+        return render(request, 'shop/cart.html', context)
+    except:
+        return render(request, 'shop/cart.html')
 
 
 def checkout(request):
-    data = cartData(request)
-    cartItems = data['cartItems']
-    order = data['order']
-    items = data['items']
+    try:
+        data = cartData(request)
+        cartItems = data['cartItems']
+        order = data['order']
+        items = data['items']
 
-    context = {'items': items, 'order': order, 'cartItems': cartItems}
-
-    return render(request, 'shop/checkout.html', context)
+        context = {'items': items, 'order': order, 'cartItems': cartItems}
+        return render(request, 'shop/checkout.html', context)
+    except:
+        return render(request, 'shop/checkout.html')
 
 
 def faq(request):
-    data = cartData(request)
-    cartItems = data['cartItems']
+    try:
+        data = cartData(request)
+        cartItems = data['cartItems']
 
-    context = {'cartItems': cartItems}
-    return render(request, 'shop/FAQ.html', context)
+        context = {'cartItems': cartItems}
+        return render(request, 'shop/FAQ.html', context)
+    except:
+        return render(request, 'shop/FAQ.html')
 
 
 def about(request):
-    data = cartData(request)
-    cartItems = data['cartItems']
+    try:
+        data = cartData(request)
+        cartItems = data['cartItems']
 
-    context = {'cartItems': cartItems}
-    return render(request, 'shop/about.html', context)
+        context = {'cartItems': cartItems}
+        return render(request, 'shop/about.html', context)
+    except:
+        return render(request, 'shop/about.html')
 
 
 def contact(request):
-    data = cartData(request)
-    cartItems = data['cartItems']
+    try:
+        data = cartData(request)
+        cartItems = data['cartItems']
 
-    context = {'cartItems': cartItems}
-    return render(request, 'shop/contact.html', context)
+        context = {'cartItems': cartItems}
+        return render(request, 'shop/contact.html', context)
+    except:
+        return render(request, 'shop/contact.html')
 
 
 def addToCart(request):

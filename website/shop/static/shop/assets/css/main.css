@@ -50,7 +50,11 @@ h1,h2,h3,h4,h5,h6{
 #cart-icon{
 	width:30px;
 	display: inline-block;
-	margin-left: 15px;
+}
+
+#account-icon{
+	width:25px;
+	display: inline-block;
 }
 
 #cart-total{
@@ -111,4 +115,13 @@ h1,h2,h3,h4,h5,h6{
 
 .hidden{
 	display: none!important;
+}
+
+.info-text{
+	font-size:24px;
+	font-family: "Poppins", sans-serif;
+	line-height:100%;
+	margin-bottom: auto;
+	margin-top: auto;
+	line-height: 200%;
 }
