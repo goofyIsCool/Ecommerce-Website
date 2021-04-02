@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'shop.apps.ShopConfig',
     'user.apps.UserConfig',
+    'dashboard.apps.DashboardConfig',
     'django_filters',
 ]
 
