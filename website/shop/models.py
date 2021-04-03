@@ -33,7 +33,7 @@ class Customer(models.Model):
 
     def __str__(self):
         try:
-            return (f'{self.user.username} Customer')
+            return (f'{self.user.username}')
         except:
             return 'Guest'
 

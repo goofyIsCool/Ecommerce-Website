@@ -17,6 +17,7 @@ import decimal
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
+from django.utils import timezone
 # from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 # Create your views here.
 
@@ -108,9 +109,10 @@ class OrderListView(ListView):
     template_name = "shop/order_history.html"
     paginate_by = 10
 
+
     def get_queryset(self, *args, **kwargs):
         customer = self.request.user.customer
-        queryset = Order.objects.filter(customer=customer, complete=True)
+        queryset = Order.objects.filter(customer=customer, complete=True).order_by('-date_ordered')
 
         return queryset
 
@@ -259,6 +261,7 @@ def processOrder(request):
     if total == order.get_cart_total:
         order.complete = True
         order.total = decimal.Decimal(order.get_cart_total)
+        order.date_ordered = timezone.localtime(timezone.now()).date()
 
     order.save()
 

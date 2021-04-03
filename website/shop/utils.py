@@ -43,4 +43,4 @@ def cartData(request):
     items = order.orderitem_set.all()
     cartItems = order.get_cart_items
 
-    return {'cartItems': cartItems, 'order': order, 'items': items, 'customer': customer, 'device': device}
+    return {'cartItems': cartItems, 'order': order, 'items': items, 'customer': customer}

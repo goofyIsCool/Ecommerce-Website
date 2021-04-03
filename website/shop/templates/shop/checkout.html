@@ -4,15 +4,15 @@
 <div class="row m-auto py-5 container">
     <div class="col-lg-6 mx-auto">
         <div class="box-element2" id="form-wrapper">
-            <form id="form" class="px-4 my-auto">
+            <form id="form" class="px-4 py-3 my-auto">
                 <div class="m-auto pt-2">
                     <a class="btn btn-outline-dark" href="{% url 'shop:products' %}">&#x2190; Continue Shopping</a>
                 </div>
                 {% csrf_token %}
-                <div id="user-info" class="my-auto my-auto">
+                <div id="user-info" class="my-auto">
                     <h5 class="mx-auto pt-3">Customer: </h5>
 
-					<div class="form-field">
+					<div class="form-f ield">
                         <label class="control-label" for="username">Name</label><span class="required">*</span>
                         <input required class="form-control" type="text" name="name">
 					</div>
@@ -27,6 +27,15 @@
                     <div class="form-field">
                         <label class="control-label" for="username">Phone</label><span class="required">*</span>
 						<input required class="form-control" type="text" name="phone">
+					</div>
+                    <h5 class="mx-auto pt-3">Dane Firmy: </h5>
+                    <div class="form-field">
+                        <label class="control-label" for="nip">Nip</label><span class="required">*</span>
+						<input required class="form-control" type="text" name="nip">
+					</div>
+                    <div class="form-field">
+                        <label class="control-label" for="nip">Adres firmy:</label><span class="required">*</span>
+						<input required class="form-control" type="text" name="nip">
 					</div>
 				</div>
                 <div id="shipping-info">
@@ -82,8 +91,10 @@
     </div>
 
     <div class="col-lg-6 mx-auto">
-        <div class="box-element2 my-auto mx-auto px-3">
-            <a class="btn btn-outline-dark" href="{% url 'shop:cart' %}">&#x2190; Back to Cart</a>
+        <div class="box-element2 m-auto px-3 py-3">
+            <div class="m-auto pt-2">
+                <a class="btn btn-outline-dark" href="{% url 'shop:cart' %}">&#x2190; Back to Cart</a>
+            </div>
             <hr>
             <h3>Order Summary</h3>
             <hr>

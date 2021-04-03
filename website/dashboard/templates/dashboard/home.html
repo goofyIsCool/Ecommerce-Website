@@ -1,0 +1,17 @@
+{% extends "dashboard/dashboard-base.html" %}
+{% block content %}
+{% load static %}
+<div class="container">
+    <div class="my-4">
+        <h1><strong>Home</strong></h1>
+        <h2> Cześć {{request.user.customer.name}}!</h2>
+    </div>
+    <div>
+        <h3>Ogólne Informacje</h3>
+
+        <p>Liczba Zamówień w dniu dzisiejszym: {{dailyOrderCounter}}</p>
+        <p> Dzienny dochód: {{ dailyIncome|floatformat:2 }} PLN </p>
+        <p>Liczba Zamówień w tym miesiącu: {{MonthlyOrderCounter}}</p>
+    </div>
+</div>
+{% endblock %}
