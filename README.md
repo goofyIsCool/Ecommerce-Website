@@ -7,7 +7,7 @@
 * [Access Admin Panel](#Access-admin-panel)
 
 ## General info
-Simple e-commerce website created for Mario with D-jango Framework in Python.
+Simple e-commerce website created with D-jango.
 	
 ## Technologies
 Project is created with:
