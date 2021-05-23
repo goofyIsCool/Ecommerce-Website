@@ -1,0 +1,34 @@
+{% extends "dashboard/dashboard-base.html" %}
+{% block content %}
+{% load static %}
+
+
+<div class="container my-4">
+    <h1><strong>Zamówienia</strong></h1>
+    <div class="row my-4">
+        <div class="col-sm mx-auto" style="text-align: left"><p>Transakcja:</p></div>
+        <div class="col-sm mx-auto" style="text-align: right"><p>Kupiec:</p></div>
+        <div class="col-sm mx-auto" style="text-align: right"><p></p></div>
+        <div class="col-sm mx-auto" style="text-align: right"><p>Czas Zakupu:</p></div>
+    </div>
+    {% for ord in object_list %}
+    <div class="box-element2 p-4 my-4" style="border-radius:5px">
+        <div class="column">
+            <div class="row">
+                <a href={{ ord.get_absolute_url }}><div class="col-sm mx-auto"><p>Transaction id: {{ord.transaction_id}}</p></div></a>
+                <div class="col-sm mx-auto" style="text-align: right"><p>{{ord.customer.name}} {{ord.customer.surname   }}</p></div>
+                <div class="col-sm mx-auto" style="text-align: right"><p></p></div>
+                <div class="col-sm mx-auto" style="text-align: right"><p>Date: {{ord.date_ordered}}</p></div>
+            </div>
+            <div class="row">
+                <div class="col-sm mx-auto"><p>Vat: {{ord.get_cart_total_brutto|floatformat:2}}zł</p></div>
+                <div class="col-sm mx-auto" style="text-align: right"><p>Payment method: <strong>{{ord.get_payment_display}}</strong></p></div>
+            </div>
+            <div>
+                <div><p>Total: {{ord.get_cart_total_vat|floatformat:2}}zł</p></div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

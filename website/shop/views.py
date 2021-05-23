@@ -17,6 +17,7 @@ import decimal
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
+from django.utils import timezone
 # from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 # Create your views here.
 
@@ -28,9 +29,12 @@ def home(request):
     except:
         cartItems = 0
 
+    # Fix filtering recommended products
     recProdcuts = Product.objects.order_by('price')[:4]
-    newProducts = Product.objects.order_by('-release_date')[:4]
-    context = {'newProducts': newProducts, 'recProducts': recProdcuts, 'cartItems': cartItems}
+    newProducts1 = Product.objects.order_by('-release_date')[:4]
+    newProducts2 = Product.objects.order_by('-release_date')[4:8]
+    best = recProdcuts[0]
+    context = {'best': best, 'newProducts1': newProducts1, 'newProducts2': newProducts2, 'recProducts': recProdcuts, 'cartItems': cartItems}
     return render(request, 'shop/home.html', context)
 
 
@@ -38,7 +42,7 @@ class ProductListView(ListView):
 
     model = Product
     template_name = "shop/products.html"
-    paginate_by = 8
+    paginate_by = 16
     ordering = ['title']
 
     def get_queryset(self, *args, **kwargs):
@@ -97,20 +101,23 @@ class ItemDetailView(DetailView):
             cartItems = 0
 
         context['cartItems'] = cartItems
-
+        categoryId = Category.objects.get(name=self.object.category.name)
+        print(categoryId)
+        recProducts = Product.objects.filter(category=categoryId)
+        print(recProducts)
+        context['recProducts'] = recProducts[:4]
         return context
 
 # Make the generic Views login_required
-
-
 class OrderListView(ListView):
     model = Order
     template_name = "shop/order_history.html"
     paginate_by = 10
 
+
     def get_queryset(self, *args, **kwargs):
         customer = self.request.user.customer
-        queryset = Order.objects.filter(customer=customer, complete=True)
+        queryset = Order.objects.filter(customer=customer, complete=True).order_by('-date_ordered')
 
         return queryset
 
@@ -259,13 +266,11 @@ def processOrder(request):
     if total == order.get_cart_total:
         order.complete = True
         order.total = decimal.Decimal(order.get_cart_total)
+        order.date_ordered = timezone.localtime(timezone.now()).date()
 
     order.save()
 
     orderItems = OrderItem.objects.filter(order=order)
-
-    print(customer)
-    print(order.complete)
     ShippingAddress.objects.create(
         customer=customer,
         order=order,

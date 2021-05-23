@@ -3,29 +3,55 @@
 {% load static %}
 
 <main>
-    <div class="container-fluid dark-grey-text">
+    <div class="small-container single-product">
+      <div class="row">
+          <div class="col-2">
+              <img src="{{ object.image1.url }}" width="100%" id="ProductImg">
+              <div class="small-img-row">
+                  <div class="small-img-col"> <img src="{{ object.image1.url }}" width="100%" class="small-img"> </div>
+                  <div class="small-img-col"> <img src="{{ object.image2.url }}" width="100%" class="small-img"> </div>
+                  <div class="small-img-col"> <img src="{{ object.image3.url }}" width="100%" class="small-img"> </div>
+              </div>
+          </div>
+          <div class="col-2">
+              <p>Produkty/{{object.category}}</p>
+              <h1>{{object.title}}</h1>
+              <p>W paczce są: {{object.pack}} rozmiarówki</p>
+              <h4>{{object.price}}PLN</h4>
+              <select>
+                  <option>S/M/L/XL</option>
+                  <option>XL/XXL/XXXL/XXXXL</option>
+              </select>
+              <input type="number" value="{{object.pack}}">
+              <a href="" class="btn">Dodaj</a>
+              <h3>Opis</h3>
+              <p>{{object.description}}</p>
+          </div>
+      </div>
+  </div>
 
-      <!--Grid row-->
-      <div class="row wow fadeIn my-auto mx-auto p-5 mx-auto">
-        <div class="col-md-6">
-            <div class="simple-slider">
-                <div class="swiper-container">
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide"><center><img class="displayed-img" src="{{ object.image1.url }}" /></center></div>
-                        <div class="swiper-slide"><center><img class="displayed-img" src="{{ object.image2.url }}" /></center></div>
-                        <div class="swiper-slide"><center><img class="displayed-img" src="{{ object.image3.url }}" /></center></div>
-                    </div>
-                    <div class="swiper-pagination"></div>
-                </div>
-            </div>
-        </div>
+  <div class="small-container">
+      <div class="row row-2">
+          <h2>Podobne produkty</h2>
+          <p>Pokaż więcej</p>
+      </div>
+      <div class="row">
+          {% for product in recProducts %}
+              <div class="col-4">
+                  <a href="{{ product.get_absolute_url }}"><img src="{{ product.image1.url }}" width="225" height="225" class="card-img-top"></a>
+                  <a href="{{ product.get_absolute_url }}"><h5><strong>{{product.title}}</strong></h5></a>
+                  <p>Cena Netto: {{product.price}} zł</p>
+                  <p>Cena Brutto: {{product.get_brutto_price}} zł</p>
+                  <a href="{{ best.get_absolute_url }}" class="btn">Dodaj do koszyka</a>
+              </div>
+          {% endfor %}
+      </div>
+  </div>
 
-        <!--Grid column-->
-        <div class="col-md-6">
+        <!-- <div class="col-md-6">
           <div class="my-auto mx-auto pt-5">
               <h2>{{object.title}}</h2>
           </div>
-          <!--Content-->
           <div class="mx-auto my-auto">
             <div class="pb-5">
               <span class="">{{object.category}}</span>
@@ -42,16 +68,26 @@
               {% else %}
               <span>{{ object.price }}zł</span>
               {% endif %}
-            </p>
+            </p> -->
 
-            <div class="mx-auto row">
+            <!-- <div class="mx-auto row">
                 <div class="">
                     <input class="text quantity-input-box" id="quantity{{object.id}}" value="{{ object.pack }}">
                 </div>
                 <div class="mx-1">
                     <a data-productId="{{ object.id }}" data-action="add" data-pack={{ object.pack }} class="update-cart btn btn-primary btn-md my-0 p">Dodaj</a>
                 </div>
+            </div> -->
+
+            <!-- <div class="row m-3">
+            	<span class="glyphicon glyphicon-minus"></span>
+            	<input type="text" value="1"/>
+            	<span class="glyphicon glyphicon-plus"></span>
+                <div class="mx-1">
+                    <a data-productId="{{ object.id }}" data-action="add" data-pack={{ object.pack }} class="update-cart btn btn-primary btn-md my-0 p">Dodaj</a>
+                </div>
             </div>
+
             <div class="m-auto pt-2">
                 <p>Produkty są sprzedawane w paczkach po: {{ object.pack }}</p>
             </div>
@@ -60,68 +96,47 @@
 
             {% if object.description %}
                 <p>{{ object.description }}</p>
-            {% endif %}
+            {% endif %} -->
 
           </div>
-          <!--Content-->
-
         </div>
-        <!--Grid column-->
 
-      </div>
-      <!--Grid row-->
+    <script type="text/javascript">
+        var ProductImg = document.getElementById("ProductImg");
+        var SmallImg = document.getElementsByClassName("small-img");
 
-      <hr>
+        SmallImg[0].onclick = function() {
+            ProductImg.src = SmallImg[0].src;
+        }
 
-      <!--Grid row-->
-      <div class="row d-flex justify-content-center wow fadeIn">
+        SmallImg[1].onclick = function() {
+            ProductImg.src = SmallImg[1].src;
+        }
 
-        <!--Grid column-->
-        <div class="col-md-6 text-center">
+        SmallImg[2].onclick = function() {
+            ProductImg.src = SmallImg[2].src;
+        }
 
-          <h4 class="my-0 h4">Additional information</h4>
 
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus suscipit modi sapiente illo soluta odit
-            voluptates,
-            quibusdam officia. Neque quibusdam quas a quis porro? Molestias illo neque eum in laborum.</p>
+    </script>
 
-        </div>
-        <!--Grid column-->
-
-      </div>
-      <!--Grid row-->
-
-      <!--Grid row-->
-      <div class="row wow fadeIn mb-5">
-
-        <!--Grid column-->
-        <div class="col-lg-4 col-md-12 mb-4">
-
-          <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/11.jpg" class="img-fluid" alt="">
-
-        </div>
-        <!--Grid column-->
-
-        <!--Grid column-->
-        <div class="col-lg-4 col-md-6 mb-4">
-
-          <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/12.jpg" class="img-fluid" alt="">
-
-        </div>
-        <!--Grid column-->
-
-        <!--Grid column-->
-        <div class="col-lg-4 col-md-6 mb-4">
-
-          <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/13.jpg" class="img-fluid" alt="">
-
-        </div>
-        <!--Grid column-->
-
-      </div>
-      <!--Grid row-->
-
-    </div>
-
- </main>
+    <!-- <script type="text/javascript">
+        $(document).ready(function() {
+            $('.minus').click(function () {
+                var $input = $(this).parent().find('input');
+                var count = parseInt($input.val()) - 1;
+                count = count < 1 ? 1 : count;
+                $input.val(count);
+                $input.change();
+                return false;
+            });
+            $('.plus').click(function () {
+                var $input = $(this).parent().find('input');
+                $input.val(parseInt($input.val()) + 1);
+                $input.change();
+                return false;
+            });
+        });
+    </script> -->
+</main>
 {% endblock %}

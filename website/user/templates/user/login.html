@@ -1,30 +1,22 @@
 {% extends "shop/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-    <div class="container my-5">
-        <div class="row">
-            <div class="col-md-4">
-                <div class='content-section'>
-                    <form method='POST'>
-                        {% csrf_token %}
-                        <fieldset class='form-group'>
-                            <legend class='border-bottom mb-4'>Log In</legend>
-                            {{ form|crispy }}
-                            <div class='form-group'>
-                                <button class='btn btn-outline-info', type='submit'>Login</button>
-                            </div>
-                            <small class='text-muted ml-2'>
-                            <a href="{% url 'password_reset' %}">Forgot Password?</a>
-                            </small>
-                        </fieldset>
-                    </form>
-                    <div class='border-top pt-3'>
-                        <small class='text-muted'> Don't have an account? <a class = 'ml-2' href='{% url 'signup' %}'>Sign Up Now</a></small>
-                    </div>
+    <div class="container">
+        <form method='POST'>
+            {% csrf_token %}
+            <fieldset class='form-group'>
+                <legend class='border-bottom mb-4'>Log In</legend>
+                {{ form|crispy }}
+                <div class='form-group'>
+                    <button class='btn btn-outline-info', type='submit'>Login</button>
                 </div>
-            </div>
-            <div class="col-md-6">
-            </div>
+                <small class='text-muted ml-2'>
+                <a href="{% url 'password_reset' %}">Forgot Password?</a>
+                </small>
+            </fieldset>
+        </form>
+        <div class='border-top pt-3'>
+            <small class='text-muted'> Don't have an account? <a class = 'ml-2' href='{% url 'signup' %}'>Sign Up Now</a></small>
         </div>
     </div>
 {% endblock content %}

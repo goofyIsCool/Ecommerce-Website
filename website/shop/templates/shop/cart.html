@@ -76,7 +76,13 @@
 			alert("Minimalna wartość netto zamówienia to 300zł.");
 		}
 		else{
-			window.location.href = "{% url 'shop:guest' %}"
+			user = '{{ user.is_authenticated }}'
+			if (user == 'True'){
+				window.location.href = "{% url 'shop:checkout' %}"
+			}
+			else{
+				window.location.href = "{% url 'shop:guest' %}"
+			}
 		}
 	}
 

@@ -1,0 +1,26 @@
+{% extends "dashboard/dashboard-base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% load static %}
+
+<div class="container">
+    <div class="row py-5">
+        <div class="col-md-5">
+            <div class='content-section'>
+                <form method='POST'>
+                    {% csrf_token %}
+                    <fieldset class='form-group'>
+                        <legend class='border-bottom mb-4'>Create Product</legend>
+                        {{ form|crispy }}
+                        <div class='form-group py-3'>
+                            <button class='btn btn-outline-dark', type='submit'>Dodaj</button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-5">
+        </div>
+    </div>
+</div>
+{% endblock %}
