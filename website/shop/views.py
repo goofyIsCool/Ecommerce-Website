@@ -42,7 +42,7 @@ class ProductListView(ListView):
 
     model = Product
     template_name = "shop/products.html"
-    paginate_by = 8
+    paginate_by = 16
     ordering = ['title']
 
     def get_queryset(self, *args, **kwargs):
@@ -101,12 +101,14 @@ class ItemDetailView(DetailView):
             cartItems = 0
 
         context['cartItems'] = cartItems
-
+        categoryId = Category.objects.get(name=self.object.category.name)
+        print(categoryId)
+        recProducts = Product.objects.filter(category=categoryId)
+        print(recProducts)
+        context['recProducts'] = recProducts[:4]
         return context
 
 # Make the generic Views login_required
-
-
 class OrderListView(ListView):
     model = Order
     template_name = "shop/order_history.html"

@@ -5,15 +5,25 @@
 {% load static %}
 
 <div class="container">
+    <div class="row row-2">
+        <h2>Produkty</h2>
+        <select>
+            <option>Domyślne sortowanie</option>
+            <option>Sortuj rosnąco po cenie</option>
+            <option>Sortuj malejąco po cenie</option>
+            <option>Sortuj po popularności</option>
+            <option>Sortuj po nazwie</option>
+        </select>
+    </div>
     <div class="row">
-        <div class="column col-md-2">
-            <div class="mx-3">
-                <h3> Categories </h3>
-            </div>
-            <div class="column">
-                <div class="list-group">
+        <div class="col-md-2">
+            <div style ="position:relative; left:0px; top: -500px;">
+                <div class="categoryText">
+                    <h3>Kategorie</h3>
+                </div>
+                <div class="column">
                     {% for category in categories %}
-                        <a href="?{% param_replace category=category.id page=1%}" class="list-group-item list-group-item-action">{{ category.name }}</a>
+                        <a class="categoryLabel" href="?{% param_replace category=category.id page=1%}"><p>{{ category.name }}</p></a>
                     {% endfor %}
                 </div>
             </div>
@@ -23,35 +33,28 @@
             </form> -->
         </div>
         {% if object_list %}
-            <div class="col-md-8 mx-auto">
-                <div class="column mx-auto">
-                    <div class="row-md-1">
-                        <h1>{{current_category}}</h1>
-                    </div>
+        <div class="col-md-8">
+            <div class="column">
+                {% if current_category %}
+                    <h1>{{current_category}}</h1>
+                {% else %}
+                    <h1>Wszystkie Produkty</h1>
+                {% endif %}
+                <div class="row">
+                    {% for product in object_list %}
+                        <div class="col-4">
+                            <a href="{{ product.get_absolute_url }}"><img src="{{ product.image1.url }}" width="225" height="225" class="card-img-top"></a>
+                            <a href="{{ product.get_absolute_url }}"><h5><strong>{{product.title}}</strong></h5></a>
 
-                    <div class="row-md-8">
-                        <div class="row wow fadeIn">
-                          {% for product in object_list %}
-                            <div class="mx-3">
-                                <div class="card my-2">
-                                    <div class="col">
-                                        <div class="view overlay mt-3">
-                                            <a href="{{ product.get_absolute_url }}"><img src="{{ product.image1.url }}" class="card-img-top"></a>
-                                        </div>
-                            			<div class="box-element mx-auto">
-                                            <a href="{{ product.get_absolute_url }}"><h5><strong>{{product.title}}</strong></h5></a>
-                            				<hr>
-                            				<button data-productId="{{ product.id }}" data-action="add" data-pack="{{ product.pack }}" class="btn btn-outline-secondary update-cart">Add to Cart</button>
-                            				<h5 style="display: inline-block; float:right;">{{product.price}} zł</h5>
-                            			</div>
-                            		</div>
-                                </div>
-                            </div>
-                          {% endfor %}
+                            <!-- <button data-productId="{{ product.id }}" data-action="add" data-pack="{{ product.pack }}" class="btn btn-outline-secondary update-cart">Dodaj</button> -->
+                            <p>Cena Netto: {{product.price}} zł</p>
+                            <p>Cena Brutto: {{product.get_brutto_price}} zł</p>
+                            <a href="{{ product.get_absolute_url }}" class="btn">Dodaj do koszyka</a>
                         </div>
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
+        </div>
         {% else %}
             <div class="col-md-8 mx-auto">
                 <div class="box-element2 m-auto">
@@ -63,32 +66,26 @@
                     </div>
                 </div>
             </div>
-        {% endif %}
-    </div>
-
-    <center>
-        <div class="container-fluid">
-            {% if is_paginated %}
-                    {% if page_obj.has_previous %}
-                        <a class='btn btn-outline-info mb-4' href='?{% param_replace page=page_obj.previous_page_number %}'>Previous</a>
-                    {% endif %}
-
-                    {% for num in page_obj.paginator.page_range %}
-                        {% if page_obj.number == num %}
-                            <a class='btn btn-info mb-4' href="?{% param_replace page=num %}">{{ num }}</a>
-                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3'  %}
-                            <a class='btn btn-outline-info mb-4' href='?{% param_replace page=num %}'>{{ num }}</a>
-                        {% endif %}
-                    {% endfor %}
-
-                    {% if page_obj.has_next %}
-                        <a class='btn btn-outline-info mb-4' href='?{% param_replace page=page_obj.next_page_number %}'>Next</a>
-                    {% endif %}
-
-            {% endif %}
-        </div>
-    </center>
+    {% endif %}
 </div>
 
-
+<center>
+    <div class="page-btn">
+        {% if is_paginated %}
+                {% if page_obj.has_previous %}
+                    <a href='?{% param_replace page=page_obj.previous_page_number %}'><span>&#10094;</span></a>
+                {% endif %}
+                {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                        <a href="?{% param_replace page=num %}"><span>{{ num }}</span></a>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3'  %}
+                        <a href='?{% param_replace page=num %}'><span>{{ num }}</span></a>
+                    {% endif %}
+                {% endfor %}
+                {% if page_obj.has_next %}
+                    <a href='?{% param_replace page=page_obj.next_page_number %}'><span>&#10095;</span></a>
+                {% endif %}
+        {% endif %}
+    </div>
+</center>
 {% endblock %}

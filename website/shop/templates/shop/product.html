@@ -2,48 +2,56 @@
 {% block content %}
 {% load static %}
 
-<style>
-    span {
-        cursor:pointer;
-    }
-
-	.minus, .plus{
-		width:34px;
-		height:34px;
-		background:#f2f2f2;
-		border-radius:4px;
-		padding:8px 5px 8px 5px;
-		border:1px solid #ddd;
-  		display: inline-block;
-  		vertical-align: middle;
-  		text-align: center;
-	}
-
-	input {
-		height:34px;
-	    width: 100px;
-	    text-align: center;
-	    font-size: 26px;
-		border:1px solid #ddd;
-		border-radius:4px;
-	    display: inline-block;
-	    vertical-align: middle;
-    }
-
-</style>
-
 <main>
-    <div class="container-fluid dark-grey-text">
+    <div class="small-container single-product">
+      <div class="row">
+          <div class="col-2">
+              <img src="{{ object.image1.url }}" width="100%" id="ProductImg">
+              <div class="small-img-row">
+                  <div class="small-img-col"> <img src="{{ object.image1.url }}" width="100%" class="small-img"> </div>
+                  <div class="small-img-col"> <img src="{{ object.image2.url }}" width="100%" class="small-img"> </div>
+                  <div class="small-img-col"> <img src="{{ object.image3.url }}" width="100%" class="small-img"> </div>
+              </div>
+          </div>
+          <div class="col-2">
+              <p>Produkty/{{object.category}}</p>
+              <h1>{{object.title}}</h1>
+              <p>W paczce są: {{object.pack}} rozmiarówki</p>
+              <h4>{{object.price}}PLN</h4>
+              <select>
+                  <option>S/M/L/XL</option>
+                  <option>XL/XXL/XXXL/XXXXL</option>
+              </select>
+              <input type="number" value="{{object.pack}}">
+              <a href="" class="btn">Dodaj</a>
+              <h3>Opis</h3>
+              <p>{{object.description}}</p>
+          </div>
+      </div>
+  </div>
 
-      <!--Grid row-->
-      <div class="row wow fadeIn my-auto mx-auto p-5 mx-auto">
+  <div class="small-container">
+      <div class="row row-2">
+          <h2>Podobne produkty</h2>
+          <p>Pokaż więcej</p>
+      </div>
+      <div class="row">
+          {% for product in recProducts %}
+              <div class="col-4">
+                  <a href="{{ product.get_absolute_url }}"><img src="{{ product.image1.url }}" width="225" height="225" class="card-img-top"></a>
+                  <a href="{{ product.get_absolute_url }}"><h5><strong>{{product.title}}</strong></h5></a>
+                  <p>Cena Netto: {{product.price}} zł</p>
+                  <p>Cena Brutto: {{product.get_brutto_price}} zł</p>
+                  <a href="{{ best.get_absolute_url }}" class="btn">Dodaj do koszyka</a>
+              </div>
+          {% endfor %}
+      </div>
+  </div>
 
-        <!--Grid column-->
-        <div class="col-md-6">
+        <!-- <div class="col-md-6">
           <div class="my-auto mx-auto pt-5">
               <h2>{{object.title}}</h2>
           </div>
-          <!--Content-->
           <div class="mx-auto my-auto">
             <div class="pb-5">
               <span class="">{{object.category}}</span>
@@ -60,7 +68,7 @@
               {% else %}
               <span>{{ object.price }}zł</span>
               {% endif %}
-            </p>
+            </p> -->
 
             <!-- <div class="mx-auto row">
                 <div class="">
@@ -71,7 +79,7 @@
                 </div>
             </div> -->
 
-            <div class="row m-3">
+            <!-- <div class="row m-3">
             	<span class="glyphicon glyphicon-minus"></span>
             	<input type="text" value="1"/>
             	<span class="glyphicon glyphicon-plus"></span>
@@ -88,20 +96,31 @@
 
             {% if object.description %}
                 <p>{{ object.description }}</p>
-            {% endif %}
+            {% endif %} -->
 
           </div>
-          <!--Content-->
-
         </div>
-        <!--Grid column-->
 
-      </div>
-      <!--Grid row-->
-
-      <hr>
-    </div>
     <script type="text/javascript">
+        var ProductImg = document.getElementById("ProductImg");
+        var SmallImg = document.getElementsByClassName("small-img");
+
+        SmallImg[0].onclick = function() {
+            ProductImg.src = SmallImg[0].src;
+        }
+
+        SmallImg[1].onclick = function() {
+            ProductImg.src = SmallImg[1].src;
+        }
+
+        SmallImg[2].onclick = function() {
+            ProductImg.src = SmallImg[2].src;
+        }
+
+
+    </script>
+
+    <!-- <script type="text/javascript">
         $(document).ready(function() {
             $('.minus').click(function () {
                 var $input = $(this).parent().find('input');
@@ -118,6 +137,6 @@
                 return false;
             });
         });
-    </script>
- </main>
+    </script> -->
+</main>
 {% endblock %}

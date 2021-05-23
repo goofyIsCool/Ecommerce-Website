@@ -101,8 +101,8 @@ class Product(models.Model):
         images = [self.image1, self.image2, self.image3]
         for image in images:
             img = Image.open(image.path)
-            if img.width > 500 or img.height > 700:
-                output_size = (500, 700)
+            if img.width > 400 or img.height > 600:
+                output_size = (400, 600)
                 img.thumbnail(output_size)
                 img.save(image.path)
 
