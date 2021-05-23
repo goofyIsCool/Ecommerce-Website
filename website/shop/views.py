@@ -29,9 +29,12 @@ def home(request):
     except:
         cartItems = 0
 
+    # Fix filtering recommended products
     recProdcuts = Product.objects.order_by('price')[:4]
-    newProducts = Product.objects.order_by('-release_date')[:4]
-    context = {'newProducts': newProducts, 'recProducts': recProdcuts, 'cartItems': cartItems}
+    newProducts1 = Product.objects.order_by('-release_date')[:4]
+    newProducts2 = Product.objects.order_by('-release_date')[4:8]
+    best = recProdcuts[0]
+    context = {'best': best, 'newProducts1': newProducts1, 'newProducts2': newProducts2, 'recProducts': recProdcuts, 'cartItems': cartItems}
     return render(request, 'shop/home.html', context)
 
 
@@ -266,9 +269,6 @@ def processOrder(request):
     order.save()
 
     orderItems = OrderItem.objects.filter(order=order)
-
-    print(customer)
-    print(order.complete)
     ShippingAddress.objects.create(
         customer=customer,
         order=order,

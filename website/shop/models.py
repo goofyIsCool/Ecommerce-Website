@@ -72,6 +72,10 @@ class Product(models.Model):
         return self.title
 
     @staticmethod
+    def get_netto_price(self):
+        return self.price
+
+    @staticmethod
     def get_brutto_price(self):
         return self.price*decimal.Decimal(1.23)
 

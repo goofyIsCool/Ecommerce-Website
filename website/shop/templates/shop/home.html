@@ -1,12 +1,12 @@
 {% extends 'shop/base.html' %}
 {% load static %}
 {% block content %}
-<div class="simple-slider">
+<!-- <div class="simple-slider">
     <div class="swiper-container">
         <div class="swiper-wrapper">
-            <div class="swiper-slide"><img class="image" src={% static 'images/clothing-2000.jpg' %} /></div>
-            <div class="swiper-slide"><img class="image" src={% static 'images/clothing-2000.jpg' %} /></div>
-            <div class="swiper-slide"><img class="image" src={% static 'images/clothing-2000.jpg' %} /></div>
+            <div class="swiper-slide"><img class="image" src="{% static 'images/clothing-2000.jpg' %}" /></div>
+            <div class="swiper-slide"><img class="image" src="{% static 'images/clothing-2000.jpg' %}" /></div>
+            <div class="swiper-slide"><img class="image" src="{% static 'images/clothing-2000.jpg' %}" /></div>
         </div>
     </div>
 </div>
@@ -105,17 +105,138 @@
         </div>
 
     </div>
-</div>
-<div class="newsletter-subscribe"><iframe allowfullscreen="" frameborder="0" src="https://cdn.bootstrapstudio.io/placeholders/map.html" width="100%" height="400"></iframe>
-<div class="newsletter-subscribe">
+</div> -->
+<div class="header">
     <div class="container">
-        <div class="intro">
-            <h2 class="text-center">Subscribe for our Newsletter</h2>
-            <p class="text-center">Nunc luctus in metus eget fringilla. Aliquam sed justo ligula. Vestibulum nibh erat, pellentesque ut laoreet vitae. </p>
+        <div class="row">
+            <div class="col-2">
+                <h1>Witamy na naszej stronie <br /> Wólka Moda!</h1>
+                <p>jakis tekst</p>
+                <a href="{% url 'shop:products' %}" class="btn">Zapraszamy do zakupu &#8594;</a>
+            </div>
+            <div class="col-2">
+                <img src="{% static 'images/home.png' %}" width="500px" >
+            </div>
         </div>
-        <form class="form-inline" method="post">
-            <div class="form-group"><input class="form-control" type="email" name="email" placeholder="Your Email"></div>
-            <div class="form-group"><button class="btn btn-primary" type="submit">Subscribe </button></div>
+    </div>
+</div>
+<div class="categories">
+    <div class="small-container">
+        <h2 class="title">Kategorie</h2>
+        <div class="row">
+            <div class="col-3">
+                <img src="{% static 'images/nakd_deep_v-neck_ruffle_dress_1014-001045-0617_01j.webp' %}">
+                <h4>Sukienki</h4>
+            </div>
+            <div class="col-3">
+                <img src="{% static 'images/Marka-Senso-Polska-Moda-Polskie-Ubrania-2-530x794.jpg' %}">
+                <h4>Koszule</h4>
+            </div>
+            <div class="col-3">
+                <img src="{% static 'images/rozkloszowana-dzianinowa-spodnica-mini-cappuccino-m660.jpg' %}">
+                <h4>Spódniczki</h4>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="small-container">
+    <h2 class="title">Bestsellery</h2>
+    <div class="row">
+        {% for product in recProducts %}
+            <div class="col-4">
+                <a href="{{ product.get_absolute_url }}"><img src="{{ product.image1.url }}" width="225" height="225" class="card-img-top"></a>
+                <a href="{{ product.get_absolute_url }}"><h5><strong>{{product.title}}</strong></h5></a>
+
+                <!-- <button data-productId="{{ product.id }}" data-action="add" data-pack="{{ product.pack }}" class="btn btn-outline-secondary update-cart">Dodaj</button> -->
+                <p>Cena Netto: {{product.price}} zł</p>
+                <p>Cena Brutto: {{product.get_brutto_price}} zł</p>
+                <a href="{{ best.get_absolute_url }}" class="btn">Dodaj do koszyka</a>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="quotes">
+    <div class=small-container">
+        <h2 class="title">Parę słów o nas</h2>
+        <div class="row">
+            <div class="col-4">
+                <i class="fa fa-quote-left"></i>
+                <p>Przy większej ilości, zapytaj o cenę.</p>
+            </div>
+            <div class="col-4">
+                <i class="fa fa-quote-left"></i>
+                <p>Szukasz jakiegoś produktu, a nie jest wystawiony na stronie internetowej?</p>
+                <p>Zapytaj sprzedawcę, postaramy się znaleźć u partnerów</p>
+            </div>
+            <div class="col-4">
+                <i class="fa fa-quote-left"></i>
+                <p>Wysyłka w ciągu 24h.</p>
+            </div>
+            <div class="col-4">
+                <i class="fa fa-quote-left"></i>
+                <p>Darmowa dostawa przy zamówieniach powyżej 1500 zł netto</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="small-container">
+    <h2 class="title">Najnowsze Produkty</h2>
+    <div class="row">
+        {% for product in newProducts1 %}
+            <div class="col-4">
+                <a href="{{ product.get_absolute_url }}"><img src="{{ product.image1.url }}" width="225" height="225" class="card-img-top"></a>
+                <a href="{{ product.get_absolute_url }}"><h5><strong>{{product.title}}</strong></h5></a>
+
+                <!-- <button data-productId="{{ product.id }}" data-action="add" data-pack="{{ product.pack }}" class="btn btn-outline-secondary update-cart">Dodaj</button> -->
+                <p>Cena Netto: {{product.price}} zł</p>
+                <p>Cena Brutto: {{product.get_brutto_price}} zł</p>
+                <a href="{{ best.get_absolute_url }}" class="btn">Dodaj do koszyka</a>
+            </div>
+        {% endfor %}
+
+        {% for product in newProducts2 %}
+            <div class="col-4">
+                <a href="{{ product.get_absolute_url }}"><img src="{{ product.image1.url }}" width="225" height="225" class="card-img-top"></a>
+                <a href="{{ product.get_absolute_url }}"><h5><strong>{{product.title}}</strong></h5></a>
+                <!-- <button data-productId="{{ product.id }}" data-action="add" data-pack="{{ product.pack }}" class="btn btn-outline-secondary update-cart">Dodaj</button> -->
+                <p>Cena Netto: {{product.price}} zł</p>
+                <p>Cena Brutto: {{product.get_brutto_price}} zł</p>
+                <a href="{{ best.get_absolute_url }}" class="btn">Dodaj do koszyka</a>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Polecany Produkt -->
+<div class="offer">
+    <div class="small-container">
+        <h2 class="title">Polecamy</h2>
+        <div class="row">
+            <div class="col-2">
+                <img src="{{best.image1.url}}" class="offer-img" >
+            </div>
+            <div class="col-2">
+                <p>Some text</p>
+                <h1>{{best.title}}</h1>
+                <small>{{best.descrition}}</small>
+                <a href="{{ best.get_absolute_url }}" class="btn">Buy Now &#8594</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="newsletter">
+    <div class="small-container">
+        <div class="">
+            <h2 class="text-center">Dołącz do naszego Newsletter,</h2>
+            <p class="text-center">i bądź na bieżąco z naszymi ofertami!</p>
+        </div>
+        <form class="text-center" method="post">
+            <input class="form-control" type="email" name="email" placeholder="Your Email">
+            <button type="submit">Subscribe </button>
         </form>
     </div>
 </div>

@@ -2,23 +2,41 @@
 {% block content %}
 {% load static %}
 
+<style>
+    span {
+        cursor:pointer;
+    }
+
+	.minus, .plus{
+		width:34px;
+		height:34px;
+		background:#f2f2f2;
+		border-radius:4px;
+		padding:8px 5px 8px 5px;
+		border:1px solid #ddd;
+  		display: inline-block;
+  		vertical-align: middle;
+  		text-align: center;
+	}
+
+	input {
+		height:34px;
+	    width: 100px;
+	    text-align: center;
+	    font-size: 26px;
+		border:1px solid #ddd;
+		border-radius:4px;
+	    display: inline-block;
+	    vertical-align: middle;
+    }
+
+</style>
+
 <main>
     <div class="container-fluid dark-grey-text">
 
       <!--Grid row-->
       <div class="row wow fadeIn my-auto mx-auto p-5 mx-auto">
-        <div class="col-md-6">
-            <div class="simple-slider">
-                <div class="swiper-container">
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide"><center><img class="displayed-img" src="{{ object.image1.url }}" /></center></div>
-                        <div class="swiper-slide"><center><img class="displayed-img" src="{{ object.image2.url }}" /></center></div>
-                        <div class="swiper-slide"><center><img class="displayed-img" src="{{ object.image3.url }}" /></center></div>
-                    </div>
-                    <div class="swiper-pagination"></div>
-                </div>
-            </div>
-        </div>
 
         <!--Grid column-->
         <div class="col-md-6">
@@ -44,14 +62,24 @@
               {% endif %}
             </p>
 
-            <div class="mx-auto row">
+            <!-- <div class="mx-auto row">
                 <div class="">
                     <input class="text quantity-input-box" id="quantity{{object.id}}" value="{{ object.pack }}">
                 </div>
                 <div class="mx-1">
                     <a data-productId="{{ object.id }}" data-action="add" data-pack={{ object.pack }} class="update-cart btn btn-primary btn-md my-0 p">Dodaj</a>
                 </div>
+            </div> -->
+
+            <div class="row m-3">
+            	<span class="glyphicon glyphicon-minus"></span>
+            	<input type="text" value="1"/>
+            	<span class="glyphicon glyphicon-plus"></span>
+                <div class="mx-1">
+                    <a data-productId="{{ object.id }}" data-action="add" data-pack={{ object.pack }} class="update-cart btn btn-primary btn-md my-0 p">Dodaj</a>
+                </div>
             </div>
+
             <div class="m-auto pt-2">
                 <p>Produkty są sprzedawane w paczkach po: {{ object.pack }}</p>
             </div>
@@ -72,56 +100,24 @@
       <!--Grid row-->
 
       <hr>
-
-      <!--Grid row-->
-      <div class="row d-flex justify-content-center wow fadeIn">
-
-        <!--Grid column-->
-        <div class="col-md-6 text-center">
-
-          <h4 class="my-0 h4">Additional information</h4>
-
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus suscipit modi sapiente illo soluta odit
-            voluptates,
-            quibusdam officia. Neque quibusdam quas a quis porro? Molestias illo neque eum in laborum.</p>
-
-        </div>
-        <!--Grid column-->
-
-      </div>
-      <!--Grid row-->
-
-      <!--Grid row-->
-      <div class="row wow fadeIn mb-5">
-
-        <!--Grid column-->
-        <div class="col-lg-4 col-md-12 mb-4">
-
-          <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/11.jpg" class="img-fluid" alt="">
-
-        </div>
-        <!--Grid column-->
-
-        <!--Grid column-->
-        <div class="col-lg-4 col-md-6 mb-4">
-
-          <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/12.jpg" class="img-fluid" alt="">
-
-        </div>
-        <!--Grid column-->
-
-        <!--Grid column-->
-        <div class="col-lg-4 col-md-6 mb-4">
-
-          <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/13.jpg" class="img-fluid" alt="">
-
-        </div>
-        <!--Grid column-->
-
-      </div>
-      <!--Grid row-->
-
     </div>
-
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.minus').click(function () {
+                var $input = $(this).parent().find('input');
+                var count = parseInt($input.val()) - 1;
+                count = count < 1 ? 1 : count;
+                $input.val(count);
+                $input.change();
+                return false;
+            });
+            $('.plus').click(function () {
+                var $input = $(this).parent().find('input');
+                $input.val(parseInt($input.val()) + 1);
+                $input.change();
+                return false;
+            });
+        });
+    </script>
  </main>
 {% endblock %}
