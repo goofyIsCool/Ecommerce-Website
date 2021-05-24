@@ -1,27 +1,26 @@
 {% extends "shop/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-<main role="main" class="container my-5">
-    <div class="row">
-        <div class="col-md-4">
-            <div class='content-section'>
-                <form method='POST'>
-                    {% csrf_token %}
-                    <fieldset class='form-group'>
-                        <legend class='border-bottom'>Join Today</legend>
-                        {{ form|crispy }}
-                        <div class='form-group'>
-                            <button class='btn btn-outline-info', type='submit'>Sign Up</button>
-                        </div>
-                    </fieldset>
-                </form>
-                <div class='border-top pt-3'>
-                    <small class='text-muted'> Already have an account? <a class = 'ml-2' href='{% url 'login' %}'>Sign In</a></small>
+
+<div class="container">
+    <div class="form">
+      <form method='POST'>
+          {% csrf_token %}
+          <fieldset style="border: none;">
+              <h3>Załóż Konto</h3>
+              <hr>
+              <div class="form-content">
+                {{ form|crispy }}
+                <div class='form-group'>
+                    <button class='btn', type='submit'>Załóż konto</button>
                 </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-        </div>
+              </div>
+          </fieldset>
+      </form>
+
+      <div class='question'>
+          <small class='text-muted'>Masz już konto? <a href='{% url 'login' %}'>Zaloguj się</a></small>
+      </div>
     </div>
-</main>
+</div>
 {% endblock content %}

@@ -33,7 +33,9 @@ body {
     display: flex;
     align-items: center;
     padding: 20px;
+    border-bottom: 1px solid lightgrey;
 }
+
 nav{
     flex:1;
     text-align: right;
@@ -290,7 +292,7 @@ ul {
 
 /* Dropdown Button */
 .dropbtn {
-    background-color: #ff524b;
+    background-color: lightblue;
     color: white;
     padding: 16px;
     font-size: 16px;
@@ -307,7 +309,7 @@ ul {
 .dropdown-content {
     display: none;
     position: absolute;
-    background-color: #f1f1f1;
+    background-color: white;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
@@ -324,13 +326,13 @@ ul {
 }
 
 /* Change color of dropdown links on hover */
-.dropdown-content a:hover {background-color: #ddd;}
+.dropdown-content a:hover {background-color: lightgrey;}
 
 /* Show the dropdown menu on hover */
 .dropdown:hover .dropdown-content {display: block;}
 
 /* Change the background color of the dropdown button when the dropdown content is shown */
-.dropdown:hover .dropbtn {background-color: #563434;}
+.dropdown:hover .dropbtn {background-color: lightgrey;}
 
 /* Newsletter */
 .newsletter {
@@ -345,7 +347,10 @@ ul {
 }
 
 .input-box {
-    width:500px;
+    border:0;
+    border-bottom:1px solid grey;
+    margin: 20px 0;
+    width:250px;
     padding:10px;
 }
 
@@ -391,7 +396,7 @@ ul {
         text-align: center;
     }
 
-    .col-2, .col-3, .col-4, .col-5{
+    .col-2, .col-3, .col-4, .col-5, .form{
         flex-basis: 100%;
     }
 
@@ -406,7 +411,10 @@ ul {
     .single-product .h1{
         font-size: 26px;
         line-height: 32px;
+    }
 
+    .form {
+        margin: auto;
     }
 }
 
@@ -513,4 +521,60 @@ input:focus{
 .small-img-row {
     flex-basis: 24%;
     cursor: pointer;
+}
+
+.form {
+  margin: 100px 100px;
+}
+
+.form-content {
+  padding: 30px 50px;
+}
+
+.form h3{
+  font-weight: bold;
+  font-size: 24px;
+  margin-bottom: 5px;
+}
+
+.form hr{
+  margin-bottom: 20px;
+}
+
+.col-form {
+  margin: 50px 0;
+  flex: 10%;
+}
+
+.form-group {
+  margin: auto;
+}
+
+.form-group label{
+  margin-right: 30px;
+}
+
+.fieldset {
+  display: none;
+}
+
+.question {
+  margin-top: 50px;
+}
+
+.question a {
+  color: lightblue;
+}
+
+.info {
+    text-align: center;
+    margin-bottom: 300px;
+}
+
+.info p{
+   color: lightblue;
+}
+
+.category-content {
+
 }

@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.contrib.auth import login
-from .forms import SignupForm
+from .forms import SignupForm, UserLoginForm
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -39,7 +39,6 @@ def signup(request):
         form = SignupForm()
 
     return render(request, 'user/signup.html', {'form': form})
-
 
 def activate(request, uidb64, token):
     try:

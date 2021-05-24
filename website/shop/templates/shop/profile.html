@@ -3,25 +3,23 @@
 {% block content %}
 {% load static %}
 
-<div class="container my-5" >
-    <form method='POST' enctype='multipart/form-data' class="mx-auto">
+<div class="container" >
+  <div class="form">
+    <form method='POST' enctype='multipart/form-data'>
           {% csrf_token %}
-          <div class="col-md-4">
-              <fieldset class='form-group' >
-                  <legend class='border-bottom mb-4'>Profile Info</legend>
-
-                  {{ p_form|crispy }}
-                  {{ u_form|crispy }}
-
-                  <div class='form-group'>
-                      <button class='btn btn-outline-info', type='submit'>Update</button>
-                  </div>
-              </fieldset>
-          </div>
-          <div class="col-md-6">
-
-          </div>
+          <fieldset class='form-group' style="border: none;">
+              <h3 class='border-bottom mb-4'>Profile Info</h3>
+              <hr>
+              <div class="form-content">
+              {{ p_form|crispy }}
+              {{ u_form|crispy }}
+              </div>
+              <div class='form-group'>
+                  <button class='btn btn-outline-info', type='submit'>Aktualizuj</button>
+              </div>
+          </fieldset>
       </form>
+    </div>
 </div>
 
 {% endblock content %}

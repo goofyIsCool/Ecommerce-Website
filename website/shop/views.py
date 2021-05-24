@@ -33,8 +33,12 @@ def home(request):
     recProdcuts = Product.objects.order_by('price')[:4]
     newProducts1 = Product.objects.order_by('-release_date')[:4]
     newProducts2 = Product.objects.order_by('-release_date')[4:8]
-    best = recProdcuts[0]
-    context = {'best': best, 'newProducts1': newProducts1, 'newProducts2': newProducts2, 'recProducts': recProdcuts, 'cartItems': cartItems}
+    try:
+        best = recProdcuts[0]
+        context = {'best': best, 'newProducts1': newProducts1, 'newProducts2': newProducts2, 'recProducts': recProdcuts, 'cartItems': cartItems}
+    except:
+        context = {'newProducts1': newProducts1, 'newProducts2': newProducts2, 'recProducts': recProdcuts, 'cartItems': cartItems}
+        
     return render(request, 'shop/home.html', context)
 
 
