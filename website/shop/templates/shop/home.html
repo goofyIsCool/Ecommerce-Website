@@ -1,5 +1,6 @@
 {% extends 'shop/base.html' %}
 {% load static %}
+{% load my_tags %}
 {% block content %}
 
 <div class="header">
@@ -21,23 +22,23 @@
         <h2 class="title">Kategorie Produktów</h2>
         <div class="row">
             <div class="col-5">
-                <img src="{% static 'images/nakd_deep_v-neck_ruffle_dress_1014-001045-0617_01j.webp' %}">
+                <a href="/products/?category=1&page=1"><img src="{% static 'images/nakd_deep_v-neck_ruffle_dress_1014-001045-0617_01j.webp' %}"></a>
                 <h4>Sukienki</h4>
             </div>
             <div class="col-5">
-                <img src="{% static 'images/Marka-Senso-Polska-Moda-Polskie-Ubrania-2-530x794.jpg' %}">
+                <a href="/products/?category=2&page=1"><img src="{% static 'images/Marka-Senso-Polska-Moda-Polskie-Ubrania-2-530x794.jpg' %}"></a>
                 <h4>Koszule</h4>
             </div>
             <div class="col-5">
-                <img src="{% static 'images/rozkloszowana-dzianinowa-spodnica-mini-cappuccino-m660.jpg' %}">
+                <a href="/products/?category=4&page=1"><img src="{% static 'images/rozkloszowana-dzianinowa-spodnica-mini-cappuccino-m660.jpg' %}"></a>
                 <h4>Spódniczki</h4>
             </div>
             <div class="col-5">
-                <img src="{% static 'images/cm3185-elegancka-dzianinowa-bluzka-damska-ecru.jpg' %}">
+                <a href="/products/?category=3&page=1"><img src="{% static 'images/cm3185-elegancka-dzianinowa-bluzka-damska-ecru.jpg' %}"></a>
                 <h4>Bluzki</h4>
             </div>
             <div class="col-5">
-                <img src="{% static 'images/produkt-polski-zakiet-elegancki-skorzany-koronka-czarny.jpg' %}">
+                <a href="/products/?category=5&page=1"><img src="{% static 'images/produkt-polski-zakiet-elegancki-skorzany-koronka-czarny.jpg' %}"></a>
                 <h4>Żakiety</h4>
             </div>
         </div>
@@ -140,7 +141,7 @@
         </div>
         <form class="text-center" method="post">
             {% csrf_token %}
-            <input class="input-box" type="email" name="email" placeholder="Your Email">
+            <input class="input-box" type="email" name="email" placeholder="Twój e-mail">
             <br>
             <a class="btn" type="submit">Subscribe</a>
         </form>

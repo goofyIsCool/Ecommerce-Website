@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
     <script type="text/javascript">
 
     var user = '{{request.user}}'
@@ -102,6 +103,7 @@
                 </ul>
             </nav>
             <a href="{% url 'shop:cart' %}"><img src="{% static 'images/cart.png' %}" width="30px" height="30px"></a>
+            <p id='cartItems'>{{cartItems}}</p>
             <img src="{% static 'images/menu.png' %}" class="menu-icon" onclick="menuToggle()">
         </div>
     </div>
@@ -178,44 +180,5 @@
         }
     }
 </script>
-
-<!-- <script type="text/javascript">
-    const cartItems = document.getElementById('cartItems');
-    var counter = '{{ cartItems }}';
-    cartItems.innerHTML = counter;
-
-    $('.update-cart').click(function(){
-        var productId = $(this).attr("data-productId");
-        var action = $(this).attr("data-action");
-        var pack = parseInt(this.dataset.pack);
-
-        try {
-            var inputVal = parseInt(document.getElementById("quantity"+productId).value);
-            if (inputVal%pack != 0){
-                inputVal += pack - inputVal%pack
-            }
-        } catch {
-            var inputVal = pack
-        }
-
-        var url = '/add_to_cart/'
-        $.ajax(
-        {
-            type:'GET',
-            url: url,
-            data:{
-                 productId: productId,
-                 action: action,
-                 inputVal: inputVal,
-            },
-            success: function( data )
-            {
-                cartItems.innerHTML = data
-                alert("Dodano do koszyka " + inputVal + " produkty");
-                $('#product'+productId).remove();
-            }
-         })
-    });
-</script> -->
 
 </html>

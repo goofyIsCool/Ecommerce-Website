@@ -85,7 +85,7 @@ p {
 
 .row{
     display: flex;
-    align-items: center;
+    /* align-items: center; */
     flex-wrap: wrap;
     justify-content: space-around;
 }
@@ -108,12 +108,10 @@ p {
 
 .col-md-2 {
     flex-basis: 20%;
-    padding: 0px 20px;
 }
 
 .col-md-8 {
-    flex-basis: 80%;
-    padding: 0px 20px;
+    flex-basis: 75%;
 }
 
 .btn{
@@ -128,6 +126,7 @@ p {
 
 .btn:hover  {
     background: grey;
+    cursor: pointer;
 }
 
 .newsletter button{
@@ -139,6 +138,7 @@ p {
     border-radius: 30px;
     transition: background 0.5s;
 }
+
 .categories {
     margin: 70px 0;
 }
@@ -158,6 +158,11 @@ p {
     min-width: 250px;
     margin-bottom: 30px;
 }
+
+.col-5 h4{
+    padding: 10px;
+}
+
 
 .col-5 img{
     padding: 10px;
@@ -193,7 +198,7 @@ p {
 
 .title::after {
     content: '';
-    background: #ff523b;
+    background: lightblue;
     width: 80px;
     height: 5px;
     border-radius: 5px;
@@ -416,6 +421,20 @@ ul {
     .form {
         margin: auto;
     }
+
+    .cart-info p{
+        display: none;
+    }
+
+    .category-content{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .categoryLabel, .categoryText{
+        width: 100%;
+    }
 }
 
 /* all products  */
@@ -576,5 +595,107 @@ input:focus{
 }
 
 .category-content {
+    align-items: center;
+    margin: auto;
+}
 
+/* cart  */
+
+.cart-page {
+    margin-top: 50px;
+    margin-bottom: 200px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.cart-info {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+th {
+    text-align: left;
+    padding: 5px;
+    margin: auto;
+    color: #fff;
+    background: lightblue;
+    font-weight: normal;
+}
+
+td {
+    padding: 10px 5px;
+}
+
+.item-box {
+    border: 1px solid lightgrey;
+}
+
+td input {
+    width: 60px;
+    height: 40px;
+    padding: 5px;
+    text-align: center;
+}
+
+
+span {
+    cursor: pointer;
+}
+
+input {
+	height: 50px;
+	width: 50px;
+	text-align: center;
+	font-size: 16px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+input[type=number] {
+    -moz-appearance:textfield; /* Firefox */
+}
+
+
+td a {
+    color: red;
+    font-size: 12px;
+}
+
+td img{
+    width: 80px;
+    height: 80px;
+    margin-right: 10px;
+}
+
+.total-price {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.total-price table{
+    border-top: 3px solid lightgrey;
+    border-bottom: 3px solid lightgrey;
+    width: 100%;
+    max-width: 430px;
+}
+
+th:last-child {
+    text-align: right;
+}
+
+td:last-child {
+    text-align: right;
 }

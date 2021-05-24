@@ -22,8 +22,10 @@
                   <option>S/M/L/XL</option>
                   <option>XL/XXL/XXXL/XXXXL</option>
               </select>
-              <input type="number" value="{{object.pack}}">
-              <a href="" class="btn">Dodaj</a>
+
+              <input type="number" id="quantity{{object.id}}" value="{{ object.pack }}">
+              <a data-productId="{{ object.id }}" data-action="add" data-pack={{ object.pack }} class="update-cart btn">Dodaj</a>
+
               <h3>Opis</h3>
               <p>{{object.description}}</p>
           </div>
@@ -48,95 +50,65 @@
       </div>
   </div>
 
-        <!-- <div class="col-md-6">
-          <div class="my-auto mx-auto pt-5">
-              <h2>{{object.title}}</h2>
-          </div>
-          <div class="mx-auto my-auto">
-            <div class="pb-5">
-              <span class="">{{object.category}}</span>
-            </div>
 
+<script type="text/javascript">
+    
+    const cartItems = document.getElementById('cartItems');
+    var counter = '{{ cartItems }}';
+    cartItems.innerHTML = counter;
 
-            <span>Paczka: {{object.pack}}</span>
-            <p class="">Cena:
-              {% if object.discount %}
-              <span class="mr-1">
-                <del>{{ object.price }}zł</del>
-              </span>
-              <span>{{ object.discount }}zł</span>
-              {% else %}
-              <span>{{ object.price }}zł</span>
-              {% endif %}
-            </p> -->
+    $('.update-cart').click(function(){
+        var productId = $(this).attr("data-productId");
+        var action = $(this).attr("data-action");
+        var pack = parseInt(this.dataset.pack);
 
-            <!-- <div class="mx-auto row">
-                <div class="">
-                    <input class="text quantity-input-box" id="quantity{{object.id}}" value="{{ object.pack }}">
-                </div>
-                <div class="mx-1">
-                    <a data-productId="{{ object.id }}" data-action="add" data-pack={{ object.pack }} class="update-cart btn btn-primary btn-md my-0 p">Dodaj</a>
-                </div>
-            </div> -->
-
-            <!-- <div class="row m-3">
-            	<span class="glyphicon glyphicon-minus"></span>
-            	<input type="text" value="1"/>
-            	<span class="glyphicon glyphicon-plus"></span>
-                <div class="mx-1">
-                    <a data-productId="{{ object.id }}" data-action="add" data-pack={{ object.pack }} class="update-cart btn btn-primary btn-md my-0 p">Dodaj</a>
-                </div>
-            </div>
-
-            <div class="m-auto pt-2">
-                <p>Produkty są sprzedawane w paczkach po: {{ object.pack }}</p>
-            </div>
-
-            <p class="lead font-weight-bold">Description</p>
-
-            {% if object.description %}
-                <p>{{ object.description }}</p>
-            {% endif %} -->
-
-          </div>
-        </div>
-
-    <script type="text/javascript">
-        var ProductImg = document.getElementById("ProductImg");
-        var SmallImg = document.getElementsByClassName("small-img");
-
-        SmallImg[0].onclick = function() {
-            ProductImg.src = SmallImg[0].src;
+        try {
+            var inputVal = parseInt(document.getElementById("quantity"+productId).value);
+            if (inputVal%pack != 0){
+                inputVal += pack - inputVal%pack
+            }
+        } catch {
+            var inputVal = pack
         }
 
-        SmallImg[1].onclick = function() {
-            ProductImg.src = SmallImg[1].src;
-        }
+        var url = '/add_to_cart/'
+        $.ajax(
+        {
+            type:'GET',
+            url: url,
+            data:{
+                 productId: productId,
+                 action: action,
+                 inputVal: inputVal,
+            },
+            success: function( data )
+            {
+                cartItems.innerHTML = data
+                alert("Dodano do koszyka " + inputVal + " produkty");
+                $('#product'+productId).remove();
+            }
+         })
+    });
+</script>
 
-        SmallImg[2].onclick = function() {
-            ProductImg.src = SmallImg[2].src;
-        }
+<script type="text/javascript">
+    var ProductImg = document.getElementById("ProductImg");
+    var SmallImg = document.getElementsByClassName("small-img");
+
+    SmallImg[0].onclick = function() {
+        ProductImg.src = SmallImg[0].src;
+    }
+
+    SmallImg[1].onclick = function() {
+        ProductImg.src = SmallImg[1].src;
+    }
+
+    SmallImg[2].onclick = function() {
+        ProductImg.src = SmallImg[2].src;
+    }
 
 
-    </script>
+</script>
 
-    <!-- <script type="text/javascript">
-        $(document).ready(function() {
-            $('.minus').click(function () {
-                var $input = $(this).parent().find('input');
-                var count = parseInt($input.val()) - 1;
-                count = count < 1 ? 1 : count;
-                $input.val(count);
-                $input.change();
-                return false;
-            });
-            $('.plus').click(function () {
-                var $input = $(this).parent().find('input');
-                $input.val(parseInt($input.val()) + 1);
-                $input.change();
-                return false;
-            });
-        });
-    </script> -->
 </main>
 {% endblock %}
