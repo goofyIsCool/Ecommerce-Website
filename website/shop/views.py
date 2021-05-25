@@ -25,21 +25,22 @@ from django.utils import timezone
 def home(request):
     try:
         data = cartData(request)
+        counterCartItems = data['counterCartItems']
         cartItems = data['cartItems']
     except:
-        cartItems = 0
+        counterCartItems = 0
 
     # Fix filtering recommended products
     recProdcuts = Product.objects.order_by('price')[:4]
     newProducts1 = Product.objects.order_by('-release_date')[:4]
     newProducts2 = Product.objects.order_by('-release_date')[4:8]
     categories = Category.get_all_categories()
-    
+
     try:
         best = recProdcuts[0]
-        context = {'categories': categories, 'best': best, 'newProducts1': newProducts1, 'newProducts2': newProducts2, 'recProducts': recProdcuts, 'cartItems': cartItems}
+        context = {'cartItems': cartItems, 'categories': categories, 'best': best, 'newProducts1': newProducts1, 'newProducts2': newProducts2, 'recProducts': recProdcuts, 'counterCartItems': counterCartItems}
     except:
-        context = {'categories': categories, 'newProducts1': newProducts1, 'newProducts2': newProducts2, 'recProducts': recProdcuts, 'cartItems': cartItems}
+        context = {'categories': categories, 'newProducts1': newProducts1, 'newProducts2': newProducts2, 'recProducts': recProdcuts, 'counterCartItems': counterCartItems}
 
     return render(request, 'shop/home.html', context)
 
@@ -72,11 +73,12 @@ class ProductListView(ListView):
 
         try:
             data = cartData(self.request)
+            counterCartItems = data['counterCartItems']
             cartItems = data['cartItems']
         except:
-            cartItems = 0
+            counterCartItems = 0
 
-        context['cartItems'] = cartItems
+        context['counterCartItems'] = counterCartItems
 
         context['current_category'] = " "
         categoryID = self.request.GET.get('category')
@@ -89,6 +91,7 @@ class ProductListView(ListView):
         categories = Category.get_all_categories()
         context['categories'] = categories
         context['filter'] = ProductFilterSet(self.request.GET, queryset=products)
+        context['cartItems'] = cartItems
 
         return context
 
@@ -102,11 +105,12 @@ class ItemDetailView(DetailView):
 
         try:
             data = cartData(self.request)
+            counterCartItems = data['counterCartItems']
             cartItems = data['cartItems']
         except:
-            cartItems = 0
+            counterCartItems = 0
 
-        context['cartItems'] = cartItems
+        context['counterCartItems'] = counterCartItems
         categoryId = Category.objects.get(name=self.object.category.name)
         print(categoryId)
         recProducts = Product.objects.filter(category=categoryId)
@@ -127,12 +131,37 @@ class OrderListView(ListView):
 
         return queryset
 
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+
+        try:
+            data = cartData(self.request)
+            counterCartItems = data['counterCartItems']
+            cartItems = data['cartItems']
+        except:
+            counterCartItems = 0
+
+        context['counterCartItems'] = counterCartItems
+        context['cartItems'] = cartItems
+
+        return context
 
 class OrderProductsListView(ListView):
     model = OrderItem
     template_name = "shop/orders_products.html"
 
     def get_context_data(self, *args, **kwargs):
+
+        try:
+            data = cartData(self.request)
+            counterCartItems = data['counterCartItems']
+            cartItems = data['cartItems']
+        except:
+            counterCartItems = 0
+
+        context['counterCartItems'] = counterCartItems
+        context['cartItems'] = cartItems
+
         orderId = self.kwargs['orderId']
         order = Order.objects.get(id=orderId)
         orderItems = OrderItem.objects.filter(order=order)
@@ -161,16 +190,32 @@ def profile(request):
         'user': user,
     }
 
+    try:
+        data = cartData(self.request)
+        counterCartItems = data['counterCartItems']
+        cartItems = data['cartItems']
+        context['cartItems'] = cartItems
+        
+    except:
+        counterCartItems = 0
+
+    context['counterCartItems'] = counterCartItems
+
+
     return render(request, "shop/profile.html", context)
 
 
 def cart(request):
     try:
         data = cartData(request)
-        cartItems = data['cartItems']
+        counterCartItems = data['counterCartItems']
         order = data['order']
         items = data['items']
-        context = {'items': items, 'order': order, 'cartItems': cartItems}
+
+        cartItems = data['cartItems']
+        context = {'items': items, 'order': order, 'counterCartItems': counterCartItems}
+        context['cartItems'] = cartItems
+
         return render(request, 'shop/cart.html', context)
     except:
         return render(request, 'shop/cart.html')
@@ -179,11 +224,14 @@ def cart(request):
 def checkout(request):
     try:
         data = cartData(request)
-        cartItems = data['cartItems']
+        counterCartItems = data['counterCartItems']
         order = data['order']
         items = data['items']
+        cartItems = data['cartItems']
 
-        context = {'items': items, 'order': order, 'cartItems': cartItems}
+        context = {'items': items, 'order': order, 'counterCartItems': counterCartItems}
+        context['cartItems'] = cartItems
+
         return render(request, 'shop/checkout.html', context)
     except:
         return render(request, 'shop/checkout.html')
@@ -192,9 +240,10 @@ def checkout(request):
 def faq(request):
     try:
         data = cartData(request)
+        counterCartItems = data['counterCartItems']
         cartItems = data['cartItems']
 
-        context = {'cartItems': cartItems}
+        context = {'cartItems': cartItems, 'counterCartItems': counterCartItems}
         return render(request, 'shop/FAQ.html', context)
     except:
         return render(request, 'shop/FAQ.html')
@@ -203,9 +252,10 @@ def faq(request):
 def about(request):
     try:
         data = cartData(request)
+        counterCartItems = data['counterCartItems']
         cartItems = data['cartItems']
 
-        context = {'cartItems': cartItems}
+        context = {'cartItems': cartItems, 'counterCartItems': counterCartItems}
         return render(request, 'shop/about.html', context)
     except:
         return render(request, 'shop/about.html')
@@ -214,9 +264,9 @@ def about(request):
 def contact(request):
     try:
         data = cartData(request)
+        counterCartItems = data['counterCartItems']
         cartItems = data['cartItems']
-
-        context = {'cartItems': cartItems}
+        context = {'cartItems': cartItems, 'counterCartItems': counterCartItems}
         return render(request, 'shop/contact.html', context)
     except:
         return render(request, 'shop/contact.html')

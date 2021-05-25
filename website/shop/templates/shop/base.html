@@ -62,11 +62,9 @@
 		device = uuidv4()
 	}
 
+  document.cookie = 'device=' + device + '; SameSite=Lax;' + ";domain=;path=/";
 
-    document.cookie = 'device=' + device + '; SameSite=Lax;' + ";domain=;path=/";
-	// document.cookie ='device=' + device + ";domain=;path=/";
-
-    </script>
+</script>
 </head>
 
 <div class="header">
@@ -81,30 +79,41 @@
                     <li><a href="{% url 'shop:products' %}">Produkty</a></li>
                     <li><a href="{% url 'shop:about' %}">O nas</a></li>
                     <li><a href="{% url 'shop:contact' %}">Kontakt</a></li>
-
                     {% if user.is_authenticated %}
-                        <li>
-                            <div class="dropdown">
-                                <button class="dropbtn">Konto</button>
-                                <div class="dropdown-content">
-                                    <a href="{% url 'shop:profile'%}">Profil</a>
-                                    <a href="{% url 'shop:orders'%}">Historia Zamówień</a>
-                                    {% if user.is_superuser %}
-                                        <a href="{% url 'dashboard:home' %}">Dashboard</a>
-                                    {% endif %}
-                                    <a href="{% url 'logout' %}">Wyloguj się</a>
-                                </div>
-                            </div>
-                        </li>
+                    <li>
+                      <div class="dropdown">
+                       <button onclick="myFunction()" class="dropbtn">Konto</button>
+                       <div id="myDropdown" class="dropdown-content">
+                         <a href="{% url 'shop:profile'%}">Profil</a>
+                         <a href="{% url 'shop:orders'%}">Historia Zamówień</a>
+                         {% if user.is_superuser %}
+                             <a href="{% url 'dashboard:home' %}">Dashboard</a>
+                         {% endif %}
+                         <a href="{% url 'logout' %}">Wyloguj się</a>
+                       </div>
+                      </div>
+                    </li>
                     {% else %}
-                        <li><a href="{% url 'signup' %}">Register</a></li>
-                        <li><a href="{% url 'login' %}">Login</a></li>
+                    <li><a href="{% url 'signup' %}">Register</a></li>
+                    <li><a href="{% url 'login' %}">Login</a></li>
                     {% endif %}
+                    <li>
+                      <div class="dropdown1">
+                        <a class="dropbtn1" href="{% url 'shop:cart' %}"><img src="{% static 'images/cart.png' %}" width="30px" height="30px"></a>
+                        <div class="dropdown-content1">
+                          <p id="cartItems">W twoim koszyku znajdują się: {{counterCartItems}}</p>
+                          {% if cartItems %}
+                            {% for item in cartItems %}
+                              <p> {{item.product.title}} </p>
+                            {% endfor %}
+                          {% else %}
+                            <a href="">Twók koszyk jest pusty</a>
+                          {% endif %}
+                        </div>
+                    </li>
                 </ul>
+                <img src="{% static 'images/menu.png' %}" class="menu-icon" onclick="menuToggle()">
             </nav>
-            <a href="{% url 'shop:cart' %}"><img src="{% static 'images/cart.png' %}" width="30px" height="30px"></a>
-            <p id='cartItems'>{{cartItems}}</p>
-            <img src="{% static 'images/menu.png' %}" class="menu-icon" onclick="menuToggle()">
         </div>
     </div>
 </div>
@@ -173,7 +182,7 @@
 
     function menuToggle() {
         if (MenuItems.style.maxHeight == "0px") {
-            MenuItems.style.maxHeight = "250px";
+            MenuItems.style.maxHeight = "270px";
         }
         else {
             MenuItems.style.maxHeight = "0px";
@@ -181,4 +190,23 @@
     }
 </script>
 
+<script type="text/javascript">
+  function myFunction() {
+    document.getElementById("myDropdown").classList.toggle("show");
+    }
+
+    // Close the dropdown menu if the user clicks outside of it
+    window.onclick = function(event) {
+    if (!event.target.matches('.dropbtn')) {
+      var dropdowns = document.getElementsByClassName("dropdown-content");
+      var i;
+      for (i = 0; i < dropdowns.length; i++) {
+        var openDropdown = dropdowns[i];
+        if (openDropdown.classList.contains('show')) {
+          openDropdown.classList.remove('show');
+        }
+      }
+    }
+  }
+</script>
 </html>

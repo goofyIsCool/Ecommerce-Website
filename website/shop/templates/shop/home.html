@@ -5,13 +5,13 @@
 
 <div class="header">
     <div class="container">
-        <div class="row">
-            <div class="col-2">
+        <div class="row" style="align-items: center">
+            <div class="col-2" style="text-align: center;">
                 <h1>Witamy na naszej stronie <br /> Wólka Moda!</h1>
                 <p>jakis tekst</p>
                 <a href="{% url 'shop:products' %}" class="btn">Zapraszamy do zakupu &#8594;</a>
             </div>
-            <div class="col-2">
+            <div class="col-2" style="text-align: center;">
                 <img src="{% static 'images/home.png' %}" width="500px" >
             </div>
         </div>
@@ -141,7 +141,7 @@
         </div>
         <form class="text-center" method="post">
             {% csrf_token %}
-            <input class="input-box" type="email" name="email" placeholder="Twój e-mail">
+            <input class="input-box2" type="email" name="email" placeholder="Twój e-mail">
             <br>
             <a class="btn" type="submit">Subscribe</a>
         </form>

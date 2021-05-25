@@ -18,6 +18,7 @@ urlpatterns = [
     path('add_to_cart/', views.addToCart, name='add_to_cart'),
     path('process_order/', views.processOrder, name='process_order'),
     path('guest/', auth_views.LoginView.as_view(template_name='shop/guestUserLogin.html'), name='guest'),
+    path('login/', auth_views.LoginView.as_view(template_name="user/login.html", authentication_form=user_forms.UserLoginForm),name='guest'),
     path('shipping_update/', views.shipping_update, name='shipping_update'),
     path('order_confirmation/', views.confirmation, name='order_confirmation'),
     path('profile/', views.profile, name='profile'),

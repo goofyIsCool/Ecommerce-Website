@@ -147,10 +147,19 @@ class Order(models.Model):
 
     # item quantity
     @property
-    def get_cart_items(self):
+    def get_amount_of_items_cart(self):
         orderItems = self.orderitem_set.all()
         total = sum([item.quantity for item in orderItems])
         return total
+
+    @property
+    def get_cart_items(self):
+        arr = []
+        orderItems = self.orderitem_set.all()
+        for item in orderItems:
+            arr.append(item)
+
+        return arr
 
 
 class OrderItem(models.Model):
