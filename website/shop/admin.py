@@ -10,7 +10,7 @@ class ProductAdmin(admin.ModelAdmin):
     image_tag.short_description = 'Image'
 
     list_display = ['image_tag', 'title', 'slug', 'category', 'pack', 'price']
-    search_fields = ['title', 'slug']
+    search_fields = ['title', 'slug', 'category']
 
 
 class ShippingAddressAdmin(admin.ModelAdmin):

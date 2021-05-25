@@ -401,12 +401,17 @@ ul {
 
 .input-box {
     border:0;
-    border-bottom:1px solid grey;
     margin: 20px 0;
-    width: 400px;
+    width: 300px;
     padding:10px;
     height: 30px;
     text-align: left;
+    border-bottom:1px solid lightgrey;
+    font-size: 20px;
+}
+
+.input-box:focus{
+    border-bottom:1px solid black;
 }
 
 select {
@@ -652,6 +657,10 @@ input:focus{
   margin-right: 30px;
 }
 
+.form-group h3 {
+    margin-top: 50px;
+}
+
 .fieldset {
   display: none;
 }
@@ -783,4 +792,36 @@ td:last-child {
   margin-top: 50px;
   margin-bottom: 20px;
   padding-right: 30px;
+}
+
+
+.number{
+        margin:100px;
+    }
+
+.minus, .plus, .check{
+    width:34px;
+    height:34px;
+    background:#f2f2f2;
+    border-radius:4px;
+    padding:5px 5px 5px 5px;
+    border:1px solid #ddd;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+}
+
+input{
+      height:34px;
+      width: 100px;
+      text-align: center;
+      font-size: 26px;
+      border:1px solid #ddd;
+      border-radius:4px;
+      display: inline-block;
+      vertical-align: middle;
+}
+
+.a-btn {
+    cursor: pointer;
 }

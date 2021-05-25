@@ -24,6 +24,7 @@ def param_replace(context, **kwargs):
     Based on
     https://stackoverflow.com/questions/22734695/next-and-before-links-for-a-django-paginated-query/22735278#22735278
     """
+
     d = context['request'].GET.copy()
     for k, v in kwargs.items():
         d[k] = v
@@ -31,8 +32,8 @@ def param_replace(context, **kwargs):
         del d[k]
 
     tmp = copy(d)
-    for k in tmp.items():
-        if k[0] == 'q':
-            del d[k[0]]
+    # for k in tmp.items():
+    #     if k[0] == 'q':
+    #         del d[k[0]]
 
     return d.urlencode()

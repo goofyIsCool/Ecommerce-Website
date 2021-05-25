@@ -75,6 +75,12 @@
             </div>
             <nav>
                 <ul id="MenuItems">
+                    <li>
+                        <form method="get" action="{% url 'shop:products' %}">
+                            <label for="search-field"><i class="fa fa-search"></i>
+                            <input style="width:300px" type="text" class="input-box" name="q" id="id_q" placeholder="Szukaj...">
+                        </form>
+                    </li>
                     <li><a href="{% url 'shop:home' %}">Home</a></li>
                     <li><a href="{% url 'shop:products' %}">Produkty</a></li>
                     <li><a href="{% url 'shop:about' %}">O nas</a></li>

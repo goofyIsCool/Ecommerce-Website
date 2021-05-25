@@ -20,40 +20,37 @@
 		{% if items %}
 		{% for item in items %}
 		<tr>
-			<div class="">
-				<td>
-					<div class="cart-info">
-						<a href="{{ item.product.get_absolute_url }}"><img src="{{ item.product.image1.url }}" ></a>
-						<div>
-							<p>{{item.product.title}}</p>
-							<small>Cena: {{item.product.price}}PLN</small>
-							<br/>
-							<a href="">Usuń</a>
-						</div>
-					</div>
-				</td>
-				<td>
-					<div class="number">
-						<span class="minus">-</span>
-						<input type="number" value="{{item.quantity}}"/>
-						<span class="plus">+</span>
-					</div>
-				</td>
-				<td>{{item.get_total}}PLN</td>
-			</div>
+			<td>
+				<a href="{{ item.product.get_absolute_url }}"><img src="{{ item.product.image1.url }}" ></a>
+				<div>
+					<p>{{item.product.title}}</p>
+					<small>Cena: {{item.product.price}}PLN</small>
+					<br/>
+					<a data-productId="{{ item.product.id }}" data-action="removeAll" class="remove-item-from-cart a-btn">Usuń</a>
+				</div>
+			</td>
+			<td>
+				<div class="plus-minus-input">
+					<span class="minus" data-action="remove" data-pack={{ item.product.pack }}>&#8722;</span>
+					<input class="quantity" type="number" id="{{item.product.id}}" value="{{item.quantity}}"/>
+					<span class="plus" data-action="add" data-pack={{ item.product.pack }}>&#43;</span>
+					<span class="update-cart check" id="{{item.product.id}}">&#10004;</span>
+				</div>
+			</td>
+			<td>{{item.get_total}}PLN</td>
 		</tr>
-		</table>
 		{% endfor %}
+		</table>
 		{% else %}
 		</table>
 		<center>
 				<div class="container" style="margin-top: 50px;">
-						<div class="info">
-								<h2 class="card-title">
-										Brak produktów
-								</h2>
-								<p class="card-text">Twój koszyk wciąż jest pusty.</p>
-						</div>
+					<div class="info">
+						<h2 class="card-title">
+							Brak produktów
+						</h2>
+						<p class="card-text">Twój koszyk wciąż jest pusty.</p>
+					</div>
 				</div>
 		</center>
 		{% endif %}
@@ -77,6 +74,92 @@
 </div>
 
 <script type="text/javascript">
+
+
+	var minusBtns = document.getElementsByClassName("minus");
+
+	for (var i = 0; i < minusBtns.length; i++){
+		minusBtns[i].addEventListener("click", function(e) {
+			var pack = parseInt(this.dataset.pack);
+
+			var $input = $(this).parent().find('input');
+			var count = parseInt($input.val()) - pack;
+			count = count < 1 ? 0 : count;
+			$input.val(count);
+			$input.change();
+			return false;
+		});
+	}
+
+	var plusBtns = document.getElementsByClassName("plus");
+
+	for (var i = 0; i < minusBtns.length; i++){
+		plusBtns[i].addEventListener("click", function(e) {
+			var pack = parseInt(this.dataset.pack);
+
+			var $input = $(this).parent().find('input');
+			var count = parseInt($input.val()) + pack;
+			count = count < 1 ? 1 : count;
+			$input.val(count);
+			$input.change();
+			return false;
+		});
+	}
+
+	checkBtns = document.getElementsByClassName("update-cart");
+
+	for (var i = 0; i < checkBtns.length; i++){
+		checkBtns[i].addEventListener("click", function(e) {
+			var productId = $(this).attr("data-productId");
+			var action = $(this).attr("data-action");
+
+			var parentDiv = $(this).parentNode;
+			var inputVal = parseInt(parentDiv.childNodes[1].dataset.value);
+			var pack = parseInt(this.dataset.pack);
+
+			var url = '/add_to_cart/'
+			$.ajax(
+			{
+				type:'GET',
+				url: url,
+				data:{
+					 productId: productId,
+					 action: action,
+					 inputVal: inputVal,
+				},
+				success: function( data )
+				{
+					cartItems.innerHTML = data
+					alert("Produkt został usunięty z twojego koszyka");
+					$('#product'+productId).remove();
+				}
+			})
+		})
+	};
+
+	$('.remove-item-from-cart').click(function(){
+		var productId = $(this).attr("data-productId");
+
+		var url = '/add_to_cart/'
+		$.ajax(
+		{
+			type:'GET',
+			url: url,
+			data:{
+				 productId: productId,
+				 action: 'removeAll',
+				 inputVal: 0,
+			},
+			success: function( data )
+			{
+				cartItems.innerHTML = data
+				alert("Produkt został usunięty z twojego koszyka");
+				$('#product'+productId).remove();
+			}
+		})
+	});
+
+
 	function checkout() {
 		counterCartItems = '{{counterCartItems}}'
 		console.log(counterCartItems)
@@ -93,32 +176,7 @@
 			}
 		}
 	}
-
-	$('.update-cart2').click(function(){
-		var productId = $(this).attr("data-productId");
-		var action = $(this).attr("data-action");
-		var pack = parseInt(this.dataset.pack);
-
-		inputVal = 0
-		console.log(productId)
-		console.log(action)
-		var url = '/add_to_cart/'
-		$.ajax(
-		{
-			type:'GET',
-			url: url,
-			data:{
-				 productId: productId,
-				 action: action,
-				 inputVal: inputVal,
-			},
-			success: function( data )
-			{
-				cartItems.innerHTML = data
-				alert("Produkt został usunięty z twojego koszyka");
-				$('#product'+productId).remove();
-			}
-		})
-	});
 </script>
+
+
 {% endblock content %}

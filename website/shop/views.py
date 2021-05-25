@@ -49,7 +49,7 @@ class ProductListView(ListView):
 
     model = Product
     template_name = "shop/products.html"
-    paginate_by = 16
+    paginate_by = 4
     ordering = ['title']
 
     def get_queryset(self, *args, **kwargs):
@@ -112,9 +112,7 @@ class ItemDetailView(DetailView):
 
         context['counterCartItems'] = counterCartItems
         categoryId = Category.objects.get(name=self.object.category.name)
-        print(categoryId)
         recProducts = Product.objects.filter(category=categoryId)
-        print(recProducts)
         context['recProducts'] = recProducts[:4]
         return context
 
@@ -195,7 +193,7 @@ def profile(request):
         counterCartItems = data['counterCartItems']
         cartItems = data['cartItems']
         context['cartItems'] = cartItems
-        
+
     except:
         counterCartItems = 0
 
@@ -277,6 +275,10 @@ def addToCart(request):
         productId = request.GET['productId']
         action = request.GET['action']
         quantity = int(request.GET['inputVal'])
+
+        print(productId)
+        print(action)
+        print(quantity)
 
         try:
             customer = request.user.customer
@@ -390,11 +392,12 @@ def product_querySet(query=None):
     queries = query.split(" ")
     for q in queries:
         products = Product.objects.filter(
-            Q(title__icontains=q),
+            Q(slug__icontains=q),
         ).distinct()
 
         for product in products:
             querySet.append(product)
+
 
     return list(set(querySet))
 
