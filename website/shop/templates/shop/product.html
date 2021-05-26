@@ -22,10 +22,12 @@
                   <option>S/M/L/XL</option>
                   <option>XL/XXL/XXXL/XXXXL</option>
               </select>
-
-              <input type="number" id="quantity{{object.id}}" value="{{ object.pack }}">
-              <a data-productId="{{ object.id }}" data-action="add" data-pack={{ object.pack }} class="update-cart btn">Dodaj</a>
-
+              <div class="plus-minus-input">
+                <span class="minus" data-action="remove" data-pack={{ object.pack }}>&#8722;</span>
+      				  <input class="quantity" type="number" id="{{object.id}}" value="{{object.pack}}"/>
+      					<span class="plus" data-action="add" data-pack={{ object.pack }}>&#43;</span>
+                <a data-productId="{{ object.id }}" data-action="add" data-pack={{ object.pack }} class="update-cart btn">Dodaj</a>
+              </div>
               <h3>Opis</h3>
               <p>{{object.description}}</p>
           </div>
@@ -42,8 +44,9 @@
               <div class="col-4">
                   <a href="{{ product.get_absolute_url }}"><img src="{{ product.image1.url }}" width="225" height="225" class="card-img-top"></a>
                   <a href="{{ product.get_absolute_url }}"><h5><strong>{{product.title}}</strong></h5></a>
-                  <p>Cena Netto: {{product.price}} zł</p>
-                  <p>Cena Brutto: {{product.get_brutto_price}} zł</p>
+                  <p>Cena Netto: {{product.price|floatformat:2}} PLN</p>
+                  <p>Cena Brutto: {{product.get_brutto_price|floatformat:2}} PLN</p>
+                  <p>W paczce: {{product.pack|floatformat:0}}</p>
                   <a href="{{ best.get_absolute_url }}" class="btn">Dodaj do koszyka</a>
               </div>
           {% endfor %}
@@ -53,60 +56,115 @@
 
 <script type="text/javascript">
 
-    const cartItems = document.getElementById('cartItems');
-    var counter = '{{ cartItems }}';
-    cartItems.innerHTML = counter;
+  const cartItems = document.getElementById('cartItems');
+  var counter = '{{ cartItems }}';
+  cartItems.innerHTML = counter;
 
-    $('.update-cart').click(function(){
-        var productId = $(this).attr("data-productId");
-        var action = $(this).attr("data-action");
-        var pack = parseInt(this.dataset.pack);
+  $('.update-cart').click(function(){
+      var productId = $(this).attr("data-productId");
+      var action = $(this).attr("data-action");
+      var pack = parseInt(this.dataset.pack);
 
-        try {
-            var inputVal = parseInt(document.getElementById("quantity"+productId).value);
-            if (inputVal%pack != 0){
-                inputVal += pack - inputVal%pack
-            }
-        } catch {
-            var inputVal = pack
-        }
+      try {
+          var inputVal = parseInt($(this).siblings('.quantity').val());
+          console.log(inputVal)
+          if (inputVal%pack != 0){
+              inputVal += pack - inputVal%pack
+          }
+      } catch {
+          var inputVal = pack
+      }
 
-        var url = '/add_to_cart/'
-        $.ajax(
-        {
-            type:'GET',
-            url: url,
-            data:{
-                 productId: productId,
-                 action: action,
-                 inputVal: inputVal,
-            },
-            success: function( data )
-            {
-                cartItems.innerHTML = data
-                alert("Dodano do koszyka " + inputVal + " produkty");
-                $('#product'+productId).remove();
-            }
-         })
-    });
+      console.log(inputVal)
+
+      var url = '/add_to_cart/'
+      $.ajax(
+      {
+          type:'GET',
+          url: url,
+          data:{
+               productId: productId,
+               action: 'add',
+               inputVal: inputVal,
+          },
+          success: function( data )
+          {
+              cartItems.innerHTML = data[0]
+              alert("Dodano do koszyka " + inputVal + " produkty");
+              $('#product'+productId).remove();
+          }
+       })
+  });
 </script>
 
 <script type="text/javascript">
-    var ProductImg = document.getElementById("ProductImg");
-    var SmallImg = document.getElementsByClassName("small-img");
 
-    SmallImg[0].onclick = function() {
-        ProductImg.src = SmallImg[0].src;
-    }
+  $('.minus').click(function(){
+    var pack = parseInt(this.dataset.pack);
 
-    SmallImg[1].onclick = function() {
-        ProductImg.src = SmallImg[1].src;
-    }
+    var $input = $(this).parent().find('input');
+    var count = parseInt($input.val()) - pack;
+    count = count < 1 ? 0 : count;
+    $input.val(count);
+    $input.change();
+    return false;
+  });
 
-    SmallImg[2].onclick = function() {
-        ProductImg.src = SmallImg[2].src;
-    }
+  // var minusBtns = document.getElementsByClassName("minus");
+  //
+  // for (var i = 0; i < minusBtns.length; i++){
+  //   minusBtns[i].addEventListener("click", function(e) {
+  //     var pack = parseInt(this.dataset.pack);
+  //
+  //     var $input = $(this).parent().find('input');
+  //     var count = parseInt($input.val()) - pack;
+  //     count = count < 1 ? 0 : count;
+  //     $input.val(count);
+  //     $input.change();
+  //     return false;
+  //   });
+  // }
 
+  $('.plus').click(function(){
+    var pack = parseInt(this.dataset.pack);
+
+    var $input = $(this).parent().find('input');
+    var count = parseInt($input.val()) + pack;
+    count = count < 1 ? 0 : count;
+    $input.val(count);
+    $input.change();
+    return false;
+  });
+
+  // var plusBtns = document.getElementsByClassName("plus");
+  //
+  // for (var i = 0; i < minusBtns.length; i++){
+  //   plusBtns[i].addEventListener("click", function(e) {
+  //     var pack = parseInt(this.dataset.pack);
+  //
+  //     var $input = $(this).parent().find('input');
+  //     var count = parseInt($input.val()) + pack;
+  //     count = count < 1 ? 1 : count;
+  //     $input.val(count);
+  //     $input.change();
+  //     return false;
+  //   });
+  // }
+
+  var ProductImg = document.getElementById("ProductImg");
+  var SmallImg = document.getElementsByClassName("small-img");
+
+  SmallImg[0].onclick = function() {
+      ProductImg.src = SmallImg[0].src;
+  }
+
+  SmallImg[1].onclick = function() {
+      ProductImg.src = SmallImg[1].src;
+  }
+
+  SmallImg[2].onclick = function() {
+      ProductImg.src = SmallImg[2].src;
+  }
 
 </script>
 

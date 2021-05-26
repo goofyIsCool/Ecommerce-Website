@@ -1,5 +1,4 @@
 from .models import Order, Customer
-import js2py
 from django.http import HttpResponse
 
 def cartData(request):

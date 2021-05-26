@@ -75,7 +75,7 @@ class Product(models.Model):
     def get_netto_price(self):
         return self.price
 
-    @staticmethod
+    @property
     def get_brutto_price(self):
         return self.price*decimal.Decimal(1.23)
 
@@ -172,6 +172,16 @@ class OrderItem(models.Model):
     def get_total(self):
         total = self.product.price * self.quantity
         return total
+
+    @property
+    def get_vat(self):
+        total = self.product.price * self.quantity
+        return total*decimal.Decimal(0.23)
+
+    @property
+    def get_brutto(self):
+        total = self.product.price * self.quantity
+        return total*decimal.Decimal(1.23)
 
 
 class ShippingAddress(models.Model):

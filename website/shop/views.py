@@ -276,10 +276,6 @@ def addToCart(request):
         action = request.GET['action']
         quantity = int(request.GET['inputVal'])
 
-        print(productId)
-        print(action)
-        print(quantity)
-
         try:
             customer = request.user.customer
         except:
@@ -296,16 +292,17 @@ def addToCart(request):
             orderItem.quantity = (orderItem.quantity - orderItem.product.pack)
         elif action == 'removeAll':
             orderItem.quantity = 0
+        elif action == 'update':
+            orderItem.quantity = quantity
 
         orderItem.save()  # saving it to store in database
 
         if orderItem.quantity <= 0:
             orderItem.delete()
 
-        return HttpResponse(order.get_cart_items)  # Sending an success response
+        return HttpResponse(order.get_cart_items) # Sending an success response
 
     return HttpResponse(order.get_cart_items)
-
 
 def processOrder(request):
     transaction_id = datetime.datetime.now().timestamp()

@@ -369,33 +369,52 @@
 
       </div>
       <div class="col-2">
-        <div class="">
-          <h2>Podsumowanie:</h2>
-          <br><hr>
-          <div class="row">
-			        <div class="mx-auto" style="flex:2"><br/></div>
-              <div class="mx-auto" style="flex:2"><strong>Nazwa</strong></div>
-              <div class="mx-auto" style="flex:1"><strong>Cena</strong></div>
-              <div class="mx-auto" style="flex:1"><strong>Ilość</strong></div>
-          </div>
-          <hr />
+        <h2>Podsumowanie:</h2>
+        <br>
+        <table>
+          <tr>
+            <th>Produkt:</th>
+            <th>Ilość:</th>
+            <th>W sumie:</th>
+          </tr>
           {% for item in items %}
-          <div class="cart-row">
-			      <div style="flex:2"><img class="row-image mx-auto" src="{{ item.product.image1.url }}" ></div>
-              <div class="mx-auto" style="flex:2">
-                  <div class="column">
-                      <p>{{item.product.title}}</p>
-                      <p>Pack: {{item.product.pack}}</p>
-                  </div>
-              </div>
-              <div style="flex:1"><p>{{item.product.price}}PLN</p></div>
-              <div style="flex:1"><p>x{{item.quantity}}</p></div>
-          </div>
+          <tr>
+            <td>
+      				<a href="{{ item.product.get_absolute_url }}"><img src="{{ item.product.image1.url }}"></a>
+      				<div>
+      					<p>{{item.product.title}}</p>
+      					<small>Cena: {{item.product.price}}PLN</small>
+      					<br/>
+      				</div>
+      			</td>
+      			<td>
+              <p>{{item.quantity}}</p>
+      			</td>
+      			<td>
+      				<div class="column" style="text-align: right">
+      					<p>Netto: {{item.get_total|floatformat:2}} PLN</p>
+      					<p>Brutto: {{item.get_brutto|floatformat:2}} PLN</p>
+      				</div>
+      			</td>
+          </tr>
           {% endfor %}
-          <h5>Liczba produktów:   <strong>{{ order.get_amount_of_items_cart }}</strong></h5>
-          <h5>Koszt wysyłki:   <strong>30 PLN</strong></h5>
-          <h3>W sumie:   <strong>{{ order.get_cart_total|floatformat:2 }} PLN</strong></h3>
-        </div>
+        </table>
+        <div class="total-price">
+      		<table>
+      			<tr>
+      				<td>Razem</td>
+      				<td>{{order.get_cart_total}} PLN</td>
+      			</tr>
+      			<tr>
+      				<td>Podatek</td>
+      				<td>{{order.get_cart_total_vat|floatformat:2}} PLN</td>
+      			</tr>
+      			<tr>
+      				<td>W sumie</td>
+      				<td>{{order.get_cart_total_brutto|floatformat:2}} PLN</td>
+      			</tr>
+      		</table>
+      	</div>
       </div>
       <br>
     </div>

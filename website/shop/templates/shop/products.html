@@ -52,15 +52,16 @@
                             <a href="{{ product.get_absolute_url }}"><h5><strong>{{product.title}}</strong></h5></a>
 
                             <!-- <button data-productId="{{ product.id }}" data-action="add" data-pack="{{ product.pack }}" class="btn btn-outline-secondary update-cart">Dodaj</button> -->
-                            <p>Cena Netto: {{product.price}} zł</p>
-                            <p>Cena Brutto: {{product.get_brutto_price}} zł</p>
+                            <p>Cena Netto: {{product.price|floatformat:2}} PLN</p>
+                            <p>Cena Brutto: {{product.get_brutto_price|floatformat:2}} PLN</p>
+                            <p>W paczce: {{product.pack|floatformat:0}}</p>
                             <a href="{{ product.get_absolute_url }}" class="btn">Dodaj do koszyka</a>
                         </div>
                     {% endfor %}
                 </div>
             </div>
         </div>
-    
+
         {% else %}
         <center>
             <div class="container">

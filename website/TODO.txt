@@ -1,0 +1,6 @@
+1. Add some pictures on the login screen. Use GIMP
+2. Add messenger bot
+3. Make Forms work
+4. Improve e-mail content
+5. Notifications
+6. Ajax proccess, update frontend data without refreshing
