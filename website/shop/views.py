@@ -288,6 +288,7 @@ def addToCart(request):
 
         if action == 'add':
             orderItem.quantity += quantity
+            messages.success(request, "Produkt został dodaany do koszyka!")
         elif action == 'remove':
             orderItem.quantity = (orderItem.quantity - orderItem.product.pack)
         elif action == 'removeAll':

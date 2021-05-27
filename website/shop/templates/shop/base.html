@@ -126,6 +126,7 @@
 
 <body>
     <div class="content">
+        {% include 'shop/messages.html' %}
         {% block content %}
         {% endblock %}
     </div>
@@ -188,7 +189,7 @@
 
     function menuToggle() {
         if (MenuItems.style.maxHeight == "0px") {
-            MenuItems.style.maxHeight = "270px";
+            MenuItems.style.maxHeight = "350px";
         }
         else {
             MenuItems.style.maxHeight = "0px";
@@ -214,5 +215,12 @@
       }
     }
   }
+
+  setTimeout(function(){
+    if ($('#msg').length > 0) {
+      $('#msg').remove();
+    }
+  }, 2000)
+  
 </script>
 </html>
