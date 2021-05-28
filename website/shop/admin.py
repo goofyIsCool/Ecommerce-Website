@@ -14,7 +14,7 @@ class ProductAdmin(admin.ModelAdmin):
 
 
 class ShippingAddressAdmin(admin.ModelAdmin):
-    list_display = ['customer', 'address', 'country', 'city', 'state', ]
+    list_display = ['customer', 'street', 'country', 'city', 'state', ]
 
 
 class OrderAdmin(admin.ModelAdmin):

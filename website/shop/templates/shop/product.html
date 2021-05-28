@@ -59,9 +59,11 @@
 
 <script type="text/javascript">
 
-  const cartItems = document.getElementById('cartItems');
+  var cartItems = document.getElementById('cartItems');
   var counter = '{{ cartItems }}';
   cartItems.innerHTML = counter;
+
+  var msg = document.getElementById('msg');
 
   $('.update-cart').click(function(){
       var productId = $(this).attr("data-productId");
@@ -70,15 +72,12 @@
 
       try {
           var inputVal = parseInt($(this).siblings('.quantity').val());
-          console.log(inputVal)
           if (inputVal%pack != 0){
               inputVal += pack - inputVal%pack
           }
       } catch {
           var inputVal = pack
       }
-
-      console.log(inputVal)
 
       var url = '/add_to_cart/'
       $.ajax(
@@ -93,7 +92,9 @@
           success: function( data )
           {
               cartItems.innerHTML = data[0]
-              alert("Dodano do koszyka " + inputVal + " produkty");
+              msg.innerHTML = data[1]
+              console.log(data[1])
+              // alert("Dodano do koszyka " + inputVal + " produkty");
               $('#product'+productId).remove();
           }
        })
@@ -113,21 +114,6 @@
     return false;
   });
 
-  // var minusBtns = document.getElementsByClassName("minus");
-  //
-  // for (var i = 0; i < minusBtns.length; i++){
-  //   minusBtns[i].addEventListener("click", function(e) {
-  //     var pack = parseInt(this.dataset.pack);
-  //
-  //     var $input = $(this).parent().find('input');
-  //     var count = parseInt($input.val()) - pack;
-  //     count = count < 1 ? 0 : count;
-  //     $input.val(count);
-  //     $input.change();
-  //     return false;
-  //   });
-  // }
-
   $('.plus').click(function(){
     var pack = parseInt(this.dataset.pack);
 
@@ -139,20 +125,6 @@
     return false;
   });
 
-  // var plusBtns = document.getElementsByClassName("plus");
-  //
-  // for (var i = 0; i < minusBtns.length; i++){
-  //   plusBtns[i].addEventListener("click", function(e) {
-  //     var pack = parseInt(this.dataset.pack);
-  //
-  //     var $input = $(this).parent().find('input');
-  //     var count = parseInt($input.val()) + pack;
-  //     count = count < 1 ? 1 : count;
-  //     $input.val(count);
-  //     $input.change();
-  //     return false;
-  //   });
-  // }
 
   var ProductImg = document.getElementById("ProductImg");
   var SmallImg = document.getElementsByClassName("small-img");

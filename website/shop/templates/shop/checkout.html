@@ -23,21 +23,21 @@
           <div class="form-content">
             <div class="form-group">
               <br>
-              <label class="control-label" for="username">Imię</label>
+              <label class="control-label" for="name">Imię</label>
               <br>
               <input required class="input-box form-control" type="text" name="name">
               <br>
-              <label class="control-label" for="username">Nazwisko</label>
+              <label class="control-label" for="surname">Nazwisko</label>
               <br>
               <input required class="input-box form-control" type="text" name="surname">
               <br>
-              <label class="control-label" for="username">E-mail</label>
+              <label class="control-label" for="email">E-mail</label>
               <br>
               <input required class="input-box form-control" type="text" name="email">
               <br>
-              <label class="control-label" for="username">Numer telefonu</label>
+              <label class="control-label" for="phone">Numer telefonu</label>
               <br>
-              <input required class="input-box form-control" type="text" name="phone">
+              <input required class="input-box form-control" type="tel" name="phone">
               <br>
             </div>
           </div>
@@ -49,21 +49,25 @@
           <div class="form-content">
             <div class="form-group">
               <br>
-              <label class="control-label" for="nip">Nazwa firmy:</label>
+              <label class="control-label" for="company_name">Nazwa firmy:</label>
               <br>
               <input required class="input-box form-control" type="text" name="company_name">
-              <br>
-              <label class="control-label" for="nip">Adres firmy:</label>
-              <br>
-              <input placeholder="ulica" required class="input-box form-control" type="text" name="company_adress">
-              <br>
-              <input placeholder="kod pocztowy" required class="input-box form-control" type="text" name="company_adress">
-              <br>
-              <input placeholder="Miescowość" required class="input-box form-control" type="text" name="company_adress">
               <br>
               <label class="control-label" for="nip">NIP</label>
               <br>
               <input required class="input-box form-control" type="text" name="nip">
+              <br>
+              <label class="control-label" for="company_adress">Adres firmy:</label>
+              <br>
+              <input placeholder="ulica" required class="input-box form-control" type="text" name="company_street">
+              <br>
+              <input placeholder="miasto" required class="input-box form-control" type="text" name="company_city">
+              <br>
+              <input placeholder="kod pocztowy" required class="input-box form-control" type="text" name="company_zipcode">
+              <br>
+              <input placeholder="Miescowość" required class="input-box form-control" type="text" name="company_city">
+              <br>
+              <input placeholder="Kraj" required class="input-box form-control" type="text" name="company_country">
               <br>
             </div>
           </div>
@@ -75,26 +79,26 @@
           <div class="form-content">
             <div class="form-group">
               <br>
-              <label class="control-label" for="username">Ulica:</label>
+              <label class="control-label" >Ulica:</label>
               <br>
-              <input class="input-box form-control" type="text" name="address">
+              <input class="input-box form-control" type="text" name="street">
               <br>
-              <label class="control-label" for="username">Miasto:</label>
+              <label class="control-label">Miasto:</label>
               <br>
               <input class="input-box form-control" type="text" name="city">
               <br>
-              <label class="control-label" for="username">Kod pocztowy:</label>
+              <label class="control-label">Kod pocztowy:</label>
               <br>
               <input class="input-box form-control" type="text" name="zipcode">
               <br>
-              <label class="control-label" for="username">Województwo:</label>
+              <label class="control-label">Województwo:</label>
               <br>
               <input class="input-box form-control" type="text" name="state">
               <br>
-              <label class="control-label" for="username">Kraj:</label>
+              <label class="control-label">Kraj:</label>
               <br>
               <!-- <input class="input-box form-control" type="text" name="country"> -->
-              <select>
+              <select id="country">
                 <option value="Afghanistan">Afghanistan</option>
                 <option value="&Aring;land Islands">&Aring;land Islands</option>
                 <option value="Albania">Albania</option>
@@ -270,7 +274,7 @@
                 <option value="Peru">Peru</option>
                 <option value="Philippines">Philippines</option>
                 <option value="Pitcairn">Pitcairn</option>
-                <option value="Poland">Poland</option>
+                <option selected value="Poland">Poland</option>
                 <option value="Portugal">Portugal</option>
                 <option value="Puerto Rico">Puerto Rico</option>
                 <option value="Qatar">Qatar</option>
@@ -362,9 +366,15 @@
           <hr>
         </div>
 
-        <span><input type="checkbox" value="False">  <label>I agree to the terms of service.</label></span>
-        <a href="{% url 'shop:regulamin' %}" class="iframe" rel="nofollow">(Read the Terms of Service)</a>
 
+        <div class="section-name">
+          <h3>Miejsce na Komentarz</h3>
+          <hr>
+        </div>
+        <textarea placeholder="Komentarz" maxlength="100" class="textarea-comment" type="text" name="comment"></textarea>
+        <br>
+        <span><input type="checkbox" value="False">  <label>Akceptuję</label></span>
+        <a href="{% url 'shop:regulamin' %}" class="iframe" rel="nofollow" value="False" id="regulamin">(Przeczytaj warunki korzystania z usługi)</a>
         <button class="btn btn-success btn-block" id="make-payment">Potwierdź</button>
 
       </div>
@@ -427,75 +437,84 @@
 </script>
 
 <script type="text/javascript">
-    var total = '{{ order.get_cart_total }}'
+  var total = '{{ order.get_cart_total }}'
 
-    // if (user != 'AnonymousUser') {
-    //     document.getElementById('user-info').innerHTML = ''
-    // }
+  // if (user != 'AnonymousUser') {
+  //     document.getElementById('user-info').innerHTML = ''
+  // }
+
+  // csrftoken = {{ csrf_token }};
+
+  document.getElementById('make-payment').addEventListener('click', function(e){
+      submitFormData()
+  })
+
+  function submitFormData(){
+      console.log('Payment button clicked')
+
+      var userFormData = {
+        'name': null,
+        'surname': null,
+        'email': null,
+        'phone': null,
+        'total': total,
+      }
+
+      var companyFormData = {
+        'name': null,
+        'nip': null,
+        'street': null,
+        'city': null,
+        'state': null,
+        'zipcode': null,
+        'country': null,
+      }
+
+      var shippingInfo = {
+          'street': null,
+          'city': null,
+          'state': null,
+          'zipcode': null,
+          'country': null,
+      }
+
+      userFormData.name = form.name.value
+      userFormData.surname = form.surname.value
+      userFormData.email = form.email.value
+      userFormData.phone = form.phone.value
+
+      companyFormData.name = form.company_name.value
+      companyFormData.nip = form.nip.value
+      companyFormData.street = form.company_street.value
+      companyFormData.city = form.company_city.value
+      companyFormData.zipcode = form.company_zipcode.value
+      companyFormData.city = form.company_city.value
+      companyFormData.country = form.company_country.value
+
+      shippingInfo.street = form.street.value
+      shippingInfo.city = form.city.value
+      shippingInfo.zipcode = form.zipcode.value
+      shippingInfo.state = form.state.value
+      shippingInfo.country = form.country.value
 
 
-    var form = document.getElementById('form')
-    // csrftoken = form.getElementsByTagName("input")[0].value
-
-    form.addEventListener('submit', function(e) {
-        e.preventDefault()
-        console.log('Form submitted...')
-        document.getElementById('form-button').classList.add('hidden')
-        document.getElementById('payment-info').classList.remove('hidden')
-    })
-
-    document.getElementById('make-payment').addEventListener('click', function(e){
-        submitFormData()
-    })
-
-    function submitFormData(){
-        console.log('Payment button clicked')
-
-        var userFormData = {
-            'name': null,
-            'surname': null,
-            'email': null,
-            'phone': null,
-            'total': total,
-        }
-
-        var shippingInfo = {
-            'address': null,
-            'city': null,
-            'state': null,
-            'zipcode': null,
-            'country': null,
-        }
-
-        userFormData.name = form.name.value
-        userFormData.surname = form.surname.value
-        userFormData.email = form.email.value
-        userFormData.phone = form.phone.value
-
-        shippingInfo.address = form.address.value
-        shippingInfo.city = form.city.value
-        shippingInfo.state = form.state.value
-        shippingInfo.zipcode = form.zipcode.value
-        shippingInfo.country = form.country.value
-
-
-        var url = '/process_order/'
+      var url = '/process_order/'
     	fetch(url, {
     		method:'POST',
     		headers:{
     			'Content-Type':'application/json',
     			'X-CSRFToken':csrftoken,
     		},
-    		body:JSON.stringify({'form':userFormData, 'shipping':shippingInfo}),
-    	})
-    	.then((response) => response.json())
-    	.then((data) => {
-			console.log('Success:', data);
-			alert('Transaction completed');
+    		body:JSON.stringify({'form':userFormData, 'company':companyFormData, 'shipping':shippingInfo}),
+  	})
+  	.then((response) => response.json())
+  	.then((data) => {
+		console.log('Success:', data);
+		alert('Transaction completed');
 
-			window.location.href = "{% url 'shop:products' %}"
-		})
-    }
+		window.location.href = "{% url 'shop:products' %}"
+	})
+  }
 
 </script>
 {% endblock %}

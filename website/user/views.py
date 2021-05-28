@@ -32,9 +32,8 @@ def signup(request):
                 mail_subject, message, to=[to_email]
             )
             email.send()
-            message = 'Please confirm your email address to complete the registration'
-            context = {'messages': message}
-            return render(request, "user/login.html", context)
+            messages.success(request,'Proszę potwierdzić swój adres e-mail, aby zakończyć rejestrację.')
+            return redirect('login')
     else:
         form = SignupForm()
 
@@ -51,10 +50,10 @@ def activate(request, uidb64, token):
         user.save()
         login(request, user)
 
-        message = 'Thank you for your email confirmation. Now you can log into your account.'
+        message = 'Dziękujemy za twoje potwierdzenie mailowe. Teraz możesz zalogować się na swoje konto.'
         context = {'messages': message}
         return render(request, "user/login.html", context)
     else:
-        message = 'Activation link is invalid!'
+        message = 'Link aktywacyjny jest nieprawidłowy!'
         context = {'messages': message}
         return render(request, "user/login.html", context)

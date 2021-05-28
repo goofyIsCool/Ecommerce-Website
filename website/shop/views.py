@@ -286,9 +286,10 @@ def addToCart(request):
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
         orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
 
+
         if action == 'add':
             orderItem.quantity += quantity
-            messages.success(request, "Produkt został dodaany do koszyka!")
+            messages = "Produkt został dodaany do koszyka!"
         elif action == 'remove':
             orderItem.quantity = (orderItem.quantity - orderItem.product.pack)
         elif action == 'removeAll':
@@ -301,7 +302,7 @@ def addToCart(request):
         if orderItem.quantity <= 0:
             orderItem.delete()
 
-        return HttpResponse(order.get_cart_items) # Sending an success response
+        return HttpResponse([order.get_cart_items, message]) # Sending an success response
 
     return HttpResponse(order.get_cart_items)
 
@@ -327,10 +328,23 @@ def processOrder(request):
     order.save()
 
     orderItems = OrderItem.objects.filter(order=order)
+    # Company.objects.get_or_create(customer=customer)
+    Company.source, created  = Company.objects.get_or_create(customer=customer)
+    if created:
+        Company.source.name = data['company']['name']
+        Company.source.nip = data['company']['nip']
+        Company.source.street = data['company']['street'],
+        Company.source.city = data['company']['city']
+        Company.source.zip_code = data['company']['zipcode']
+        Company.source.state = data['company']['state']
+        Company.source.country = data['company']['country']
+
+    Company.source.save()
+
     ShippingAddress.objects.create(
         customer=customer,
         order=order,
-        address=data['shipping']['address'],
+        street=data['shipping']['street'],
         city=data['shipping']['city'],
         state=data['shipping']['state'],
         country=data['shipping']['country'],
@@ -390,7 +404,7 @@ def product_querySet(query=None):
     queries = query.split(" ")
     for q in queries:
         products = Product.objects.filter(
-            Q(slug__icontains=q),
+            Q(title__contains=q) | Q(slug__icontains=q)
         ).distinct()
 
         for product in products:

@@ -34,7 +34,7 @@
 					<span class="minus" data-action="remove" data-pack={{ item.product.pack }}>&#8722;</span>
 					<input class="quantity" type="number" id="{{item.product.id}}" value="{{item.quantity}}"/>
 					<span class="plus" data-action="add" data-pack={{ item.product.pack }}>&#43;</span>
-					<span class="update-cart check" data-action="update" data-productId="{{ item.product.id }}">&#10004;</span>
+					<span class="update-cart check" data-pack={{ item.product.pack }} data-action="update" data-productId="{{ item.product.id }}">&#10004;</span>
 				</div>
 			</td>
 			<td>
@@ -117,8 +117,14 @@
 		$(checkBtns[i]).click(function() {
 			var productId = $(this).attr("data-productId");
 			var action = $(this).attr("data-action");
+			var pack = parseInt(this.dataset.pack);
 
-			const inputVal = parseInt( $(this).siblings('.quantity').val());
+			// const inputVal = parseInt( $(this).siblings('.quantity').val());
+
+			var inputVal = parseInt( $(this).siblings('.quantity').val());
+			if (inputVal%pack != 0){
+					inputVal += pack - inputVal%pack
+			}
 
 			var url = '/add_to_cart/'
 			$.ajax(

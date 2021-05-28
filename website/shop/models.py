@@ -7,6 +7,8 @@ from django.utils import timezone
 import decimal
 # Create your models here.
 
+VAT = 0.23
+
 SIZE_CHOICES = (
     ('XS', 'extra small'),
     ('S', 'small'),
@@ -77,7 +79,7 @@ class Product(models.Model):
 
     @property
     def get_brutto_price(self):
-        return self.price*decimal.Decimal(1.23)
+        return self.price*decimal.Decimal(1 + VAT)
 
     def get_absolute_url(self):
         return reverse("shop:product", kwargs={
@@ -115,7 +117,8 @@ class Order(models.Model):
     payment = models.CharField(max_length=9, choices=PAYMENT_CHOICES, default='d')
     delivery = models.CharField(max_length=6, default='Kurier')
     total = models.DecimalField(null=True, blank=True, decimal_places=2, max_digits=10)
-    message = models.CharField(max_length=500, null=True, blank=True)
+    totalVat = models.DecimalField(null=True, blank=True, decimal_places=2, max_digits=10)
+    comment = models.CharField(max_length=100, null=True, blank=True)
     Terms_and_conditions = models.BooleanField(default=False)
 
     def get_absolute_url(self):
@@ -137,13 +140,13 @@ class Order(models.Model):
     def get_cart_total_vat(self):
         orderItems = self.orderitem_set.all()
         total = sum([item.get_total for item in orderItems])
-        return total*decimal.Decimal(0.23)
+        return total*decimal.Decimal(VAT)
 
     @property
     def get_cart_total_brutto(self):
         orderItems = self.orderitem_set.all()
         total = sum([item.get_total for item in orderItems])
-        return total*decimal.Decimal(1.23)
+        return total*decimal.Decimal(1 + VAT)
 
     # item quantity
     @property
@@ -176,23 +179,30 @@ class OrderItem(models.Model):
     @property
     def get_vat(self):
         total = self.product.price * self.quantity
-        return total*decimal.Decimal(0.23)
+        return total*decimal.Decimal(VAT)
 
     @property
     def get_brutto(self):
         total = self.product.price * self.quantity
-        return total*decimal.Decimal(1.23)
+        return total*decimal.Decimal(1 + VAT)
 
-
-class ShippingAddress(models.Model):
+class Company(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
-    order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
-    address = models.CharField(max_length=200, null=False)
+    nip = models.CharField(max_length=10, null=False)
+    street = models.CharField(max_length=200, null=False)
     city = models.CharField(max_length=200, null=False)
     state = models.CharField(max_length=200, null=False)
     country = models.CharField(max_length=200, null=False)
     zip_code = models.CharField(max_length=20, null=False)
-    release_date = models.DateTimeField(auto_now_add=True)
+
+class ShippingAddress(models.Model):
+    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
+    order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
+    street = models.CharField(max_length=200, null=False)
+    city = models.CharField(max_length=200, null=False)
+    state = models.CharField(max_length=200, null=False)
+    country = models.CharField(max_length=200, null=False)
+    zip_code = models.CharField(max_length=20, null=False)
 
     def __str__(self):
         if self.customer.name == '':
