@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 # from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import redirect
-from django.contrib import messages
+from django.contrib import messages as messages
 from django.http import JsonResponse
 from .forms import ShippingUpdateForm, UserUpdateForm, ProfileUpdateForm
 import json
@@ -71,6 +71,7 @@ class ProductListView(ListView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
 
+        cartItems = []
         try:
             data = cartData(self.request)
             counterCartItems = data['counterCartItems']
@@ -79,7 +80,6 @@ class ProductListView(ListView):
             counterCartItems = 0
 
         context['counterCartItems'] = counterCartItems
-
         context['current_category'] = " "
         categoryID = self.request.GET.get('category')
         if categoryID:
@@ -107,6 +107,7 @@ class ItemDetailView(DetailView):
             data = cartData(self.request)
             counterCartItems = data['counterCartItems']
             cartItems = data['cartItems']
+            context['cartItems'] = cartItems
         except:
             counterCartItems = 0
 
@@ -114,6 +115,7 @@ class ItemDetailView(DetailView):
         categoryId = Category.objects.get(name=self.object.category.name)
         recProducts = Product.objects.filter(category=categoryId)
         context['recProducts'] = recProducts[:4]
+
         return context
 
 # Make the generic Views login_required
@@ -188,17 +190,17 @@ def profile(request):
         'user': user,
     }
 
+
+    cartItems = []
     try:
         data = cartData(self.request)
         counterCartItems = data['counterCartItems']
         cartItems = data['cartItems']
-        context['cartItems'] = cartItems
-
     except:
         counterCartItems = 0
 
     context['counterCartItems'] = counterCartItems
-
+    context['cartItems'] = cartItems
 
     return render(request, "shop/profile.html", context)
 
@@ -286,15 +288,17 @@ def addToCart(request):
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
         orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
 
-
         if action == 'add':
             orderItem.quantity += quantity
-            messages = "Produkt został dodaany do koszyka!"
-        elif action == 'remove':
-            orderItem.quantity = (orderItem.quantity - orderItem.product.pack)
+            message = "Produkt został dodany do koszyka!"
+        # elif action == 'remove':
+        #     orderItem.quantity = (orderItem.quantity - orderItem.product.pack)
+        #     message = "Produkty zosta!"
         elif action == 'removeAll':
+            message = "Produkt został usunięty z twojego koszyka!"
             orderItem.quantity = 0
         elif action == 'update':
+            message = "Produkt został zaktualizowany!"
             orderItem.quantity = quantity
 
         orderItem.save()  # saving it to store in database
@@ -302,7 +306,8 @@ def addToCart(request):
         if orderItem.quantity <= 0:
             orderItem.delete()
 
-        return HttpResponse([order.get_cart_items, message]) # Sending an success response
+        messages.success(request, message)
+        return HttpResponse(order.get_cart_items) # Sending an success response
 
     return HttpResponse(order.get_cart_items)
 

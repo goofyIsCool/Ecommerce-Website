@@ -110,7 +110,7 @@
                       <div class="dropdown1">
                         <a class="dropbtn1" href="{% url 'shop:cart' %}"><img src="{% static 'images/cart.png' %}" width="30px" height="30px"></a>
                         <div class="dropdown-content1">
-                          <p id="cartItems">W twoim koszyku znajdują się: {{counterCartItems}}</p>
+                          <p id="cartItems">W twoim koszyku znajdują się: </p>
                           {% if cartItems %}
                             {% for item in cartItems %}
                               <p> {{item.product.title}} </p>

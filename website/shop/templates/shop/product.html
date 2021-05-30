@@ -91,10 +91,7 @@
           },
           success: function( data )
           {
-              cartItems.innerHTML = data[0]
-              msg.innerHTML = data[1]
-              console.log(data[1])
-              // alert("Dodano do koszyka " + inputVal + " produkty");
+              cartItems.innerHTML = data[0];
               $('#product'+productId).remove();
           }
        })

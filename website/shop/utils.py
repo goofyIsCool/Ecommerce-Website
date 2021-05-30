@@ -13,4 +13,4 @@ def cartData(request):
     counterCartItems = order.get_amount_of_items_cart
     cartItems = order.get_cart_items
 
-    return {'cartItems': cartItems, 'counterCartItems': counterCartItems, 'order': order, 'items': items, 'customer': customer}
+    return {'cartItems': cartItems, 'counterCartItems': counterCartItems, 'customer': customer, 'order': order, 'items':items}

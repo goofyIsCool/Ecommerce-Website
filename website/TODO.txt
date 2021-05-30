@@ -8,3 +8,4 @@
 8. Guest User Login Move cart items to user if logged in
 9. Dashboard
 10. DateTimeField Order Fix
+11. Cart
