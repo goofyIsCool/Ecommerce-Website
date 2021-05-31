@@ -108,10 +108,12 @@ p {
 
 .col-md-2 {
     flex-basis: 20%;
+    margin-bottom: 100px;
 }
 
 .col-md-8 {
     flex-basis: 75%;
+    margin-bottom: 100px;
 }
 
 .btn{
@@ -399,6 +401,24 @@ ul {
     text-align: center;
 }
 
+.filter {
+    margin: 50px 0px;
+    height: 30px;
+    text-align: left;
+    font-size: 20px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.filter select{
+    border:0;
+    margin: 20px 0;
+    width: 200px;
+    height: 30px;
+    text-align: left;
+    border-bottom:1px solid lightgrey;
+    font-family: 'Poppins', sans-serif;
+}
+
 .input-box {
     border:0;
     margin: 20px 0;
@@ -515,6 +535,7 @@ select {
         display: flex;
         align-items: center;
         justify-content: center;
+        align-items: center;
     }
 
     .categoryLabel, .categoryText{
@@ -574,7 +595,10 @@ select:focus {
 }
 
 .categoryText{
-    margin: 10px 10px;
+    margin: 10px 0px;
+    text-align:left;
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px
 }
 
 .categoryLabel{
@@ -697,11 +721,6 @@ input:focus{
 
 .info p{
    color: lightblue;
-}
-
-.category-content {
-    align-items: center;
-    margin: auto;
 }
 
 /* cart  */

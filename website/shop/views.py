@@ -363,6 +363,8 @@ def processOrder(request):
         zip_code=data['shipping']['zipcode'],
     )
 
+    ShippingAddress.save()
+
     customer.name = data['form']['name']
     customer.surname = data['form']['surname']
     customer.email = data['form']['email']

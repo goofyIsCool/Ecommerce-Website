@@ -2,11 +2,12 @@
 2. Add messenger bot (easy)
 3. Make Forms work (easy)
 4. Improve e-mail content (easy)
+
 5. Notifications (working on it)
-6. Ajax proccess, update frontend data without refreshing
-7. Search/filterigng products done (can be improved)
-8. Guest User Login Move cart items to user if logged in
-9. Dashboard 
-10. DateTimeField Order Fix
-11. Cart
+6. Ajax proccess, update frontend data without refreshing (Working on it)
+7. Search/filterigng products done (can be improved) X
+8. Guest User Login Move cart items to user if logged in (Working on it)
+9. Dashboard (Working on it)
+10. DateTimeField Order Fix X
+11. Cart (almost done)
 12. Make the website more mobile friendly (to be improved)

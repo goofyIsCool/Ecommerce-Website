@@ -7,13 +7,6 @@
 <div class="container">
     <div class="row row-2">
         <h2>Produkty</h2>
-        <select>
-            <option>Domyślne sortowanie</option>
-            <option>Sortuj rosnąco po cenie</option>
-            <option>Sortuj malejąco po cenie</option>
-            <option>Sortuj po popularności</option>
-            <option>Sortuj po nazwie</option>
-        </select>
     </div>
     <div class="row">
         {% if object_list %}
@@ -22,13 +15,17 @@
               <div style="category-content">
                   <center>
                       <div class="categoryText">
-                          <h3>Kategorie</h3>
+                          <label>Kategorie</label>
                       </div>
                       <div class="column">
                           {% for category in categories %}
                               <a class="categoryLabel" href="?{% param_replace category=category.id page=1%}"><p>{{ category.name }}</p></a>
                           {% endfor %}
                       </div>
+                      <form class="filter" method="get">
+                          {{ filter.form|crispy }}
+                          <button class="btn" type="submit">Search</button>
+                      </form>
                    </center>
               </div>
             </div>
@@ -65,7 +62,7 @@
         {% else %}
         <center>
             <div class="container">
-                <div class="info">
+                <div class="info" style="margin-bottom: 500px;">
                     <h2 class="card-title">
                         Brak wyników
                     </h2>

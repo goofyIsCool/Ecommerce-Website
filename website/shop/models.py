@@ -116,9 +116,9 @@ class Order(models.Model):
     transaction_id = models.CharField(max_length=100, null=True)
     payment = models.CharField(max_length=9, choices=PAYMENT_CHOICES, default='d')
     delivery = models.CharField(max_length=6, default='Kurier')
-    total = models.DecimalField(null=True, blank=True, decimal_places=2, max_digits=10)
-    vat = models.DecimalField(null=True, blank=True, decimal_places=2, max_digits=10)
-    brutto = models.DecimalField(null=True, blank=True, decimal_places=2, max_digits=10)
+    total = models.DecimalField(default=0, null=True, blank=True, decimal_places=2, max_digits=10)
+    vat = models.DecimalField(default=0, null=True, blank=True, decimal_places=2, max_digits=10)
+    brutto = models.DecimalField(default=0, null=True, blank=True, decimal_places=2, max_digits=10)
     comment = models.CharField(max_length=100, null=True, blank=True)
     Terms_and_conditions = models.BooleanField(default=False)
 
