@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Product, OrderItem, Order, ShippingAddress, Category, Customer
+from .models import Product, OrderItem, Order, ShippingAddress, Category, Customer, Company
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
@@ -321,30 +321,37 @@ def processOrder(request):
         device = request.COOKIES['device']
         customer, created = Customer.objects.get_or_create(device=device)
 
-    total = float(data['form']['total'])
+    #całkowite
+    całklowite = float(data['form']['total'][:-3])
+    #grosze
+    grosze = float(data['form']['total'][-2:])/100
+    # total to w sumie z Vatem
+    total = round(całklowite + grosze,2)
     order, created = Order.objects.get_or_create(customer=customer, complete=False)
     order.transaction_id = transaction_id
 
-    if total == order.get_cart_total:
+    if total == float(round(order.get_cart_total_brutto,2)):
         order.complete = True
         order.total = decimal.Decimal(order.get_cart_total)
+        order.vat = decimal.Decimal(order.get_cart_total_vat)
+        order.brutto = round(decimal.Decimal(order.get_cart_total_brutto),2)
         order.date_ordered = timezone.localtime(timezone.now()).date()
 
     order.save()
 
     orderItems = OrderItem.objects.filter(order=order)
     # Company.objects.get_or_create(customer=customer)
-    Company.source, created  = Company.objects.get_or_create(customer=customer)
+    Company, created  = Company.objects.get_or_create(customer=customer)
     if created:
-        Company.source.name = data['company']['name']
-        Company.source.nip = data['company']['nip']
-        Company.source.street = data['company']['street'],
-        Company.source.city = data['company']['city']
-        Company.source.zip_code = data['company']['zipcode']
-        Company.source.state = data['company']['state']
-        Company.source.country = data['company']['country']
+        Company.name = data['company']['name']
+        Company.nip = data['company']['nip']
+        Company.street = data['company']['street'],
+        Company.city = data['company']['city']
+        Company.zip_code = data['company']['zipcode']
+        Company.state = data['company']['state']
+        Company.country = data['company']['country']
 
-    Company.source.save()
+    Company.save()
 
     ShippingAddress.objects.create(
         customer=customer,

@@ -1,11 +1,12 @@
 1. Add some pictures on the login screen. Use GIMP (easy)
 2. Add messenger bot (easy)
-3. Make Forms work
-4. Improve e-mail content
+3. Make Forms work (easy)
+4. Improve e-mail content (easy)
 5. Notifications (working on it)
 6. Ajax proccess, update frontend data without refreshing
 7. Search/filterigng products done (can be improved)
 8. Guest User Login Move cart items to user if logged in
-9. Dashboard
+9. Dashboard 
 10. DateTimeField Order Fix
 11. Cart
+12. Make the website more mobile friendly (to be improved)

@@ -11,15 +11,17 @@
       </div>
     </div>
     <div class="row">
-        <div class="col-2">
-          <h2>Dane do zamówienia: </h2>
-          <p><span class="required">*</span>-proszę wypełnić wszystkie pola</p>
-          {% csrf_token %}
+      <div class="col-2">
+        <h2>Dane do zamówienia: </h2>
+        <p><span class="required">*</span>-proszę wypełnić wszystkie pola</p>
+        {% csrf_token %}
 
-          <div class="section-name">
-            <h3 class="mx-auto pt-3">Dane Odbiorcy: </h3>
-            <hr>
-          </div>
+        <div class="section-name">
+          <h3 class="mx-auto pt-3">Dane Odbiorcy: </h3>
+          <hr>
+        </div>
+
+        <form id="form">
           <div class="form-content">
             <div class="form-group">
               <br>
@@ -65,13 +67,12 @@
               <br>
               <input placeholder="kod pocztowy" required class="input-box form-control" type="text" name="company_zipcode">
               <br>
-              <input placeholder="Miescowość" required class="input-box form-control" type="text" name="company_city">
+              <input placeholder="Województwo" required class="input-box form-control" type="text" name="company_state">
               <br>
               <input placeholder="Kraj" required class="input-box form-control" type="text" name="company_country">
               <br>
             </div>
           </div>
-
           <div class="section-name">
             <h3 class="mx-auto pt-3">Adres Dostawy: </h3>
             <hr>
@@ -357,9 +358,9 @@
           <hr>
         </div>
         <div>
-          <span><input type="checkbox" name="dostawa" value="False">  <label>Kurier 30zł, płatność przelewem.</label></span>
+          <span><input type="checkbox" name="dostawa" value="False"><label>Kurier 30zł, płatność przelewem.</label></span>
           <br>
-          <span><input type="checkbox" name="dostawa" value="False">  <label>Kurier 30zł, płatność przy odbiorze.</label></span>
+          <span><input type="checkbox" name="dostawa" value="False"><label>Kurier 30zł, płatność przy odbiorze.</label></span>
           <br>
         </div>
         <div class="section-name">
@@ -375,8 +376,9 @@
         <br>
         <span><input type="checkbox" value="False">  <label>Akceptuję</label></span>
         <a href="{% url 'shop:regulamin' %}" class="iframe" rel="nofollow" value="False" id="regulamin">(Przeczytaj warunki korzystania z usługi)</a>
-        <button class="btn btn-success btn-block" id="make-payment">Potwierdź</button>
 
+        <button class="btn btn-success btn-block" id="make-payment">Potwierdź</button>
+      </form>
       </div>
       <div class="col-2">
         <h2>Podsumowanie:</h2>
@@ -437,14 +439,10 @@
 </script>
 
 <script type="text/javascript">
-  var total = '{{ order.get_cart_total }}'
+  var total = '{{ order.get_cart_total_brutto|floatformat:2 }}'
 
-  // if (user != 'AnonymousUser') {
-  //     document.getElementById('user-info').innerHTML = ''
-  // }
-
+  var form = document.getElementById('form')
   // csrftoken = {{ csrf_token }};
-
   document.getElementById('make-payment').addEventListener('click', function(e){
       submitFormData()
   })
@@ -460,6 +458,8 @@
         'total': total,
       }
 
+      console.log(userFormData)
+
       var companyFormData = {
         'name': null,
         'nip': null,
@@ -470,6 +470,8 @@
         'country': null,
       }
 
+      console.log(companyFormData)
+
       var shippingInfo = {
           'street': null,
           'city': null,
@@ -477,6 +479,8 @@
           'zipcode': null,
           'country': null,
       }
+
+      console.log(shippingInfo)
 
       userFormData.name = form.name.value
       userFormData.surname = form.surname.value
@@ -488,7 +492,7 @@
       companyFormData.street = form.company_street.value
       companyFormData.city = form.company_city.value
       companyFormData.zipcode = form.company_zipcode.value
-      companyFormData.city = form.company_city.value
+      companyFormData.state = form.company_state.value
       companyFormData.country = form.company_country.value
 
       shippingInfo.street = form.street.value
@@ -496,6 +500,13 @@
       shippingInfo.zipcode = form.zipcode.value
       shippingInfo.state = form.state.value
       shippingInfo.country = form.country.value
+
+
+      console.log("-----------------------")
+
+      console.log(userFormData)
+      console.log(companyFormData)
+      console.log(shippingInfo)
 
 
       var url = '/process_order/'
@@ -507,14 +518,22 @@
     		},
     		body:JSON.stringify({'form':userFormData, 'company':companyFormData, 'shipping':shippingInfo}),
   	})
+
   	.then((response) => response.json())
   	.then((data) => {
 		console.log('Success:', data);
 		alert('Transaction completed');
 
-		window.location.href = "{% url 'shop:products' %}"
+		window.location.href = "{% url 'shop:home' %}"
 	})
   }
+
+  $('form input').keydown(function (e) {
+    if (e.keyCode == 13) {
+        e.preventDefault();
+        return false;
+      }
+  });
 
 </script>
 {% endblock %}
