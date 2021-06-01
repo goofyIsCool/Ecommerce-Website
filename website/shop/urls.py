@@ -17,6 +17,7 @@ urlpatterns = [
     path('cart/', views.cart, name='cart'),
     path('checkout/', views.checkout, name='checkout'),
     path('add_to_cart/', views.addToCart, name='add_to_cart'),
+    path('move_cart/', views.moveItemCarts, name='move_cart'),
     path('process_order/', views.processOrder, name='process_order'),
     path('guest/', auth_views.LoginView.as_view(template_name="shop/guestUserLogin.html", authentication_form=user_forms.UserLoginForm),name='guest'),
     path('shipping_update/', views.shipping_update, name='shipping_update'),

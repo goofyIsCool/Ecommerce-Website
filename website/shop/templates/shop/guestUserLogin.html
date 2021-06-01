@@ -37,11 +37,34 @@
                 {{ form.password }}
                 {{ form.password.errors }}
             </div>
-            <button class="btn" type="submit">Zaloguj się</button>
+            <button class="btn" type="submit" id="move_cart"">Zaloguj się</button>
           </div>
         </form>
       </div>
     </div>
   </div>
 </div>
+
+<script type="text/javascript">
+
+  document.getElementById('move_cart').addEventListener('click', function(e){moveCart()})
+
+  function moveCart(){
+    console.log('Moving items from guest cart to user cart!')
+    var url = '/move_cart/'
+  	fetch(url, {
+  		method:'POST',
+  		headers:{
+  			'Content-Type':'application/json',
+  			'X-CSRFToken':csrftoken,
+  		},
+  	})
+
+  	.then((response) => response.json())
+  	.then((data) => {
+		  window.location.href = "{% url 'shop:home' %}"
+	  })
+  }
+</script>
+
 {% endblock %}

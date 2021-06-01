@@ -521,11 +521,9 @@
 
   	.then((response) => response.json())
   	.then((data) => {
-		console.log('Success:', data);
-		alert('Transaction completed');
-
-		window.location.href = "{% url 'shop:home' %}"
-	})
+  		alert('Transaction completed');
+  		window.location.href = "{% url 'shop:home' %}"
+	  })
   }
 
   $('form input').keydown(function (e) {

@@ -312,6 +312,7 @@ def addToCart(request):
     return HttpResponse(order.get_cart_items)
 
 def processOrder(request):
+
     transaction_id = datetime.datetime.now().timestamp()
     data = json.loads(request.body)
 
@@ -329,29 +330,31 @@ def processOrder(request):
     total = round(całklowite + grosze,2)
     order, created = Order.objects.get_or_create(customer=customer, complete=False)
     order.transaction_id = transaction_id
-
+    print(total)
+    print(float(round(order.get_cart_total_brutto,2)))
     if total == float(round(order.get_cart_total_brutto,2)):
         order.complete = True
         order.total = decimal.Decimal(order.get_cart_total)
         order.vat = decimal.Decimal(order.get_cart_total_vat)
         order.brutto = round(decimal.Decimal(order.get_cart_total_brutto),2)
         order.date_ordered = timezone.localtime(timezone.now()).date()
+        print("WORKING!")
 
     order.save()
 
     orderItems = OrderItem.objects.filter(order=order)
     # Company.objects.get_or_create(customer=customer)
-    Company, created  = Company.objects.get_or_create(customer=customer)
+    company, created  = Company.objects.get_or_create(customer=customer)
     if created:
-        Company.name = data['company']['name']
-        Company.nip = data['company']['nip']
-        Company.street = data['company']['street'],
-        Company.city = data['company']['city']
-        Company.zip_code = data['company']['zipcode']
-        Company.state = data['company']['state']
-        Company.country = data['company']['country']
+        company.name = data['company']['name']
+        company.nip = data['company']['nip']
+        company.street = data['company']['street'],
+        company.city = data['company']['city']
+        company.zip_code = data['company']['zipcode']
+        company.state = data['company']['state']
+        company.country = data['company']['country']
 
-    Company.save()
+    company.save()
 
     ShippingAddress.objects.create(
         customer=customer,
@@ -363,8 +366,6 @@ def processOrder(request):
         zip_code=data['shipping']['zipcode'],
     )
 
-    ShippingAddress.save()
-
     customer.name = data['form']['name']
     customer.surname = data['form']['surname']
     customer.email = data['form']['email']
@@ -373,7 +374,7 @@ def processOrder(request):
     customer.save()
 
     current_site = get_current_site(request)
-    mail_subject = 'Your Wólka Moda order.'
+    mail_subject = 'Zamówienie Wólka Moda'
     message = render_to_string('shop/order_email.html', {
         'customer': customer,
         'domain': current_site.domain,
@@ -386,11 +387,29 @@ def processOrder(request):
     )
     email.send()
 
-    # message = 'Please check your email address to complete the registration'
+    # message = 'Please check your email. We've sent you an email with your order.'
     # context = {'messages': message}
 
     return JsonResponse('Payment complete!', safe=False)
 
+def moveItemCarts(request):
+
+    print("OK!")
+    device = request.COOKIES['device']
+    customer1, created = Customer.objects.get_or_create(device=device) #Guest user
+    customer2 = request.user.customer
+
+    order1, created = Order.objects.get_or_create(customer=customer1, complete=False)
+    order2, created = Order.objects.get_or_create(customer=customer2, complete=False)
+
+    items1 = order1.orderitem_set.all()
+    for item in items1:
+        orderItem, created = OrderItem.objects.get_or_create(order=order2, product=item.product)
+        orderItem.quantity = item.quantity
+
+    order1.delete()
+
+    return JsonResponse('We have succesfully moved your cart items!', safe=False)
 
 @ login_required
 def shipping_update(request):
