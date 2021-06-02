@@ -110,13 +110,36 @@
                       <div class="dropdown1">
                         <a class="dropbtn1" href="{% url 'shop:cart' %}"><img src="{% static 'images/cart.png' %}" width="30px" height="30px"></a>
                         <div class="dropdown-content1">
-                          <p id="cartItems">W twoim koszyku znajdują się: </p>
+                          <p id="cartItems">Twój koszyk: </p>
                           {% if cartItems %}
                             {% for item in cartItems %}
-                              <p> {{item.product.title}} </p>
+                            <tr>
+                              <td>
+                                <div class="row">
+                                  <div class="col-3">
+                                    <a href="{{ item.product.get_absolute_url }}"><img src="{{ item.product.image1.url }}" style="width:50px; height: 50px;"></a>
+                                  </div>
+                                  <div class="col-3">
+                                    <div>
+                                      <p>{{item.product.title}}</p>
+                                      <small>Cena: {{item.product.price}}PLN</small>
+                                      <br/>
+                                    </div>
+                                    <p>{{item.quantity}}</p>
+                                  </div>
+                                </div>
+                              </td>
+                              <td>
+                                <div class="column" style="text-align: right">
+                                  <p>Netto: {{item.get_total|floatformat:2}} PLN</p>
+                                  <p>Brutto: {{item.get_brutto|floatformat:2}} PLN</p>
+                                </div>
+                              </td>
+                              </div>
+                            </tr>
                             {% endfor %}
                           {% else %}
-                            <a href="">Twók koszyk jest pusty</a>
+                            <p>Twók koszyk jest pusty</p>
                           {% endif %}
                         </div>
                     </li>

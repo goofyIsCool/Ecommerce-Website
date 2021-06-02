@@ -5,7 +5,7 @@
 9. Dashboard (Working on it)
 11. Cart (almost done)
 12. Make the website more mobile friendly (to be improved)
-
+13. SEO (META etc.)
 
 Working:
 5. Notifications (working on it)

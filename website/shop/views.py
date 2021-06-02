@@ -392,6 +392,9 @@ def processOrder(request):
 
     return JsonResponse('Payment complete!', safe=False)
 
+def order_complete(request):
+    return render(request,'shop/order_complete.html')
+
 def moveItemCarts(request):
 
     print("OK!")

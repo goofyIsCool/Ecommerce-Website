@@ -448,83 +448,83 @@
   })
 
   function submitFormData(){
-      console.log('Payment button clicked')
+    console.log('Payment button clicked')
 
-      var userFormData = {
-        'name': null,
-        'surname': null,
-        'email': null,
-        'phone': null,
-        'total': total,
-      }
+    var userFormData = {
+      'name': null,
+      'surname': null,
+      'email': null,
+      'phone': null,
+      'total': total,
+    }
 
-      console.log(userFormData)
+    console.log(userFormData)
 
-      var companyFormData = {
-        'name': null,
-        'nip': null,
+    var companyFormData = {
+      'name': null,
+      'nip': null,
+      'street': null,
+      'city': null,
+      'state': null,
+      'zipcode': null,
+      'country': null,
+    }
+
+    console.log(companyFormData)
+
+    var shippingInfo = {
         'street': null,
         'city': null,
         'state': null,
         'zipcode': null,
         'country': null,
-      }
+    }
 
-      console.log(companyFormData)
+    console.log(shippingInfo)
 
-      var shippingInfo = {
-          'street': null,
-          'city': null,
-          'state': null,
-          'zipcode': null,
-          'country': null,
-      }
+    userFormData.name = form.name.value
+    userFormData.surname = form.surname.value
+    userFormData.email = form.email.value
+    userFormData.phone = form.phone.value
 
-      console.log(shippingInfo)
+    companyFormData.name = form.company_name.value
+    companyFormData.nip = form.nip.value
+    companyFormData.street = form.company_street.value
+    companyFormData.city = form.company_city.value
+    companyFormData.zipcode = form.company_zipcode.value
+    companyFormData.state = form.company_state.value
+    companyFormData.country = form.company_country.value
 
-      userFormData.name = form.name.value
-      userFormData.surname = form.surname.value
-      userFormData.email = form.email.value
-      userFormData.phone = form.phone.value
-
-      companyFormData.name = form.company_name.value
-      companyFormData.nip = form.nip.value
-      companyFormData.street = form.company_street.value
-      companyFormData.city = form.company_city.value
-      companyFormData.zipcode = form.company_zipcode.value
-      companyFormData.state = form.company_state.value
-      companyFormData.country = form.company_country.value
-
-      shippingInfo.street = form.street.value
-      shippingInfo.city = form.city.value
-      shippingInfo.zipcode = form.zipcode.value
-      shippingInfo.state = form.state.value
-      shippingInfo.country = form.country.value
+    shippingInfo.street = form.street.value
+    shippingInfo.city = form.city.value
+    shippingInfo.zipcode = form.zipcode.value
+    shippingInfo.state = form.state.value
+    shippingInfo.country = form.country.value
 
 
-      console.log("-----------------------")
+    console.log("-----------------------")
 
-      console.log(userFormData)
-      console.log(companyFormData)
-      console.log(shippingInfo)
+    console.log(userFormData)
+    console.log(companyFormData)
+    console.log(shippingInfo)
 
 
-      var url = '/process_order/'
-    	fetch(url, {
-    		method:'POST',
-    		headers:{
-    			'Content-Type':'application/json',
-    			'X-CSRFToken':csrftoken,
-    		},
-    		body:JSON.stringify({'form':userFormData, 'company':companyFormData, 'shipping':shippingInfo}),
-  	})
+    var url = '/process_order/'
+  	fetch(url, {
+  		method:'POST',
+  		headers:{
+  			'Content-Type':'application/json',
+  			'X-CSRFToken':csrftoken,
+  		},
+  		body:JSON.stringify({'form':userFormData, 'company':companyFormData, 'shipping':shippingInfo}),
+	  })
 
   	.then((response) => response.json())
   	.then((data) => {
   		alert('Transaction completed');
-  		window.location.href = "{% url 'shop:home' %}"
+  		window.location.href = "{% url 'shop:order_complete' %}"
 	  })
-  }
+}
 
   $('form input').keydown(function (e) {
     if (e.keyCode == 13) {
