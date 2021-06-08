@@ -15,8 +15,6 @@
     <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
     <script type="text/javascript">
 
-
-
     var user = '{{request.user}}'
 
     function getToken(name) {
@@ -68,8 +66,59 @@
   document.cookie = 'device=' + device + '; SameSite=Lax;' + ";domain=;path=/";
 
 </script>
-</head>
 
+<style>
+    .sidebar {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      background-color: #111;
+      overflow-x: hidden;
+      transition: 0.5s;
+      padding-top: 60px;
+    }
+
+    .sidebar a {
+      padding: 8px 8px 8px 32px;
+      text-decoration: none;
+      font-size: 25px;
+      color: #818181;
+      display: block;
+      transition: 0.3s;
+    }
+
+    .sidebar a:hover {
+      color: #f1f1f1;
+    }
+
+    .sidebar .closebtn {
+      position: absolute;
+      top: 0;
+      right: 25px;
+      font-size: 36px;
+      margin-left: 50px;
+    }
+
+    .content {
+        padding: 10px 15px;
+    }
+
+    #main {
+      transition: margin-left .5s;
+      padding: 16px;
+    }
+
+    /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+    @media screen and (max-height: 450px) {
+      .sidebar {padding-top: 15px;}
+      .sidebar a {font-size: 18px;}
+    }
+</style>
+
+</head>
 <div class="header">
     <div class="container">
         <div class="navbar">
@@ -79,10 +128,10 @@
             <nav>
                 <ul id="MenuItems">
                     <li>
-                        <form method="get" action="{% url 'shop:products' %}">
-                            <label for="search-field"><i class="fa fa-search"></i>
-                            <input style="width:300px; font-size: 18px" type="text" class="input-box" name="q" id="id_q" placeholder="Szukaj...">
-                        </form>
+                    <form method="get" action="{% url 'shop:products' %}">
+                        <label for="search-field"><i class="fa fa-search"></i>
+                        <input style="width:300px; font-size: 18px" type="text" class="input-box" name="q" id="id_q" placeholder="Szukaj...">
+                    </form>
                     </li>
                     <li><a href="{% url 'shop:home' %}">Home</a></li>
                     <li><a href="{% url 'shop:products' %}">Produkty</a></li>
@@ -107,41 +156,17 @@
                     <li><a href="{% url 'login' %}">Login</a></li>
                     {% endif %}
                     <li>
-                      <div class="dropdown1">
-                        <a class="dropbtn1" href="{% url 'shop:cart' %}"><img src="{% static 'images/cart.png' %}" width="30px" height="30px"></a>
-                        <div class="dropdown-content1">
-                          <p id="cartItems">Twój koszyk: </p>
+                        <div id="mySidebar" class="sidebar">
+                          <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
                           {% if cartItems %}
                             {% for item in cartItems %}
-                            <tr>
-                              <td>
-                                <div class="row">
-                                  <div class="col-3">
-                                    <a href="{{ item.product.get_absolute_url }}"><img src="{{ item.product.image1.url }}" style="width:50px; height: 50px;"></a>
-                                  </div>
-                                  <div class="col-3">
-                                    <div>
-                                      <p>{{item.product.title}}</p>
-                                      <small>Cena: {{item.product.price}}PLN</small>
-                                      <br/>
-                                    </div>
-                                    <p>{{item.quantity}}</p>
-                                  </div>
-                                </div>
-                              </td>
-                              <td>
-                                <div class="column" style="text-align: right">
-                                  <p>Netto: {{item.get_total|floatformat:2}} PLN</p>
-                                  <p>Brutto: {{item.get_brutto|floatformat:2}} PLN</p>
-                                </div>
-                              </td>
-                              </div>
-                            </tr>
+                                <a href="">{{item.product.title}}</a>
                             {% endfor %}
                           {% else %}
                             <p>Twók koszyk jest pusty</p>
                           {% endif %}
                         </div>
+                        <a onclick="openNav()" class="openbtn"><img src="{% static 'images/cart.png' %}" width="30px" height="30px"></a>
                     </li>
                 </ul>
                 <img src="{% static 'images/menu.png' %}" class="menu-icon" onclick="menuToggle()">
@@ -244,12 +269,24 @@
       }
     }
   }
-  //
+
   setTimeout(function(){
     if ($('#msg').length > 0) {
       $('#msg').remove();
     }
   }, 2000)
 
+</script>
+
+<script>
+function openNav() {
+  document.getElementById("mySidebar").style.width = "250px";
+  document.getElementById("main").style.marginLeft = "250px";
+}
+
+function closeNav() {
+  document.getElementById("mySidebar").style.width = "0";
+  document.getElementById("main").style.marginLeft= "0";
+}
 </script>
 </html>

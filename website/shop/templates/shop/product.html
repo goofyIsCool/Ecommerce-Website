@@ -2,8 +2,18 @@
 {% block content %}
 {% load static %}
 
+<style>
+    .mbar {
+      padding: 5px;
+      margin: 5px;
+      background: lightgreen;
+      border: 1px solid #aaa;
+    }
+</style>
+
 <main>
     <div class="small-container single-product">
+      <div id="mbar"></div>
       <div class="row">
           <div class="col-2">
               <img src="{{ object.image1.url }}" width="100%" id="ProductImg">
@@ -29,7 +39,7 @@
                 <span class="minus" data-action="remove" data-pack={{ object.pack }}>&#8722;</span>
       				  <input class="quantity" type="number" id="{{object.id}}" value="{{object.pack}}"/>
       					<span class="plus" data-action="add" data-pack={{ object.pack }}>&#43;</span>
-                <a data-productId="{{ object.id }}" data-action="add" data-pack={{ object.pack }} class="update-cart btn">Dodaj</a>
+                <a onclick="mbar('Dodano produkt do koszyka!')" data-productId="{{ object.id }}" data-action="add" data-pack={{ object.pack }} class="update-cart btn">Dodaj</a>
               </div>
               <h3>Opis</h3>
               <p>{{object.description}}</p>
@@ -54,7 +64,7 @@
               </div>
           {% endfor %}
       </div>
-  </div>
+</div>
 
 
 <script type="text/javascript">
@@ -138,6 +148,26 @@
       ProductImg.src = SmallImg[2].src;
   }
 
+</script>
+
+<script>
+    // (B) MESSAGE BAR
+    function mbar (msg, css) {
+      // (B1) CREATE BAR
+      var bar = document.createElement("div");
+
+      bar.innerHTML = msg;
+      bar.classList.add("mbar");
+      if (css) { bar.classList.add(css); }
+
+      // (B2) CLICK TO CLOSE
+      bar.onclick = function(){
+        document.getElementById("mbar").removeChild(this);
+      };
+
+      // (B3) APPEND TO CONTAINER
+      document.getElementById("mbar").appendChild(bar);
+    }
 </script>
 
 </main>
