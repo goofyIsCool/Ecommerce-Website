@@ -81,6 +81,16 @@
       padding-top: 60px;
     }
 
+    .sidebar-btn {
+      text-decoration: none;
+      font-size: 18px;
+      color: #818181;
+      display: block;
+      transition: 0.3s;
+      cursor: pointer;
+      text-align: center;
+    }
+
     .sidebar a {
       padding: 8px 8px 8px 32px;
       text-decoration: none;
@@ -88,6 +98,8 @@
       color: #818181;
       display: block;
       transition: 0.3s;
+      cursor: pointer;
+      text-align: left;
     }
 
     .sidebar a:hover {
@@ -109,6 +121,7 @@
     #main {
       transition: margin-left .5s;
       padding: 16px;
+      float: right;
     }
 
     /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
@@ -156,17 +169,23 @@
                     <li><a href="{% url 'login' %}">Login</a></li>
                     {% endif %}
                     <li>
-                        <div id="mySidebar" class="sidebar">
-                          <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
-                          {% if cartItems %}
-                            {% for item in cartItems %}
-                                <a href="">{{item.product.title}}</a>
-                            {% endfor %}
-                          {% else %}
-                            <p>Twók koszyk jest pusty</p>
-                          {% endif %}
-                        </div>
-                        <a onclick="openNav()" class="openbtn"><img src="{% static 'images/cart.png' %}" width="30px" height="30px"></a>
+                      <div id="menu">
+                      <a onclick="openNav()" class="openbtn"><img style="cursor: pointer" src="{% static 'images/cart.png' %}" width="30px" height="30px"></a>
+                      <div id="mySidebar" class="sidebar">
+                        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+                        <a class="btn sidebar-btn" href="{% url 'shop:cart' %}">Przejdź do zapłaty</a>
+                        <div class="sidebar-cart">
+                          <h3>Twój koszyk: </h3>
+                            {% if cartItems %}
+                              {% for item in cartItems %}
+                              <a href="">{{item.product.title}}</a>
+                              {% endfor %}
+                            {% else %}
+                              <p>Twók koszyk jest pusty</p>
+                            {% endif %}
+                          </div>
+                      </div>
+                      </div>
                     </li>
                 </ul>
                 <img src="{% static 'images/menu.png' %}" class="menu-icon" onclick="menuToggle()">
@@ -239,6 +258,7 @@
 <script type="text/javascript">
     var MenuItems = document.getElementById("MenuItems");
     MenuItems.style.maxHeight = "0px";
+    // MenuItems.style.position = "fixed";
 
     function menuToggle() {
         if (MenuItems.style.maxHeight == "0px") {
@@ -279,14 +299,14 @@
 </script>
 
 <script>
-function openNav() {
-  document.getElementById("mySidebar").style.width = "250px";
-  document.getElementById("main").style.marginLeft = "250px";
-}
+  function openNav() {
+    document.getElementById("mySidebar").style.width = "300px";
+    document.getElementById("main").style.marginLeft = "300px";
+  }
 
-function closeNav() {
-  document.getElementById("mySidebar").style.width = "0";
-  document.getElementById("main").style.marginLeft= "0";
-}
+  function closeNav() {
+    document.getElementById("mySidebar").style.width = "0";
+    document.getElementById("main").style.marginLeft= "0";
+  }
 </script>
 </html>

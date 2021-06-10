@@ -69,9 +69,9 @@
 
 <script type="text/javascript">
 
-  var cartItems = document.getElementById('cartItems');
-  var counter = '{{ cartItems }}';
-  cartItems.innerHTML = counter;
+  // var cartItems = document.getElementById('cartItems');
+  // var counter = '{{ cartItems }}';
+  // cartItems.innerHTML = counter;
 
   var msg = document.getElementById('msg');
 
@@ -101,7 +101,7 @@
           },
           success: function( data )
           {
-              cartItems.innerHTML = data[0];
+              // cartItems.innerHTML = data[0];
               $('#product'+productId).remove();
           }
        })

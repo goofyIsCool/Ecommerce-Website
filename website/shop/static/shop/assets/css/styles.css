@@ -877,3 +877,26 @@ input{
   text-align: center;
   margin-top: 30px;
 }
+
+.sidebar-cart {
+  align-content: center;
+}
+
+.sidebar-cart a{
+  color: lightgrey;
+  text-align: center;
+  margin: 50px;
+}
+
+.sidebar-cart p{
+  color: lightgrey;
+  text-align: center;
+  margin: 50px;
+}
+
+.sidebar-cart h3 {
+  margin: auto;
+  margin: 50px 10px;
+  color: lightgrey;
+  text-align: left;
+}

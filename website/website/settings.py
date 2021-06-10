@@ -26,7 +26,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.17', '192.168.0.102', '192.168.0.103', '192.168.0.101', 'wolkamoda.pl']
+ALLOWED_HOSTS = ['192.168.1.17', '192.168.0.102', '192.168.0.103', '192.168.0.104', 'wolkamoda.pl']
 
 # Application definition
 

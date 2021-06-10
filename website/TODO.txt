@@ -3,7 +3,6 @@
 4. Improve e-mail content (easy)
 
 9. Dashboard (Working on it)
-11. Cart (almost done)
 12. Make the website more mobile friendly (to be improved)
 13. SEO (META etc.)
 
