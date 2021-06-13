@@ -18,14 +18,14 @@
           <div class="col-2">
               <img src="{{ object.image1.url }}" width="100%" id="ProductImg">
               <div class="small-img-row">
-                  <div class="small-img-col"> <img src="{{ object.image1.url }}" width="100%" class="small-img"> </div>
-                  <div class="small-img-col"> <img src="{{ object.image2.url }}" width="100%" class="small-img"> </div>
-                  <div class="small-img-col"> <img src="{{ object.image3.url }}" width="100%" class="small-img"> </div>
+                  <div class="small-img-col"> <img src="{{ object.image1.url }}" width="150px" height="150px" class="small-img"> </div>
+                  <div class="small-img-col"> <img src="{{ object.image2.url }}" width="150px" height="150px" class="small-img"> </div>
+                  <div class="small-img-col"> <img src="{{ object.image3.url }}" width="150px" height="150px" class="small-img"> </div>
               </div>
           </div>
           <div class="col-2">
               <p>Produkty/{{object.category}}</p>
-              <h1 style="margin-bottom: 0px;">{{object.title}}</h1>
+              <h1>{{object.title}}</h1>
               <small>Kod produktu: {{object.slug}}</small>
               <br>
               <br>
@@ -55,7 +55,7 @@
       <div class="row">
           {% for product in recProducts %}
               <div class="col-4">
-                  <a href="{{ product.get_absolute_url }}"><img src="{{ product.image1.url }}" width="225" height="225" class="card-img-top"></a>
+                  <a href="{{ product.get_absolute_url }}"><img src="{{ product.image1.url }}" width="225px" height="250px" class="card-img-top"></a>
                   <a href="{{ product.get_absolute_url }}"><h5><strong>{{product.title}}</strong></h5></a>
                   <p>Cena Netto: {{product.price|floatformat:2}} PLN</p>
                   <p>Cena Brutto: {{product.get_brutto_price|floatformat:2}} PLN</p>
@@ -72,8 +72,6 @@
   // var cartItems = document.getElementById('cartItems');
   // var counter = '{{ cartItems }}';
   // cartItems.innerHTML = counter;
-
-  var msg = document.getElementById('msg');
 
   $('.update-cart').click(function(){
       var productId = $(this).attr("data-productId");
@@ -101,8 +99,7 @@
           },
           success: function( data )
           {
-              // cartItems.innerHTML = data[0];
-              $('#product'+productId).remove();
+              toastr.success('Produkt został dodany do twojego koszyka!');
           }
        })
   });
@@ -148,26 +145,6 @@
       ProductImg.src = SmallImg[2].src;
   }
 
-</script>
-
-<script>
-    // (B) MESSAGE BAR
-    function mbar (msg, css) {
-      // (B1) CREATE BAR
-      var bar = document.createElement("div");
-
-      bar.innerHTML = msg;
-      bar.classList.add("mbar");
-      if (css) { bar.classList.add(css); }
-
-      // (B2) CLICK TO CLOSE
-      bar.onclick = function(){
-        document.getElementById("mbar").removeChild(this);
-      };
-
-      // (B3) APPEND TO CONTAINER
-      document.getElementById("mbar").appendChild(bar);
-    }
 </script>
 
 </main>

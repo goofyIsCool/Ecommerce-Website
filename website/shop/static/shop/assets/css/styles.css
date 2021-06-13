@@ -273,7 +273,7 @@ small {
     transition: transform 0.5s;
 }
 
-.quotes .col-4:hover{
+.quotes .col-4:openDropdown{
     transform: translateY(-10px)
 }
 
@@ -482,6 +482,14 @@ select {
     display: none;
 }
 
+#MenuItems {
+    height: 0%
+}
+
+#MenuItems.open {
+    height: 100%
+}
+
 /* media query for menu  */
 @media only screen and (max-width: 800px) {
     nav ul {
@@ -493,6 +501,7 @@ select {
         width: 100%;
         overflow: hidden;
         transition: max-height 0.5s;
+        z-index: 100;
     }
 
     nav ul li {
@@ -899,4 +908,28 @@ input{
   margin: 50px 10px;
   color: lightgrey;
   text-align: left;
+}
+
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    border-radius: 5px;
+    margin: 20px 20px;
+    padding: 20px 20px;
+
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.cartItem {
+    height: 100px;
+    width: 100%;
+    display: inline-block;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+
+.cartItem:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }

@@ -32,13 +32,35 @@ class OrderListView(ListView):
     paginate_by = 10
 
     def get_queryset(self, *args, **kwargs):
-        queryset = Order.objects.filter(complete=True).order_by('-date_ordered')
+        queryset = Order.objects.order_by('-date_ordered')
+        print(queryset)
         return queryset
+
+
+class OrderProductsListView(ListView):
+    model = OrderItem
+    template_name = "dashboard/order.html"
+
+    def get_context_data(self, *args, **kwargs):
+
+        try:
+            data = cartData(self.request)
+            counterCartItems = data['counterCartItems']
+            cartItems = data['cartItems']
+        except:
+            counterCartItems = 0
+
+        orderId = self.kwargs['orderId']
+        order = Order.objects.get(id=orderId)
+        orderItems = OrderItem.objects.filter(order=order)
+        context = {'order': order, 'items': orderItems}
+        return context
+
 
 class ProductListView(ListView):
     model = Product
     template_name = "dashboard/products.html"
-    paginte_by = 20
+    paginate_by = 10
     ordering = 'release_date'
 
 class ProductCreateView(CreateView):
@@ -49,16 +71,16 @@ class ProductCreateView(CreateView):
 class ProductDeleteView(DeleteView):
     model = Product
 
-class CategoryListView(ListView):
-    model = Category
-    template_name = "dashboard/categories.html"
-    paginte_by = 20
-    ordering = 'release_date'
-
-class CategoryCreateView(CreateView):
-    model = Category
-    fields = ['title', 'category', 'price', 'pack', 'discount', 'size', 'slug', 'description', 'image1', 'image2', 'image3']
-    template_name = "dashboard/category_form.html"
-
-class CategoryDeleteView(DeleteView):
-    model = Category
+# class CategoryListView(ListView):
+#     model = Category
+#     template_name = "dashboard/categories.html"
+#     paginte_by = 20
+#     ordering = 'release_date'
+#
+# class CategoryCreateView(CreateView):
+#     model = Category
+#     fields = ['title', 'category', 'price', 'pack', 'discount', 'size', 'slug', 'description', 'image1', 'image2', 'image3']
+#     template_name = "dashboard/category_form.html"
+#
+# class CategoryDeleteView(DeleteView):
+#     model = Category

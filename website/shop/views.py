@@ -49,7 +49,7 @@ class ProductListView(ListView):
 
     model = Product
     template_name = "shop/products.html"
-    paginate_by = 4
+    paginate_by = 8
     ordering = ['title']
 
     def get_queryset(self, *args, **kwargs):
@@ -158,9 +158,6 @@ class OrderProductsListView(ListView):
             cartItems = data['cartItems']
         except:
             counterCartItems = 0
-
-        context['counterCartItems'] = counterCartItems
-        context['cartItems'] = cartItems
 
         orderId = self.kwargs['orderId']
         order = Order.objects.get(id=orderId)
@@ -330,6 +327,7 @@ def processOrder(request):
     total = round(całklowite + grosze,2)
     order, created = Order.objects.get_or_create(customer=customer, complete=False)
     order.transaction_id = transaction_id
+
     print(total)
     print(float(round(order.get_cart_total_brutto,2)))
     if total == float(round(order.get_cart_total_brutto,2)):

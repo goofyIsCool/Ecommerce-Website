@@ -12,7 +12,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
     <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script type="text/javascript">
 
     var user = '{{request.user}}'
@@ -74,7 +76,7 @@
       position: fixed;
       z-index: 1;
       top: 0;
-      left: 0;
+      right: 0;
       background-color: #111;
       overflow-x: hidden;
       transition: 0.5s;
@@ -92,18 +94,8 @@
     }
 
     .sidebar a {
-      padding: 8px 8px 8px 32px;
-      text-decoration: none;
-      font-size: 25px;
-      color: #818181;
-      display: block;
       transition: 0.3s;
       cursor: pointer;
-      text-align: left;
-    }
-
-    .sidebar a:hover {
-      color: #f1f1f1;
     }
 
     .sidebar .closebtn {
@@ -127,8 +119,9 @@
     /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
     @media screen and (max-height: 450px) {
       .sidebar {padding-top: 15px;}
-      .sidebar a {font-size: 18px;}
+      /* .sidebar a {font-size: 18px;} */
     }
+
 </style>
 
 </head>
@@ -153,7 +146,7 @@
                     {% if user.is_authenticated %}
                     <li>
                       <div class="dropdown">
-                       <button onclick="myFunction()" class="dropbtn">Konto</button>
+                       <button onclick="openDropdown()" class="dropbtn">Konto</button>
                        <div id="myDropdown" class="dropdown-content">
                          <a href="{% url 'shop:profile'%}">Profil</a>
                          <a href="{% url 'shop:orders'%}">Historia Zamówień</a>
@@ -177,13 +170,21 @@
                         <div class="sidebar-cart">
                           <h3>Twój koszyk: </h3>
                             {% if cartItems %}
-                              {% for item in cartItems %}
-                              <a href="">{{item.product.title}}</a>
-                              {% endfor %}
+                                {% for item in cartItems %}
+                                <div class="cartItem">
+                                    <div class="row">
+                                        <a href="{{ item.product.get_absolute_url }}"><img src="{{ item.product.image1.url }}" width="50px" height="50px"></a>
+                                        <div class="column">
+                                            <p>{{item.product.title}}</p>
+                                            <p>{{item.product.pack}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
                             {% else %}
-                              <p>Twók koszyk jest pusty</p>
+                        <p>Twók koszyk jest pusty</p>
                             {% endif %}
-                          </div>
+                        </div>
                       </div>
                       </div>
                     </li>
@@ -195,13 +196,8 @@
 </div>
 
 <body>
-    <div class="content">
-      <ul id="popup-messages-content">
-        {% include 'shop/messages.html' %}
-      </ul>
-      {% block content %}
-      {% endblock %}
-    </div>
+    {% block content %}
+    {% endblock %}
 </body>
 
 <!-- footer  -->
@@ -256,23 +252,16 @@
 </div>
 
 <script type="text/javascript">
-    var MenuItems = document.getElementById("MenuItems");
-    MenuItems.style.maxHeight = "0px";
-    // MenuItems.style.position = "fixed";
+    var MenuItems = $("#MenuItems");
 
     function menuToggle() {
-        if (MenuItems.style.maxHeight == "0px") {
-            MenuItems.style.maxHeight = "350px";
-        }
-        else {
-            MenuItems.style.maxHeight = "0px";
-        }
+        MenuItems.toggleClass('open');
     }
 </script>
 
 <script type="text/javascript">
 
-  function myFunction() {
+  function openDropdown() {
     document.getElementById("myDropdown").classList.toggle("show");
     }
 
@@ -301,12 +290,12 @@
 <script>
   function openNav() {
     document.getElementById("mySidebar").style.width = "300px";
-    document.getElementById("main").style.marginLeft = "300px";
+    // document.getElementById("main").style.marginLeft = "300px";
   }
 
   function closeNav() {
     document.getElementById("mySidebar").style.width = "0";
-    document.getElementById("main").style.marginLeft= "0";
+    // document.getElementById("main").style.marginLeft= "0";
   }
 </script>
 </html>

@@ -127,6 +127,11 @@ class Order(models.Model):
             'orderId': self.id,
         })
 
+    def get_absolute_url2(self):
+        return reverse("dashboard:orderAdmin", kwargs={
+            'orderId': self.id,
+        })
+
     @property
     def get_payment_name(self):
         return self.payment

@@ -107,20 +107,43 @@
     {% block content %}
     {% endblock %}
 
-    <script>
-    function openNav() {
-      document.getElementById("mySidebar").style.width = "250px";
-      document.getElementById("main").style.marginLeft = "250px";
-    }
+    <br />
+    <center>
+        <div class="page-btn">
+            {% if is_paginated %}
+                    {% if page_obj.has_previous %}
+                        <a href='page={{page_obj.previous_page_number}}'><span>&#10094;</span></a>
+                    {% endif %}
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                            <a href="page={{num}}"><span>{{ num }}</span></a>
+                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3'  %}
+                            <a href='page={{num}}'><span>{{ num }}</span></a>
+                        {% endif %}
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                        <a href='page={{page_obj.next_page_number}}'><span>&#10095;</span></a>
+                    {% endif %}
+            {% endif %}
+        </div>
+    </center>
 
-    function closeNav() {
-      document.getElementById("mySidebar").style.width = "0";
-      document.getElementById("main").style.marginLeft= "0";
-    }
-    </script>
+
 
 
 </body>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script> -->
+
+<script>
+function openNav() {
+  document.getElementById("mySidebar").style.width = "250px";
+  document.getElementById("main").style.marginLeft = "250px";
+}
+
+function closeNav() {
+  document.getElementById("mySidebar").style.width = "0";
+  document.getElementById("main").style.marginLeft= "0";
+}
+</script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script> -->
 </html>
 <body>
