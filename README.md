@@ -8,7 +8,10 @@
 
 ## General info
 Simple e-commerce website created with D-jango.
-	
+
+![1](https://user-images.githubusercontent.com/72651157/154280162-09dd07d5-c2c5-4ba5-9188-230fc63fbe7f.png)
+
+
 ## Technologies
 Project is created with:
 * Boostrap: 4.5
