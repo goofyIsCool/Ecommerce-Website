@@ -9,7 +9,8 @@
 ## General info
 Simple e-commerce website created with D-jango.
 
-![1](https://user-images.githubusercontent.com/72651157/154280162-09dd07d5-c2c5-4ba5-9188-230fc63fbe7f.png)
+![1](https://user-images.githubusercontent.com/72651157/154280414-3c4bb09e-3a01-49bf-9e9e-fc32701f9e83.png)
+![2](https://user-images.githubusercontent.com/72651157/154280487-6b45c510-d426-4630-a9b3-42d52c0acc08.png)
 
 
 ## Technologies
