@@ -9,19 +9,21 @@
 ## General info
 Simple e-commerce website created with D-jango.
 
-![1](https://user-images.githubusercontent.com/72651157/154280414-3c4bb09e-3a01-49bf-9e9e-fc32701f9e83.png)
-![2](https://user-images.githubusercontent.com/72651157/154280487-6b45c510-d426-4630-a9b3-42d52c0acc08.png)
+![1](https://user-images.githubusercontent.com/72651157/154443284-5777377c-2ddb-48e7-8f15-bdda17c3f72c.png)
+![2](https://user-images.githubusercontent.com/72651157/154443286-52eb52b7-2c1d-45a7-8320-56106288ffd0.png)
+![3](https://user-images.githubusercontent.com/72651157/154443288-44d6b32c-012c-40e9-971a-9caa704944ef.png)
 
 
 ## Technologies
 Project is created with:
 * Boostrap: 4.5
 * Python: 3.9
-* Django: 3.1.3
+* Django: 3.1.3!
 
 ## Setup
 To run this project, install it locally using cmd/terminal:
 (If you're using a mac, use python3 in the terminal)
+
 
 1. Install python on your machine: https://www.python.org/
 
