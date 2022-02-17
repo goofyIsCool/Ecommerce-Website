@@ -10,9 +10,8 @@
 Simple e-commerce website created with D-jango.
 
 ![1](https://user-images.githubusercontent.com/72651157/154443284-5777377c-2ddb-48e7-8f15-bdda17c3f72c.png)
-![2](https://user-images.githubusercontent.com/72651157/154443286-52eb52b7-2c1d-45a7-8320-56106288ffd0.png)
 ![3](https://user-images.githubusercontent.com/72651157/154443288-44d6b32c-012c-40e9-971a-9caa704944ef.png)
-
+![2](https://user-images.githubusercontent.com/72651157/154443286-52eb52b7-2c1d-45a7-8320-56106288ffd0.png)
 
 ## Technologies
 Project is created with:
