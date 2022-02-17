@@ -19,36 +19,35 @@
 		</tr>
 		{% if items %}
 		{% for item in items %}
-		<tr id="product{{item.product.id}}">
-			<td>
-				<a href="{{ item.product.get_absolute_url }}"><img src="{{ item.product.image1.url }}" ></a>
-				<div>
-					<p>{{item.product.title}}</p>
-					<small>Cena: {{item.product.price}}PLN</small>
-					<br/>
-					<a data-productId="{{ item.product.id }}" data-action="removeAll" class="remove-item-from-cart a-btn">Usuń</a>
-				</div>
-			</td>
-			<td>
-				<div class="plus-minus-input">
-					<span class="minus" data-action="remove" data-pack={{ item.product.pack }}>&#8722;</span>
-					<input class="quantity" type="number" id="{{item.product.id}}" value="{{item.quantity}}"/>
-					<span class="plus" data-action="add" data-pack={{ item.product.pack }}>&#43;</span>
-					<span class="update-cart check" data-pack={{ item.product.pack }} data-action="update" data-productId="{{ item.product.id }}">&#10004;</span>
-				</div>
-			</td>
-			<td>
-				<div class="column">
-					<p>Cena netto: {{item.get_total|floatformat:2}} PLN</p>
-					<p>Vat: {{item.get_vat|floatformat:2}} PLN</p>
-					<p>Cena brutto: {{item.get_brutto|floatformat:2}} PLN</p>
-				</div>
-			</td>
-		</tr>
-		{% endfor %}
+			<tr id="product{{item.product.id}}">
+				<td>
+					<a href="{{ item.product.get_absolute_url }}"><img src="{{ item.product.image1.url }}" ></a>
+					<div>
+						<p>{{item.product.title}}</p>
+						<small>Cena: {{item.product.price}}PLN</small>
+						<br/>
+						<a data-productId="{{ item.product.id }}" data-action="removeAll" class="remove-item-from-cart a-btn">Usuń</a>
+					</div>
+				</td>
+				<td>
+					<div class="plus-minus-input">
+						<span class="minus" data-action="remove" data-pack={{ item.product.pack }}>&#8722;</span>
+						<input class="quantity" type="number" id="{{item.product.id}}" value="{{item.quantity}}"/>
+						<span class="plus" data-action="add" data-pack={{ item.product.pack }}>&#43;</span>
+						<span class="update-cart check" data-pack={{ item.product.pack }} data-action="update" data-productId="{{ item.product.id }}">&#10004;</span>
+					</div>
+				</td>
+				<td>
+					<div class="column">
+						<p>Cena netto: {{item.get_total|floatformat:2}} PLN</p>
+						<p>Vat: {{item.get_vat|floatformat:2}} PLN</p>
+						<p>Cena brutto: {{item.get_brutto|floatformat:2}} PLN</p>
+					</div>
+				</td>
+			</tr>
+			{% endfor %}
 		</table>
 		{% else %}
-		</table>
 		<center>
 				<div class="container" style="margin-top: 50px;">
 					<div class="info">

@@ -208,11 +208,8 @@ def cart(request):
         counterCartItems = data['counterCartItems']
         order = data['order']
         items = data['items']
-
         cartItems = data['cartItems']
-        context = {'items': items, 'order': order, 'counterCartItems': counterCartItems}
-        context['cartItems'] = cartItems
-
+        context = {'items': items, 'order': order, 'counterCartItems': counterCartItems, 'cartItems': cartItems}
         return render(request, 'shop/cart.html', context)
     except:
         return render(request, 'shop/cart.html')
@@ -225,10 +222,7 @@ def checkout(request):
         order = data['order']
         items = data['items']
         cartItems = data['cartItems']
-
-        context = {'items': items, 'order': order, 'counterCartItems': counterCartItems}
-        context['cartItems'] = cartItems
-
+        context = {'items': items, 'order': order, 'counterCartItems': counterCartItems, 'cartItems': cartItems}
         return render(request, 'shop/checkout.html', context)
     except:
         return render(request, 'shop/checkout.html')

@@ -380,7 +380,7 @@
         <button class="btn btn-success btn-block" id="make-payment">Potwierdź</button>
       </form>
       </div>
-      <div class="col-2">
+      <div class="col-6">
         <h2>Podsumowanie:</h2>
         <br>
         <table>
@@ -392,22 +392,22 @@
           {% for item in items %}
           <tr>
             <td>
-      				<a href="{{ item.product.get_absolute_url }}"><img src="{{ item.product.image1.url }}"></a>
-      				<div>
-      					<p>{{item.product.title}}</p>
-      					<small>Cena: {{item.product.price}}PLN</small>
-      					<br/>
-      				</div>
-      			</td>
-      			<td>
-              <p>{{item.quantity}}</p>
-      			</td>
-      			<td>
-      				<div class="column" style="text-align: right">
-      					<p>Netto: {{item.get_total|floatformat:2}} PLN</p>
-      					<p>Brutto: {{item.get_brutto|floatformat:2}} PLN</p>
-      				</div>
-      			</td>
+                <a href="{{ item.product.get_absolute_url }}"><img src="{{ item.product.image1.url }}"></a>
+                <div>
+  					<p>{{item.product.title}}</p>
+  					<small>Cena: {{item.product.price}}PLN</small>
+  					<br/>
+  				</div>
+  			</td>
+  			<td>
+                <p>{{item.quantity}}</p>
+  			</td>
+  			<td>
+  				<div class="column" style="text-align: right">
+  					<p>Netto: {{item.get_total|floatformat:2}} PLN</p>
+  					<p>Brutto: {{item.get_brutto|floatformat:2}} PLN</p>
+  				</div>
+  			</td>
           </tr>
           {% endfor %}
         </table>
